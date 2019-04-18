@@ -465,6 +465,16 @@ function gm_objectWrite( id, obj )
 {
 	GM_setValue( id, obj.value );
 }
+
+function gmRead( name, def )
+{
+    return unescape( gm_read( name, def ) );
+}
+
+function gmWrite( name, value )
+{
+    return gm_write( name, escape( value ) );
+}
 /*********************************************
   GreaseMonkey Interal Access Variables - End
 **********************************************/
