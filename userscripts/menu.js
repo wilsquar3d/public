@@ -6,7 +6,7 @@ cssMenuItemsDefault = { padding: '10px' };
 cssMenuDefault = { height: '100%', width: '200px', padding: 0, margin: 0, float: 'left' };
 cssDisplayDefault = { height: '100%', width: 'calc(100% - 202px)', padding: 0, margin: 0, 'border-left': '2px #000 solid', float: 'left' };
 
-function loadDisplay( menuItems=[], displayCSS={}, menuItemsCSS={}, menuCSS={}, bodyCSS={} )
+function createMenu( menuItems=[], displayCSS={}, menuItemsCSS={}, menuCSS={}, bodyCSS={} )
 {
     $( 'body' ).html( '' ).css( bodyCSS );
     $( 'body' ).append(
