@@ -26,3 +26,99 @@ var global_defaults =
             settings: { indent: '  ' }
         }
     };
+
+function createMenu( menuItems=[], displayCSS=null, menuItemsCSS=null, menuCSS=null, bodyCSS=null )
+{
+    if( !displayCSS )
+    {
+        displayCSS = global_defaults.css.display;
+    }
+
+    if( !menuItemsCSS )
+    {
+        menuItemsCSS = global_defaults.css.menuItems;
+    }
+
+    if( !menuCSS )
+    {
+        menuCSS = global_defaults.css.menu;
+    }
+
+    if( !bodyCSS )
+    {
+        bodyCSS = global_defaults.css.body;
+    }
+
+    $( 'body' ).html( '' ).css( bodyCSS );
+    $( 'body' ).append(
+        [
+            $( '<div id="menu" />' ).css( menuCSS ).append( $( '<div />' ).css( menuItemsCSS ).append( menuItems ) ),
+            $( '<div id="display" />' ).css( displayCSS )
+        ]
+    );
+}
+
+//displayFunc will accept the selector to attach to
+function menuItem( name, displayFunc, css=null, hover=null )
+{
+    if( !css )
+    {
+        css = global_defaults.css.menuItem;
+    }
+
+    if( !hover )
+    {
+        hover = global_defaults.css.menuItemHover;
+    }
+
+    return $( '<div />' )
+        .css( css )
+        .hover( function(){ $( this ).css( hover.on ); }, function(){ $( this ).css( hover.off ); } )
+        .text( name )
+        .click( function(){ $( '#display' ).html( '' ); displayFunc( '#display' ); } );
+}
+
+function jsonEditBoxGM( gmVar, cssJsonEdit=null, cssJsonText=null, jsonFormat=null, hover=null )
+{
+    if( !cssJsonEdit )
+    {
+        cssJsonEdit = global_defaults.css.jsonEdit;
+    }
+
+    if( !cssJsonText )
+    {
+        cssJsonText = global_defaults.css.jsonText;
+    }
+
+    if( !jsonFormat )
+    {
+        jsonFormat = global_defaults.json.settings;
+    }
+
+    if( !hover )
+    {
+        hover = global_defaults.css.editBoxHover;
+    }
+
+    var id = gmVar; //TODO should sanitize or randomize
+
+    return $( '<div />' ).css( cssJsonEdit ).hover(
+        function(){ $( this ).css( hover.on ); },
+        function(){ $( this ).css( hover.off ); }
+    ).append(
+        [
+            $( '<div style="padding:10px;" />' ).append(
+                $( '<textarea id="' + id + '" />' )
+                    .css( cssJsonText )
+                    .val( JSON.stringify( GM_getValue( gmVar, {} ), null, jsonFormat.indent ) )
+                    .on( 'input', function(){ isJson( $( this ), global_defaults.css.bgWhite, global_defaults.css.bgRed, $( '#save_' + id ) ); } )
+            ),
+            $( '<input type="button" value="Save" id="save_' + id +  '" />' ).click(
+                function()
+                {
+                    GM_setValue( gmVar, JSON.parse( $( '#' + id ).val() ) );
+                }
+            )
+        ]
+    );
+}
