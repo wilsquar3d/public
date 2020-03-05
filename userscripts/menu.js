@@ -45,7 +45,7 @@ function jsonEditBoxGM( gmVar, jsonFormat={}, hover={} )
             $( '<div style="padding:10px;" />' ).append(
                 $( '<textarea id="' + id + '" style="width:100%;height:calc(100% - 50px);white-space:nowrap;" />' )
                     .val( JSON.stringify( GM_getValue( gmVar, {} ), jsonFormat.format, jsonFormat.indent ) )
-                    .on( 'input', function(){ isJson( $( this ), 'background-color', '#FFF', '#fbcfcf', $( '#save_' + id ) ); } )
+                    .on( 'input', function(){ isJson( $( this ), { 'background-color': '#FFF' }, { 'background-color': '#fbcfcf' }, $( '#save_' + id ) ); } )
             ),
             $( '<input type="button" value="Save" id="save_' + id +  '" />' ).click(
                 function()
