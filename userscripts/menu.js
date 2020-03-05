@@ -109,7 +109,7 @@ function jsonEditBoxGM( gmVar, cssJsonEdit=null, cssJsonText=null, jsonFormat=nu
         [
             $( '<div style="padding:10px;" />' ).append(
                 [
-                    $( '<div style="height:10px;font-size:11pt" />' ).val( gmVar ),
+                    $( '<div style="height:10px;font-size:11pt" />' ).html( gmVar ),
                     $( '<textarea id="' + id + '" />' )
                         .css( cssJsonText )
                         .val( JSON.stringify( GM_getValue( gmVar, {} ), null, jsonFormat.indent ) )
