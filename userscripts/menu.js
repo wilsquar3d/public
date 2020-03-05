@@ -14,7 +14,10 @@ var global_defaults =
             menuItem: { cursor: 'pointer', 'margin-bottom': '10px' },
             menuItemHover: { on: { 'background-color': '#CCC' }, off: { 'background-color': '#FFF' } },
             //jsonEditBox
-            editBoxHover: { on: { 'background-color': '#EEE' }, off: { 'background-color': '#FFF' } }
+            editBoxHover: { on: { 'background-color': '#EEE' }, off: { 'background-color': '#FFF' } },
+            //isJson
+            bgWhite: { 'background-color': '#FFF' },
+            bgRed: { 'background-color': '#fbcfcf' }
         },
         json:
         {
