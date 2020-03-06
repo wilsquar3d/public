@@ -15,7 +15,7 @@ var global_defaults =
             menuItemHover: { on: { 'background-color': '#CCC' }, off: { 'background-color': '#FFF' } },
             //jsonEditBox
             jsonEdit: { width: '50%', height: '50%', float: 'left' },
-            jsonText: { width: '100%', height: 'calc(100% - 60px)', 'white-space': 'nowrap' },
+            jsonText: { width: '100%', height: 'calc(100% - 70px)', 'white-space': 'nowrap' },
             editBoxHover: { on: { 'background-color': '#EEE' }, off: { 'background-color': '#FFF' } },
             //isJson
             bgWhite: { 'background-color': '#FFF' },
@@ -109,7 +109,7 @@ function jsonEditBoxGM( gmVar, cssJsonEdit=null, cssJsonText=null, jsonFormat=nu
         [
             $( '<div style="padding:10px;" />' ).append(
                 [
-                    $( '<div style="height:10px;font-size:11pt" />' ).html( gmVar ),
+                    $( '<div style="height:20px;font-size:11pt" />' ).html( gmVar ),
                     $( '<textarea id="' + id + '" />' )
                         .css( cssJsonText )
                         .val( JSON.stringify( GM_getValue( gmVar, {} ), null, jsonFormat.indent ) )
