@@ -7,7 +7,7 @@ function createID( appID, varName, extras=[] )
 
 function createSafeID( id )
 {
-    return id.replace( /[\W_]+/g, '_' );
+    return id.replace( /[\W_]+/g, '_' ).toLowerCase();
 }
 
 function isJson( elem, pos, neg, btn=null )
