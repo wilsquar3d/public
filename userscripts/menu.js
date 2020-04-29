@@ -75,6 +75,7 @@ function menuItem( name, displayFunc, css=null, hover=null )
         .css( css )
         .hover( function(){ $( this ).css( hover.on ); }, function(){ $( this ).css( hover.off ); } )
         .text( name )
+        .attr( 'id', createSafeID( name ) )
         .click( function(){ $( '#display' ).html( '' ); displayFunc( '#display' ); } );
 }
 
