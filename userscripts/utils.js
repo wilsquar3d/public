@@ -5,6 +5,11 @@ function createID( appID, varName, extras=[] )
     return 'ww_' + appID + '_' + varName + ( extras && extras.length > 0 ? ( '_' + extras.join( '_' ) ) : '' ) + '_ww';
 }
 
+function createSafeID( id )
+{
+    return id.replace( /[\W_]+/g, '_' );
+}
+
 function isJson( elem, pos, neg, btn=null )
 {
     var test = false;
