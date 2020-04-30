@@ -14,9 +14,9 @@ function runFunc( func, delay=500 )
 var runFuncCallbackProps_default = { func: function(){ }, callback: null, delay: 500 };
 
 //TODO failover after # tries
-function runFuncCallback( props, initDelay=500 )
+function runFuncCallback( props, initDelay=500, defaultCallbackDelay=100 )
 {
-    setTimeout( runFuncCallbackHelper, initDelay, props, 500 ); //default per iteration delay of 0.5s
+    setTimeout( runFuncCallbackHelper, initDelay, props, defaultCallbackDelay ); //default per iteration delay of 0.5s
 }
 
 function runFuncCallbackHelper( props, delay )
