@@ -27,6 +27,6 @@ function runFuncCallbackHelper( props, delay )
     }
     else if( props.callback )
     {
-        runFuncCallbackHelper( props.callback, delay );
+        runFuncCallback( props.callback, props.delay ? props.delay : delay );
     }
 }
