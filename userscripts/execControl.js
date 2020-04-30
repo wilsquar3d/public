@@ -1,4 +1,4 @@
-//
+//https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/execControl.js
 
 function runFunc( func, delay=500 )
 {
