@@ -30,3 +30,16 @@ function isJson( elem, pos, neg, btn=null )
 
     return test;
 }
+
+//Replace ${var} with vars[var]
+function varReplace( txt, vars )
+{
+    $.each( Object.keys( vars ),
+        function( ndx, val )
+        {
+            txt = txt.split( '${' + val + '}' ).join( vars[val] );
+        }
+    );
+
+    return txt;
+}
