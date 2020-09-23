@@ -43,3 +43,17 @@ function varReplace( txt, vars )
 
     return txt;
 }
+
+//Clear all stored variables except exclusions
+function clearAllData( exclusions=[] )
+{
+    $.each( GM_listValues(),
+        function( ndx, key )
+        {
+            if( !exclusions.includes( key ) )
+            {
+                GM_deleteValue( key );
+            }
+        });
+
+}
