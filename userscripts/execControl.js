@@ -4,7 +4,7 @@ function runFunc( func, delay=500 )
 {
     if( !func() )
     {
-        setTimeout( runFunc, delay, func, delay );
+        setTimeout( function(){ runFunc( func, delay); }, delay );
     }
 }
 
