@@ -30,3 +30,11 @@ function runFuncCallbackHelper( props, delay )
         runFuncCallback( props.callback, props.delay ? props.delay : delay );
     }
 }
+
+//dynamically call a function by name with arguments
+function funcCall( name, ...args )
+{
+    let func = eval( name );
+
+    return func( ...args );
+}
