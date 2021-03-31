@@ -7,7 +7,7 @@
 //responseType: document, text, arraybuffer, etc.
 //callback: the function to call with the response
 //args: anything you want passed to the result methods
-function httpRequestFull( url, method, headers, payload, responseType, callback, ...args )
+function httpRequest( url, method, headers, payload, responseType, callback, ...args )
 {
     GM_xmlhttpRequest(
         {
