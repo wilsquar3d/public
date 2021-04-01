@@ -88,8 +88,9 @@ function buildInput( props )
     }
 
     props.type = props.type || 'text';
+    props.value = Object.keys( props ).includes( 'value' ) ? props.value : ( ['text', 'textarea'].includes( props.type ) ? '' : props.label || '' );
 
-    let input = $( '<' + props.tag + ' />' ).val( props.value || props.label || '' );
+    let input = $( '<' + props.tag + ' />' ).val( props.value );
 
     delete props.tag;
     delete props.label;
