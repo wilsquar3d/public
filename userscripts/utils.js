@@ -31,6 +31,31 @@ function isJson( elem, pos, neg, btn=null )
     return test;
 }
 
+function isObject( val )
+{
+    return val === Object( val ) && !Array.isArray( val ) && typeof val != 'function';
+}
+
+function isFunction( val )
+{
+    return val === Object( val ) && !Array.isArray( val ) && typeof val === 'function';
+}
+
+function isPrimitive( val )
+{
+    return val && val !== Object( val );
+}
+
+function isNumber( val )
+{
+    return isPrimitive( val ) && !isNaN( val );
+}
+
+function isString( val )
+{
+    return isPrimitive( val ) && !isNumber( val );
+}
+
 //Replace ${var} with vars[var]
 function varReplace( txt, vars )
 {
