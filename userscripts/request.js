@@ -9,18 +9,25 @@
 //args: anything you want passed to the result methods
 function httpRequest( url, method, headers, payload, responseType, callback, ...args )
 {
-    GM_xmlhttpRequest(
+    let request = buildRequest( url, method, payload, responseType );
+    request.onload = function( response )
         {
-            method: method,
-            url: url,
-            headers: headers,
-            data: payload,
-            responseType: responseType,
-            onload: function( response )
-            {
-                callback( response, ...args );
-            }
-        });
+            callback( response, ...args );
+        };
+
+    GM_xmlhttpRequest( request );
+}
+
+//build a request
+function buildRequest( url, method, headers, payload, responseType )
+{
+    return {
+        method: method,
+        url: url,
+        headers: headers,
+        data: JSON.stringify( payload ),
+        responseType: responseType
+    }
 }
 
 //automatic 200 validation: ex. httpRequest( url, method, headers, payload, responseType, validateHttpRequest, callback_func, <other args> );
