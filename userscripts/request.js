@@ -9,7 +9,8 @@
 //args: anything you want passed to the result methods
 function httpRequest( url, method, headers, payload, responseType, callback, ...args )
 {
-    let request = buildRequest( url, method, payload, responseType );
+    let request = buildRequest( url, method, headers, payload, responseType );
+    
     request.onload = function( response )
         {
             callback( response, ...args );
