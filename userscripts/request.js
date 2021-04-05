@@ -1,16 +1,12 @@
 //https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/request.js
 //userscript must grant: GM_xmlhttpRequest
 
-//method: GET, POST, PUT, etc.
-//headers: headers object
-//payload: message data
-//responseType: document, text, arraybuffer, etc.
+
+//request: JSON request matching structure created by buildRequest
 //callback: the function to call with the response
 //args: anything you want passed to the result methods
-function httpRequest( url, method, headers, payload, responseType, callback, ...args )
+function httpRequest( request, callback, ...args )
 {
-    let request = buildRequest( url, method, headers, payload, responseType );
-    
     request.onload = function( response )
         {
             callback( response, ...args );
@@ -19,7 +15,10 @@ function httpRequest( url, method, headers, payload, responseType, callback, ...
     GM_xmlhttpRequest( request );
 }
 
-//build a request
+//method: GET, POST, PUT, etc.
+//headers: headers object
+//payload: message data
+//responseType: document, text, arraybuffer, etc.
 function buildRequest( url, method, headers, payload, responseType )
 {
     return {
@@ -31,7 +30,7 @@ function buildRequest( url, method, headers, payload, responseType )
     }
 }
 
-//automatic 200 validation: ex. httpRequest( url, method, headers, payload, responseType, validateHttpRequest, callback_func, <other args> );
+//automatic 200 validation: ex. httpRequest( buildRequest( url, method, headers, payload, responseType ), validateHttpRequest, callback_func, <other args> );
 function validateHttpRequest( response, callback, ...args )
 {
     if( 200 == response.status )
