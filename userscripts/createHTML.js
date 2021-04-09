@@ -25,7 +25,7 @@ var list = [
     { tag: 'br' },
     { tag: 'input', type: 'radio', label: 'name3', name: 'group' },
     { tag: 'br' },
-    { tag: 'select', label: 'select label', value: 'val1', options: [{ value: 'val1'}, { value: 'val2' }] },
+    { tag: 'select', label: 'select label', value: 'val2', options: [{ value: 'val1'}, { value: 'val2' }, { value: 'val3' }] },
     { tag: 'br' },
     { tag: 'input', type: 'checkbox', label: 'check1' },
     { tag: 'br' },
@@ -92,7 +92,7 @@ function buildInput( props, globals={} )
 
     if( label )
     {
-        label = buildLabel( label, props, globals );
+        label = buildLabel( label, props, globals, !isSuffixLabel );
     }
 
     if( label && !isSuffixLabel )
@@ -174,9 +174,9 @@ function buildGeneric( props, globals={} )
     return tag;
 }
 
-function buildLabel( label, props, globals={} )
+function buildLabel( label, props, globals={}, colon=true )
 {
-    let tag = $( '<label />' ).html( label + ': ' );
+    let tag = $( '<label />' ).html( label + ( colon ? ': ' : ' ' ) );
 
     if( Object.keys( props ).includes( 'id' ) )
     {
