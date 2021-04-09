@@ -6,7 +6,8 @@ Example Usage:
 
 var globals = {
     input: { class: 'class_input', value: 'text value' },
-    a: { text: 'link text' }
+    a: { text: 'link text' },
+    label: { class: 'class_label' }
 };
 
 var list = [
@@ -196,9 +197,9 @@ function addGlobalProps( tag, props, globals={} )
 
         addSpecialTagProps( tag, global_props );
 
-        $.each( global_props, function( ndx, val )
+        $.each( Object.keys( global_props ), function( ndx, val )
             {
-                tag.attr( val, globals[props.tag][val] );
+                tag.attr( val, global_props[val] );
             }
         );
     }
