@@ -5,13 +5,13 @@
 Example Usage:
 
 var globals = {
-    input: { class: 'class_input', value: 'text value' },
+    input: { class: 'class_input', value: 'some text value' },
     a: { text: 'link text' },
     label: { class: 'class_label' }
 };
 
 var list = [
-    { tag: 'input', id: 'input1', label: 'name', value: 'text value' },
+    { tag: 'input', id: 'input1', label: 'name' },
     { tag: 'br' },
     { tag: 'input', label: 'name', value: 'text value', readonly: true },
     { tag: 'br' },
@@ -41,6 +41,7 @@ $( <selector> ).append( buildTags( list ) );
 
 
 //Builds a list of tags from object definitions
+//tag properties override global properties
 //list: [{}, ...]
 function buildTags( list, globals={} )
 {
@@ -100,7 +101,6 @@ function buildInput( props, globals={} )
     }
 
     props.type = props.type || 'text';
-    props.value = Object.keys( props ).includes( 'value' ) ? props.value : ( ['text', 'textarea'].includes( props.type ) ? '' : props.label || '' );
 
     let input = $( '<' + props.tag + ' />' );
     addGlobalProps( input, props, globals );
