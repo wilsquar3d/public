@@ -4,8 +4,13 @@
 /*
 Example Usage:
 
+var globals = {
+    input: { class: 'class_input', value: 'text value' },
+    a: { text: 'link text' }
+};
+
 var list = [
-    { tag: 'input', label: 'name', value: 'text value' },
+    { tag: 'input', id: 'input1', label: 'name', value: 'text value' },
     { tag: 'br' },
     { tag: 'input', label: 'name', value: 'text value', readonly: true },
     { tag: 'br' },
@@ -27,7 +32,7 @@ var list = [
     { tag: 'div', html: 'div content' },
     { tag: 'label', text: 'label text' },
     { tag: 'br' },
-    { tag: 'a', text: 'link text', href: 'https://google.com' }
+    { tag: 'a', href: 'https://google.com' }
 ];
 
 $( <selector> ).append( buildTags( list ) );
@@ -36,7 +41,7 @@ $( <selector> ).append( buildTags( list ) );
 
 //Builds a list of tags from object definitions
 //list: [{}, ...]
-function buildTags( list )
+function buildTags( list, globals={} )
 {
     if( !Array.isArray( list ) )
     {
@@ -58,15 +63,15 @@ function buildTags( list )
             {
                 case 'input':
                 case 'textarea':
-                    tags = tags.concat( buildInput( val ) );
+                    tags = tags.concat( buildInput( val, globals ) );
                     break;
 
                 case 'select':
-                    tags = tags.concat( buildSelect( val ) );
+                    tags = tags.concat( buildSelect( val, globals ) );
                     break;
 
                 default:
-                    tags = tags.concat( buildGeneric( val ) );
+                    tags = tags.concat( buildGeneric( val, globals ) );
                     break;
             }
         }
@@ -77,7 +82,7 @@ function buildTags( list )
 
 //Builds an input tag
 //props: { tag: 'textarea', label: '', value: '' }, { tag: 'input', type: 'text|radio|checkbox', label: '', name: '' },
-function buildInput( props )
+function buildInput( props, globals={} )
 {
     let label = props.label || '';
     let isSuffixLabel = ['radio', 'checkbox'].includes( props.type );
@@ -85,7 +90,7 @@ function buildInput( props )
 
     if( label )
     {
-        label = buildLabel( label, props );
+        label = buildLabel( label, props, globals );
     }
 
     if( label && !isSuffixLabel )
@@ -97,6 +102,7 @@ function buildInput( props )
     props.value = Object.keys( props ).includes( 'value' ) ? props.value : ( ['text', 'textarea'].includes( props.type ) ? '' : props.label || '' );
 
     let input = $( '<' + props.tag + ' />' );
+    addGlobalProps( input, props, globals );
 
     delete props.tag;
 
@@ -114,14 +120,14 @@ function buildInput( props )
 
 //Builds a select tag
 //props: { tag: 'select', label: '', value: '', options: [{ value: ''}, { value: '' }] }
-function buildSelect( props )
+function buildSelect( props, globals={} )
 {
     let label = props.label || '';
     let tags = [];
 
     if( label )
     {
-        tags.push( buildLabel( label, props ) );
+        tags.push( buildLabel( label, props, globals ) );
     }
 
     let select = $( '<select />' )
@@ -142,6 +148,8 @@ function buildSelect( props )
             }
         );
 
+    addGlobalProps( select, props, globals );
+
     delete props.tag;
     delete props.options;
 
@@ -152,9 +160,10 @@ function buildSelect( props )
     return tags;
 }
 
-function buildGeneric( props )
+function buildGeneric( props, globals={} )
 {
     let tag = $( '<' + props.tag + ' />' );
+    addGlobalProps( tag, props, globals );
 
     delete props.tag;
 
@@ -164,17 +173,35 @@ function buildGeneric( props )
     return tag;
 }
 
-function buildLabel( label, props )
+function buildLabel( label, props, globals={} )
 {
     let tag = $( '<label />' ).html( label + ': ' );
 
     if( Object.keys( props ).includes( 'id' ) )
     {
-        label.setAttr( 'id', props.id + '_label' );
+        tag.attr( 'id', props.id + '_label' );
     }
     delete props.label;
 
+    addGlobalProps( tag, { tag: 'label' }, globals );
+
     return tag;
+}
+
+function addGlobalProps( tag, props, globals={} )
+{
+    if( Object.keys( globals ).includes( props.tag ) )
+    {
+        let global_props = copyObject( globals[props.tag] );
+
+        addSpecialTagProps( tag, global_props );
+
+        $.each( global_props, function( ndx, val )
+            {
+                tag.attr( val, globals[props.tag][val] );
+            }
+        );
+    }
 }
 
 function addSpecialTagProps( tag, props )
