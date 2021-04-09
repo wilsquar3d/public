@@ -56,6 +56,11 @@ function isString( val )
     return isPrimitive( val ) && !isNumber( val );
 }
 
+function copyObject( obj )
+{
+    return JSON.parse( JSON.stringify( obj ) );
+}
+
 //Replace ${var} with vars[var]
 function varReplace( txt, vars )
 {
