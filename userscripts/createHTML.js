@@ -15,7 +15,7 @@ var list = [
     { tag: 'br' },
     { tag: 'input', type: 'radio', label: 'name1', name: 'group' },
     { tag: 'br' },
-    { tag: 'input', type: 'radio', label: 'name2', name: 'group' },
+    { tag: 'input', type: 'radio', label: 'name2', name: 'group', checked: true },
     { tag: 'br' },
     { tag: 'input', type: 'radio', label: 'name3', name: 'group' },
     { tag: 'br' },
@@ -23,10 +23,14 @@ var list = [
     { tag: 'br' },
     { tag: 'input', type: 'checkbox', label: 'check1' },
     { tag: 'br' },
-    { tag: 'input', type: 'checkbox', label: 'check2' }
+    { tag: 'input', type: 'checkbox', label: 'check2' },
+    { tag: 'div', html: 'div content' },
+    { tag: 'label', text: 'label text' },
+    { tag: 'br' },
+    { tag: 'a', text: 'link text', href: 'https://google.com' }
 ];
 
-$( <selction> ).append( buildTags( list ) );
+$( <selector> ).append( buildTags( list ) );
 */
 
 
@@ -61,12 +65,9 @@ function buildTags( list )
                     tags = tags.concat( buildSelect( val ) );
                     break;
 
-                case 'br':
-                    tags.push( $( '<br />' ) );
-                    break;
-
                 default:
-                    console.log( 'Uknown tag type: ' + JSON.stringify( val ) );
+                    tags = tags.concat( buildGeneric( val ) );
+                    break;
             }
         }
     );
@@ -82,27 +83,30 @@ function buildInput( props )
     let isSuffixLabel = ['radio', 'checkbox'].includes( props.type );
     let tags = [];
 
+    if( label )
+    {
+        label = buildLabel( label, props );
+    }
+
     if( label && !isSuffixLabel )
     {
-        tags.push( $( '<label />' ).html( label + ': ' ) );
+        tags.push( label );
     }
 
     props.type = props.type || 'text';
     props.value = Object.keys( props ).includes( 'value' ) ? props.value : ( ['text', 'textarea'].includes( props.type ) ? '' : props.label || '' );
 
-    let input = $( '<' + props.tag + ' />' ).val( props.value );
+    let input = $( '<' + props.tag + ' />' );
 
     delete props.tag;
-    delete props.label;
-    delete props.value;
 
+    addSpecialTagProps( input, props );
     addTagProps( input, props );
     tags.push( input );
 
-
     if( label && isSuffixLabel )
     {
-        tags.push( $( '<label />' ).html( label ) );
+        tags.push( label );
     }
 
     return tags;
@@ -117,7 +121,7 @@ function buildSelect( props )
 
     if( label )
     {
-        tags.push( $( '<label />' ).html( label + ': ' ) );
+        tags.push( buildLabel( label, props ) );
     }
 
     let select = $( '<select />' )
@@ -136,18 +140,64 @@ function buildSelect( props )
 
                 return options;
             }
-        )
-        .val( props.value );
+        );
 
     delete props.tag;
-    delete props.label;
-    delete props.value;
     delete props.options;
 
+    addSpecialTagProps( select, props );
     addTagProps( select, props );
     tags.push( select );
 
     return tags;
+}
+
+function buildGeneric( props )
+{
+    let tag = $( '<' + props.tag + ' />' );
+
+    delete props.tag;
+
+    addSpecialTagProps( tag, props );
+    addTagProps( tag, props );
+
+    return tag;
+}
+
+function buildLabel( label, props )
+{
+    let tag = $( '<label />' ).html( label + ': ' );
+
+    if( Object.keys( props ).includes( 'id' ) )
+    {
+        label.setAttr( 'id', props.id + '_label' );
+    }
+    delete props.label;
+
+    return tag;
+}
+
+function addSpecialTagProps( tag, props )
+{
+    if( Object.keys( props ).includes( 'value' ) )
+    {
+        tag.val( props.value );
+    }
+    delete props.value;
+
+    if( Object.keys( props ).includes( 'html' ) )
+    {
+        tag.html( props.html );
+    }
+    delete props.html;
+
+    if( Object.keys( props ).includes( 'text' ) )
+    {
+        tag.text( props.text );
+    }
+    delete props.text;
+
+    return tag;
 }
 
 //Assigns all object properties to the tag as key='value'
