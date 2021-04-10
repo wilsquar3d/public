@@ -2,7 +2,8 @@
 //requires utils.js
 
 /*
-Styling Conflicts: css > style | tag > global
+Styling Conflicts: tag:css > tag:style > global:tag:css > global:tag:style > global:*:css > global:*:style
+Mixing style and css: style of a higher order will completely remove css of a lower order. styles replace, css combines.
 Content Conflicts: text > html > value
 
 Example Usage - demonstrates conflict priorities:
@@ -11,7 +12,7 @@ var globals = {
     input: { class: 'class_input', value: 'some text value' },
     a: { text: 'link text' },
     label: { class: 'class_label' },
-    '*': { css: { 'margin-top': '5px', 'font-size': '10pt' }, style: 'margin-top: 20px;' },
+    '*': { class: 'class_global', css: { 'margin-top': '5px', 'font-size': '10pt' }, style: 'margin-top: 20px;' }
 };
 
 var list = [
