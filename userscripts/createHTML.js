@@ -228,41 +228,28 @@ function setGlobalProps( tag, props )
     );
 }
 
+var specialTagProperties = { value: 'val', html: 'html', text: 'text', style: 'attr', css: 'css' };
+
 function addSpecialTagProps( tag, props )
 {
-    if( Object.keys( props ).includes( 'value' ) )
-    {
-        tag.val( props.value );
-    }
-    delete props.value;
-
-    if( Object.keys( props ).includes( 'html' ) )
-    {
-        tag.html( props.html );
-    }
-    delete props.html;
-
-    if( Object.keys( props ).includes( 'text' ) )
-    {
-        tag.text( props.text );
-    }
-    delete props.text;
-
-    if( Object.keys( props ).includes( 'style' ) )
-    {
-        tag.attr( 'style', props.style );
-    }
-    delete props.style;
-
-    if( Object.keys( props ).includes( 'css' ) )
-    {
-        $.each( Object.keys( props.css ), function( ndx, val )
+    $.each( Object.keys( specialTagProperties ),
+        function( ndx, val )
+        {
+            if( Object.keys( props ).includes( val ) )
             {
-                tag.css( val, props.css[val] );
+                if( 'attr' == specialTagProperties[val] )
+                {
+                    tag.attr( val, props[val] );
+                }
+                else
+                {
+                    tag[specialTagProperties[val]]( props[val] );
+                }
             }
-        );
-    }
-    delete props.css;
+
+            delete props[val];
+        }
+    );
 
     return tag;
 }
