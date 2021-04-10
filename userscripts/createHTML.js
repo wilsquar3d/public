@@ -7,7 +7,8 @@ Example Usage:
 var globals = {
     input: { class: 'class_input', value: 'some text value' },
     a: { text: 'link text' },
-    label: { class: 'class_label' }
+    label: { class: 'class_label' },
+    '*': { css: { 'margin-top': '5px', 'font-size': '10pt' }, style: 'margin-top: 20px;' }, //Styling Conflicts: css > style | tag > global
 };
 
 var list = [
@@ -19,7 +20,7 @@ var list = [
     { tag: 'br' },
     { tag: 'textarea', label: 'name', value: 'text value'},
     { tag: 'br' },
-    { tag: 'input', type: 'radio', label: 'name1', name: 'group' },
+    { tag: 'input', type: 'radio', label: 'name1', name: 'group', style: 'margin-top: 15px' },
     { tag: 'br' },
     { tag: 'input', type: 'radio', label: 'name2', name: 'group', checked: true },
     { tag: 'br' },
@@ -30,7 +31,7 @@ var list = [
     { tag: 'input', type: 'checkbox', label: 'check1' },
     { tag: 'br' },
     { tag: 'input', type: 'checkbox', label: 'check2' },
-    { tag: 'div', html: 'div content' },
+    { tag: 'div', html: 'div content', css: { 'padding': '10px', 'font-weight': 'bold', 'font-size': '20px' } },
     { tag: 'label', text: 'label text' },
     { tag: 'br' },
     { tag: 'a', href: 'https://google.com' }
@@ -191,18 +192,26 @@ function buildLabel( label, props, globals={}, colon=true )
 
 function addGlobalProps( tag, props, globals={} )
 {
+    if( Object.keys( globals ).includes( '*' ) )
+    {
+        setGlobalProps( tag, copyObject( globals['*'] ) );
+    }
+
     if( Object.keys( globals ).includes( props.tag ) )
     {
-        let global_props = copyObject( globals[props.tag] );
-
-        addSpecialTagProps( tag, global_props );
-
-        $.each( Object.keys( global_props ), function( ndx, val )
-            {
-                tag.attr( val, global_props[val] );
-            }
-        );
+        setGlobalProps( tag, copyObject( globals[props.tag] ) );
     }
+}
+
+function setGlobalProps( tag, props )
+{
+    addSpecialTagProps( tag, props );
+
+    $.each( Object.keys( props ), function( ndx, val )
+        {
+            tag.attr( val, props[val] );
+        }
+    );
 }
 
 function addSpecialTagProps( tag, props )
@@ -224,6 +233,22 @@ function addSpecialTagProps( tag, props )
         tag.text( props.text );
     }
     delete props.text;
+
+    if( Object.keys( props ).includes( 'style' ) )
+    {
+        tag.attr( 'style', props.style );
+    }
+    delete props.style;
+
+    if( Object.keys( props ).includes( 'css' ) )
+    {
+        $.each( Object.keys( props.css ), function( ndx, val )
+            {
+                tag.css( val, props.css[val] );
+            }
+        );
+    }
+    delete props.css;
 
     return tag;
 }
