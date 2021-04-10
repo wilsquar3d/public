@@ -2,21 +2,24 @@
 //requires utils.js
 
 /*
-Example Usage:
+Styling Conflicts: css > style | tag > global
+Content Conflicts: text > html > value
+
+Example Usage - demonstrates conflict priorities:
 
 var globals = {
     input: { class: 'class_input', value: 'some text value' },
     a: { text: 'link text' },
     label: { class: 'class_label' },
-    '*': { css: { 'margin-top': '5px', 'font-size': '10pt' }, style: 'margin-top: 20px;' }, //Styling Conflicts: css > style | tag > global
+    '*': { css: { 'margin-top': '5px', 'font-size': '10pt' }, style: 'margin-top: 20px;' },
 };
 
 var list = [
-    { tag: 'input', id: 'input1', label: 'name' },
+    { tag: 'input', id: 'input1', label: { value: 'name', id: 'label_id_override' } },
     { tag: 'br' },
-    { tag: 'input', label: 'name', value: 'text value', readonly: true },
+    { tag: 'input', label: { value: 'name', css: { 'font-weight': 'bold' } }, value: 'text value', readonly: true },
     { tag: 'br' },
-    { tag: 'input', label: 'name', value: 'text value', disabled: true },
+    { tag: 'input', label: { html: 'html name: ', text: 'text name: ', value: 'value name: ' }, value: 'text value', disabled: true },
     { tag: 'br' },
     { tag: 'textarea', label: 'name', value: 'text value'},
     { tag: 'br' },
@@ -177,8 +180,10 @@ function buildGeneric( props, globals={} )
 
 function buildLabel( label, props, globals={}, colon=true )
 {
-    let tag = $( '<label />' ).html( label + ( colon ? ': ' : ' ' ) );
+    let text = isString( label ) ? label : label.value || '';
+    let tag = $( '<label />' ).html( text + ( colon ? ': ' : ' ' ) );
 
+    //default id
     if( Object.keys( props ).includes( 'id' ) )
     {
         tag.attr( 'id', props.id + '_label' );
@@ -186,6 +191,14 @@ function buildLabel( label, props, globals={}, colon=true )
     delete props.label;
 
     addGlobalProps( tag, { tag: 'label' }, globals );
+
+    if( !isString( label ) )
+    {
+        delete label.value;
+
+        addSpecialTagProps( tag, label );
+        addTagProps( tag, label );
+    }
 
     return tag;
 }
