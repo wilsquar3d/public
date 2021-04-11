@@ -9,7 +9,7 @@ Content Conflicts: text > html > value
 Example Usage - demonstrates conflict priorities:
 
 var globals = {
-    input: { filter: { type: 'text' }, class: 'class_input', value: 'some text value' },
+    input: [{ filter: { type: 'text' }, class: 'class_input_text', value: 'some text value' }, { filter: { type: 'radio' }, class: 'class_input_radio', value: 'some text value' }],
     a: { text: 'link text' },
     label: { class: 'class_label' },
     '*': { class: 'class_global', css: { 'margin-top': '5px', 'font-size': '10pt' }, style: 'margin-top: 20px;' }
@@ -55,6 +55,16 @@ function buildTags( list, globals={} )
         console.log( 'Tags list not defined as an array: ' + JSON.stringify( list ) );
         return [];
     }
+
+    //ensure globals are structured as tag: [{ filter: {}, name: value }, ...]
+    $.each( Object.keys( globals ), function( ndx, val )
+        {
+            if( !Array.isArray( globals[val] ) )
+            {
+                globals[val] = [globals[val]];
+            }
+        }
+    );
 
     let tags = [];
 
@@ -210,27 +220,32 @@ function addGlobalProps( tag, props, globals={} )
 {
     if( Object.keys( globals ).includes( '*' ) )
     {
-        setGlobalProps( tag, copyObject( globals['*'] ) );
+        setGlobalProps( tag, props, copyObject( globals['*'] ) );
     }
 
     if( Object.keys( globals ).includes( props.tag ) )
     {
-        if( Object.keys( globals[props.tag] ).includes( 'filter' ) && Object.keys( globals[props.tag].filter ).filter( fltr => globals[props.tag].filter[fltr] != props[fltr] ).length > 0 )
-        {
-            return;
-        }
-
-        setGlobalProps( tag, copyObject( globals[props.tag] ) );
+        setGlobalProps( tag, props, copyObject( globals[props.tag] ) );
     }
 }
 
-function setGlobalProps( tag, props )
+function setGlobalProps( tag, props, global_props_list=[] )
 {
-    addSpecialTagProps( tag, props );
-
-    $.each( Object.keys( props ), function( ndx, val )
+    $.each( global_props_list, function( ndx, global_props )
         {
-            tag.attr( val, props[val] );
+            if( Object.keys( global_props ).includes( 'filter' ) && Object.keys( global_props.filter ).filter( fltr => global_props.filter[fltr] != props[fltr] ).length > 0 )
+            {
+                return;
+            }
+            delete global_props.filter;
+
+            addSpecialTagProps( tag, global_props );
+
+            $.each( Object.keys( global_props ), function( ndx, val )
+                {
+                    tag.attr( val, global_props[val] );
+                }
+            );
         }
     );
 }
