@@ -56,16 +56,6 @@ function buildTags( list, globals={} )
         return [];
     }
 
-    //ensure globals are structured as tag: [{ filter: {}, name: value }, ...]
-    $.each( Object.keys( globals ), function( ndx, val )
-        {
-            if( !Array.isArray( globals[val] ) )
-            {
-                globals[val] = [globals[val]];
-            }
-        }
-    );
-
     let tags = [];
 
     $.each( list, function( ndx, val )
@@ -231,7 +221,7 @@ function addGlobalProps( tag, props, globals={} )
 
 function setGlobalProps( tag, props, global_props_list=[] )
 {
-    $.each( global_props_list, function( ndx, global_props )
+    $.each( Array.isArray( global_props_list ) ? global_props_list : [global_props_list], function( ndx, global_props )
         {
             if( Object.keys( global_props ).includes( 'filter' ) && Object.keys( global_props.filter ).filter( fltr => global_props.filter[fltr] != props[fltr] ).length > 0 )
             {
@@ -272,8 +262,6 @@ function addSpecialTagProps( tag, props )
             delete props[val];
         }
     );
-
-    return tag;
 }
 
 //Assigns all object properties to the tag as key='value'
@@ -284,6 +272,4 @@ function addTagProps( tag, props )
             tag.attr( val, props[val] );
         }
     );
-
-    return tag;
 }
