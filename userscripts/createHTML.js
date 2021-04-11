@@ -221,7 +221,7 @@ function addGlobalProps( tag, props, globals={} )
 
 function setGlobalProps( tag, props, global_props_list=[] )
 {
-    $.each( Array.isArray( global_props_list ) ? global_props_list : [global_props_list], function( ndx, global_props )
+    $.each( [].concat( global_props_list ), function( ndx, global_props )
         {
             if( Object.keys( global_props ).includes( 'filter' ) && Object.keys( global_props.filter ).filter( fltr => global_props.filter[fltr] != props[fltr] ).length > 0 )
             {
