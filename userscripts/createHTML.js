@@ -9,7 +9,7 @@ Content Conflicts: text > html > value
 Example Usage - demonstrates conflict priorities:
 
 var globals = {
-    input: { class: 'class_input', value: 'some text value' },
+    input: { filter: { type: 'text' }, class: 'class_input', value: 'some text value' },
     a: { text: 'link text' },
     label: { class: 'class_label' },
     '*': { class: 'class_global', css: { 'margin-top': '5px', 'font-size': '10pt' }, style: 'margin-top: 20px;' }
@@ -204,6 +204,8 @@ function buildLabel( label, props, globals={}, colon=true )
     return tag;
 }
 
+//filter is optional
+//global properties: <tag>: { filter: { <tag attribute>: <tag value>, ... }, <attribute>: <value>, ... }
 function addGlobalProps( tag, props, globals={} )
 {
     if( Object.keys( globals ).includes( '*' ) )
@@ -213,6 +215,11 @@ function addGlobalProps( tag, props, globals={} )
 
     if( Object.keys( globals ).includes( props.tag ) )
     {
+        if( Object.keys( globals[props.tag] ).includes( 'filter' ) && Object.keys( globals[props.tag].filter ).filter( fltr => globals[props.tag].filter[fltr] != props[fltr] ).length > 0 )
+        {
+            return;
+        }
+
         setGlobalProps( tag, copyObject( globals[props.tag] ) );
     }
 }
