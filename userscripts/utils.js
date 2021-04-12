@@ -10,16 +10,22 @@ function createSafeID( id )
     return id.replace( /[\W_]+/g, '_' ).toLowerCase();
 }
 
-function isJson( elem, pos, neg, btn=null )
+function isJson( text )
 {
-    var test = false;
-
     try
     {
-        JSON.parse( elem.val() );
-        test = true;
+        JSON.parse( text );
+        return true;
     }
-    catch( e ) {}
+    catch( e )
+    {
+        return false;
+    }
+}
+
+function isJsonAction( elem, pos, neg, btn=null )
+{
+    var test = isJson( elem.val() );
 
     elem.css( test ? pos : neg );
 
@@ -56,9 +62,9 @@ function isString( val )
     return isPrimitive( val ) && !isNumber( val );
 }
 
-function copyObject( obj )
+function copyJson( json )
 {
-    return JSON.parse( JSON.stringify( obj ) );
+    return JSON.parse( JSON.stringify( json ) );
 }
 
 //Replace ${var} with vars[var]
