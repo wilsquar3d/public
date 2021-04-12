@@ -210,12 +210,12 @@ function addGlobalProps( tag, props, globals={} )
 {
     if( Object.keys( globals ).includes( '*' ) )
     {
-        setGlobalProps( tag, props, copyObject( globals['*'] ) );
+        setGlobalProps( tag, props, copyJson( globals['*'] ) );
     }
 
     if( Object.keys( globals ).includes( props.tag ) )
     {
-        setGlobalProps( tag, props, copyObject( globals[props.tag] ) );
+        setGlobalProps( tag, props, copyJson( globals[props.tag] ) );
     }
 }
 
