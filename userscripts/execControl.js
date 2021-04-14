@@ -38,3 +38,33 @@ function funcCall( name, ...args )
 
     return func( ...args );
 }
+
+//dynamically wait for a condition to be true
+//Ex. waitForCondition( <func for success> ).then( () => { <conditional code> } );
+function waitForCondition( func, limit=5000, interval=500 )
+{
+    return new Promise( (resolve, reject) =>
+        {
+            var start_time = Date.now();
+
+            function checkCondition()
+            {
+                if( func() )
+                {
+                    resolve();
+                }
+                else if (Date.now() > start_time + limit )
+                {
+                    reject();
+                }
+                else
+                {
+                    window.setTimeout( checkCondition, interval );
+                }
+            }
+
+            checkCondition();
+        }
+    );
+}
+
