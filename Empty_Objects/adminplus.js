@@ -1,4 +1,4 @@
-
+//https://raw.githubusercontent.com/wilsquar3d/public/master/Empty_Objects/adminplus.js
 
 if( data )
 {
