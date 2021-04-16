@@ -67,6 +67,13 @@ function copyJson( json )
     return JSON.parse( JSON.stringify( json ) );
 }
 
+function guid( bFullRandom=false )
+{
+    let rand = Date.now().toString( 16 ) + Math.random().toString( 16 ).replace( '.', '' ) + Math.random().toString( 16 ).replace( '.', '' );
+
+    return [rand.substr( 0, 8 ), rand.substr( 8, 4 ), bFullRandom ? rand.substr( 12, 4 ) : '7777', rand.substr( 16, 4 ), rand.substr( 20, 12 )].join( '-' );
+}
+
 //Replace ${var} with vars[var]
 function varReplace( txt, vars )
 {
