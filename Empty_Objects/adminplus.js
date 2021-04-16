@@ -14,12 +14,12 @@ function add_emptyObjects_adminplus( elem )
         "id": -1,
         "displayName": "",
         "bundlePrefix": "",
-        "bundleUuid": ""
+        "bundleUuid": "${guid}"
       },
       data_types: {
         "id": -1,
         "displayName": "",
-        "dataTypeUuid": "",
+        "dataTypeUuid": "${guid}",
         "applicationName": "",
         "canBePublished": false,
         "canBeUploaded": false,
@@ -30,14 +30,14 @@ function add_emptyObjects_adminplus( elem )
         "id": -1,
         "displayName": "",
         "sortOrder": -1,
-        "applicationPluginUuid": "",
+        "applicationPluginUuid": "${guid}",
         "applicationName": ""
       },
       tenants: {
         "userList": [],
         "revoked": false,
         "id": -1,
-        "customerUuid": "",
+        "customerUuid": "${guid}",
         "customerName": "",
         "customerShortName": "",
         "salesRep": "",
@@ -55,7 +55,7 @@ function add_emptyObjects_adminplus( elem )
       aircrafts: {
         "id": -1,
         "displayName": "",
-        "typeCode": ""
+        "typeCode": "${guid}"
       },
       lookups: {
         "publishDataTypes": [],
@@ -73,7 +73,7 @@ function add_emptyObjects_adminplus( elem )
       },
       releases: {
         "id": -1,
-        "releaseCode": "",
+        "releaseCode": "${guid}",
         "releaseName": "",
         "releaseDescription": "",
         "createdDate": "", //YYYY-MM-DDThh:mm:ss+00:00
