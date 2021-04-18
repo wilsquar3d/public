@@ -10,35 +10,30 @@ function httpRequest( request, callback, ...args )
 {
     return new Promise( ( resolve, reject ) =>
         {
-            if( callback )
-            {
-                request.onload = ( response ) =>
+            request.onload = ( response ) =>
+                {
+                    if( callback )
                     {
                         callback( response, ...args );
-                    };
+                    }
 
-                request.onerror = ( response ) =>
+                    if( 200 == response.status )
+                    {
+                        resolve( response );
+                    }
+
+                    reject( response );
+                };
+
+            request.onerror = ( response ) =>
+                {
+                    if( callback )
                     {
                         httpRequestError( response, ...args );
                     }
-            }
-            else //promise
-            {
-                request.onload = ( response ) =>
-                    {
-                        if( 200 == response.status )
-                        {
-                            resolve( response );
-                        }
-                    
-                        reject( response );
-                    };
 
-                request.onerror = ( response ) =>
-                    {
-                        reject( response );
-                    }
-            }
+                    reject( response );
+                }
 
             GM_xmlhttpRequest( request );
         }
