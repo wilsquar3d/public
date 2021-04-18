@@ -33,9 +33,9 @@
 		},
 		created()
 		{
-			$.each( Object.keys( this.components ), function( ndx, val )
+			Object.keys( this.components ).forEach( name )
 				{
-					Vue.component( val, httpVueLoader( components[val].source ) );
+					Vue.component( name, httpVueLoader( components[name].source ) );
 				}
 		    	);
 		},
