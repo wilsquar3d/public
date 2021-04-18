@@ -10,6 +10,11 @@
 				>{{menu_item.name}}</div>
 			</div>
 		</div>
+		<div id='display'>
+			<template v-if='selected_item'>
+				<component :is='selected_item'></component>
+			</template>
+		</div>
 	</div>
 </template>
 
