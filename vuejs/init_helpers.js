@@ -1,10 +1,7 @@
 //https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/init_helpers.js
 //requires utils.js
 
-//load: can be the source of a main component or an object containing a template and components list { template: '', components: { 'tag-name': 'component-source' } }
-function vuejs_init( load )
-{
-    let template = '<d//load: can be the source of a main component or an object containing a template, data and components list { template: '', data: { 'name': 'value' }, components: { 'tag-name': 'component-source' } }
+//load: can be the source of a main component or an object containing a template, data and components list { template: '', data: { 'name': 'value' }, components: { 'tag-name': 'component-source' } }
 function vuejs_init( load )
 {
     let template = '<div id="vue-app">' + ( load.template || '<vuejs-host-component></vuejs-host-component>' ) + '</div>';
