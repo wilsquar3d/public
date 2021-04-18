@@ -1,4 +1,4 @@
-//
+//https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/init_helpers.js
 //requires utils.js
 
 //load: can be the source of a main component or an object containing a template and components list { template: '', components: { 'tag-name': 'component-source' } }
