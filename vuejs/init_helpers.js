@@ -5,7 +5,7 @@
 function vuejs_init( load )
 {
     let template = '<div id="vue-app">' + ( load.template || '<vuejs-host-component></vuejs-host-component>' ) + '</div>';
-    let props: {};
+    let props = {};
     let components = {};
 
     //load a set of components with a template
