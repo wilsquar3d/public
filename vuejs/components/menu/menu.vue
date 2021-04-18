@@ -34,6 +34,7 @@
 		{
 			setSelected( menu_item )
 			{
+				console.log( menu_item );
 				this.selected_item = menu_item.component;
 			}
 		}
