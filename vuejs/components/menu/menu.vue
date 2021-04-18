@@ -15,7 +15,7 @@
 	{
 		props:
 		{
-			menu_items: { type: Array, required: true }
+			menu_items: { type: Array, default: () => [] }
 		},
 		methods:
 		{
