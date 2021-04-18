@@ -21,9 +21,10 @@
 <script>
 	module.exports =
 	{
-		data:
-		{
-			selected_item: ''
+		data: () => {
+			return {
+				selected_item: ''
+			}
 		},
 		props:
 		{
