@@ -29,13 +29,13 @@
 		props:
 		{
 			menu_items: { type: Array, required: true },
-			components: { type: Object, required: true }
+			menu_components: { type: Object, required: true }
 		},
 		created()
 		{
-			Object.keys( this.components ).forEach( name )
+			Object.keys( this.menu_components ).forEach( name )
 				{
-					Vue.component( name, httpVueLoader( components[name].source ) );
+					Vue.component( name, httpVueLoader( this.menu_components[name].source ) );
 				}
 		    	);
 		},
