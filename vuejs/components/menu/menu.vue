@@ -3,7 +3,7 @@
 	<div id="menu">
 		<div style="padding: 10px;">
 			<div
-				v-for='menu_item, ndx from menu_items'
+				v-for='menu_item, ndx in menu_items'
 				class='menu_item'
 			>{{menu_item.name}}</div>
 		</div>
