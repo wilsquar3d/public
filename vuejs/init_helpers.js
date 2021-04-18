@@ -4,11 +4,14 @@
 //load: can be the source of a main component or an object containing a template and components list { template: '', components: { 'tag-name': 'component-source' } }
 function vuejs_init( load )
 {
+    let template = '<d//load: can be the source of a main component or an object containing a template, data and components list { template: '', data: { 'name': 'value' }, components: { 'tag-name': 'component-source' } }
+function vuejs_init( load )
+{
     let template = '<div id="vue-app">' + ( load.template || '<vuejs-host-component></vuejs-host-component>' ) + '</div>';
-    let props = {};
+    let data = {};
     let components = {};
 
-    //load a set of components with a template
+    //load components with a template
     if( isObject( load.components ) )
     {
         $.each( Object.keys( load.components ), function( ndx, val )
@@ -17,9 +20,9 @@ function vuejs_init( load )
             }
         );
         
-        if( load.props )
+        if( load.data )
         {
-            props = load.props;
+            data = load.data;
         }
     }
     //load a default hosting component
@@ -30,7 +33,7 @@ function vuejs_init( load )
 
     let vuejsapp = new Vue(
         {
-            props: props,
+            data: data,
             components: components
         }
     );
