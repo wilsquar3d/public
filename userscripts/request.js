@@ -3,16 +3,46 @@
 
 
 //request: JSON request matching structure created by buildRequest
-//callback: the function to call with the response
-//args: anything you want passed to the result methods
+//callback (optional): the function to call with the response
+//args (optional): anything you want passed to the callback method
+//returns a promise
 function httpRequest( request, callback, ...args )
 {
-    request.onload = function( response )
+    return new Promise( ( resolve, reject ) =>
         {
-            callback( response, ...args );
-        };
+            if( callback )
+            {
+                request.onload = ( response ) =>
+                    {
+                        callback( response, ...args );
+                    };
 
-    GM_xmlhttpRequest( request );
+                request.onerror = ( response ) =>
+                    {
+                        httpRequestError( response, ...args );
+                    }
+            }
+            else //promise
+            {
+                request.onload = ( response ) =>
+                    {
+                        if( 200 == response.status )
+                        {
+                            resolve( response );
+                        }
+                    
+                        reject( response );
+                    };
+
+                request.onerror = ( response ) =>
+                    {
+                        reject( response );
+                    }
+            }
+
+            GM_xmlhttpRequest( request );
+        }
+    );
 }
 
 //method: GET, POST, PUT, etc.
