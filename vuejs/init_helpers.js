@@ -5,6 +5,7 @@
 function vuejs_init( load )
 {
     let template = '<div id="vue-app">' + ( load.template || '<vuejs-host-component></vuejs-host-component>' ) + '</div>';
+    let props: {};
     let components = {};
 
     //load a set of components with a template
@@ -15,6 +16,11 @@ function vuejs_init( load )
                 components[val] = httpVueLoader( load.components[val] );
             }
         );
+        
+        if( load.props )
+        {
+            props = load.props;
+        }
     }
     //load a default hosting component
     else if( isString( load ) )
@@ -24,6 +30,7 @@ function vuejs_init( load )
 
     let vuejsapp = new Vue(
         {
+            props: props,
             components: components
         }
     );
