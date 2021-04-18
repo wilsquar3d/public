@@ -1,5 +1,3 @@
-(function()
-{
 <template>
 	<div>
 		{{ JSON.stringify( test ) }}
@@ -21,4 +19,3 @@
 
 <style>
 </style>
-})();
