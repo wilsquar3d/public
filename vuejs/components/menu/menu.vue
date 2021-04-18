@@ -1,8 +1,8 @@
   
 <template>
 	<div>
-		<div id="menu">
-			<div style="padding: 10px;">
+		<div id='menu'>
+			<div class='menu_item_wrapper'>
 				<div
 					v-for='menu_item, ndx in menu_items'
 					class='menu_item'
@@ -10,7 +10,7 @@
 				>{{menu_item.name}}</div>
 			</div>
 		</div>
-		<div id="display">
+		<div id='display'>
 			<template v-if='selected_item'>
 				<component :is='selected_item'></component>
 			</template>
@@ -27,7 +27,7 @@
 		},
 		props:
 		{
-			menu_items: { type: Array, default: () => [{ name: 'sample' }] }
+			menu_items: { type: Array, required: true }
 		},
 		methods:
 		{
@@ -47,6 +47,10 @@
 		padding: 0px;
 		margin: 0px;
 		float: left;
+	}
+	.menu_item_wrapper
+	{
+		padding: 10px;
 	}
 	.menu_item
 	{
