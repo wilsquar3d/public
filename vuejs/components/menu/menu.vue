@@ -59,6 +59,10 @@
 		margin-bottom: 10px;
 		background-color: #FFF;
 	}
+	.menu_item:hover
+	{
+		background-color: #CCC;
+	}
 	#display
 	{
 		height: 100%;
