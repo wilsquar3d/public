@@ -28,7 +28,16 @@
 		},
 		props:
 		{
-			menu_items: { type: Array, required: true }
+			menu_items: { type: Array, required: true },
+			components: { type: Object, required: true }
+		},
+		created()
+		{
+			$.each( Object.keys( this.components ), function( ndx, val )
+				{
+					Vue.component( val, httpVueLoader( components[val].source ) );
+				}
+		    	);
 		},
 		methods:
 		{
