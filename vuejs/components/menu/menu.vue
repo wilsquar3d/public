@@ -29,21 +29,16 @@
 		props:
 		{
 			menu_items: { type: Array, required: true },
-			menu_components: { type: Object, required: true }
+			menu_components: { type: Array, required: true }
 		},
 		created()
 		{
-			Object.keys( this.menu_components ).forEach( name )
-				{
-					Vue.component( name, httpVueLoader( this.menu_components[name].source ) );
-				}
-		    	);
+			this.menu_components.map( menu_component => { Vue.component( menu_component.name, httpVueLoader( menu_component.source ) ); } );
 		},
 		methods:
 		{
 			setSelected( menu_item )
 			{
-				console.log( menu_item );
 				this.selected_item = menu_item.component;
 			}
 		}
