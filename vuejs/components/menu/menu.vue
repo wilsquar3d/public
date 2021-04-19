@@ -10,10 +10,12 @@
 				>{{menu_item.name}}</div>
 			</div>
 		</div>
-		<div id='display'>
-			<template v-if='selected_item'>
-				<component :is='selected_item'></component>
-			</template>
+		<div id='display_wrapper'>
+			<div id='display'>
+				<template v-if='selected_item'>
+					<component :is='selected_item'></component>
+				</template>
+			</div>
 		</div>
 	</div>
 </template>
@@ -63,7 +65,7 @@
 	{
 		background-color: #CCC;
 	}
-	#display
+	#display_wrapper
 	{
 		height: 100%;
 		width: calc( 100% - 202px );
@@ -71,5 +73,10 @@
 		margin: 0px;
 		border-left: 2px solid rgb(0, 0, 0);
 		float: left;
+	}
+	#display
+	{
+		margin: 10px;
+		height: calc( 100% - 20px );
 	}
 </style>
