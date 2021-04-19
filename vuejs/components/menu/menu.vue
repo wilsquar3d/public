@@ -33,6 +33,8 @@
 		},
 		created()
 		{
+			console.log(window.Vue);
+			console.log(Vue);
 			this.menu_components.map( menu_component => { Vue.component( menu_component.name, httpVueLoader( menu_component.source ) ); } );
 		},
 		methods:
