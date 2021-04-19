@@ -28,13 +28,7 @@
 		},
 		props:
 		{
-			menu_items: { type: Array, required: true },
-			menu_components: { type: Array, required: true }
-		},
-		created()
-		{
-			console.log(Vue);
-			this.menu_components.map( menu_component => { Vue.component( menu_component.name, httpVueLoader( menu_component.source ) ); } );
+			menu_items: { type: Array, required: true }
 		},
 		methods:
 		{
