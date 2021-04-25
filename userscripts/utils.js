@@ -1,4 +1,4 @@
-//https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/utils.js
+
 
 function createID( appID, varName, extras=[] )
 {
