@@ -35,10 +35,12 @@ var list = [
     { tag: 'input', type: 'checkbox', label: 'check1' },
     { tag: 'br' },
     { tag: 'input', type: 'checkbox', label: 'check2' },
-    { tag: 'div', html: 'div content', css: { 'padding': '10px', 'font-weight': 'bold', 'font-size': '20px' } },
+    { tag: 'div', html: 'div content', css: { 'padding': '10px', 'font-weight': 'bold', 'font-size': '20px' },
+        children: [ { tag: 'div',
+            children: [{ tag: 'span', html: 'div.span content' }, { tag: 'br' }, { tag: 'a', href: 'https://google.com' }] }
+        ]
+    },
     { tag: 'label', text: 'label text' },
-    { tag: 'br' },
-    { tag: 'a', href: 'https://google.com' }
 ];
 
 $( <selector> ).append( buildTags( list ) );
@@ -77,6 +79,10 @@ function buildTags( list, globals={} )
                     tags = tags.concat( buildSelect( val, globals ) );
                     break;
 
+                case 'a':
+                    tags = tags.concat( buildLink( val, globals ) );
+                    break;
+
                 default:
                     tags = tags.concat( buildGeneric( val, globals ) );
                     break;
@@ -112,7 +118,7 @@ function buildInput( props, globals={} )
 
     delete props.tag;
 
-    addSpecialTagProps( input, props );
+    addSpecialTagProps( input, props, globals );
     addTagProps( input, props );
     tags.push( input );
 
@@ -159,11 +165,25 @@ function buildSelect( props, globals={} )
     delete props.tag;
     delete props.options;
 
-    addSpecialTagProps( select, props );
+    addSpecialTagProps( select, props, globals );
     addTagProps( select, props );
     tags.push( select );
 
     return tags;
+}
+
+//Builds an anchor tag
+//props: { tag: 'a', href: <link> }
+function buildLink( props, globals={} )
+{
+    if( !( props.html || props.text ) )
+    {
+        props.html = props.label || props.href;
+
+        delete props.label;
+    }
+
+    return buildGeneric( props, globals );
 }
 
 function buildGeneric( props, globals={} )
@@ -173,7 +193,7 @@ function buildGeneric( props, globals={} )
 
     delete props.tag;
 
-    addSpecialTagProps( tag, props );
+    addSpecialTagProps( tag, props, globals );
     addTagProps( tag, props );
 
     return tag;
@@ -197,7 +217,7 @@ function buildLabel( label, props, globals={}, colon=true )
     {
         delete label.value;
 
-        addSpecialTagProps( tag, label );
+        addSpecialTagProps( tag, label, globals );
         addTagProps( tag, label );
     }
 
@@ -229,7 +249,7 @@ function setGlobalProps( tag, props, global_props_list=[] )
             }
             delete global_props.filter;
 
-            addSpecialTagProps( tag, global_props );
+            addSpecialTagProps( tag, global_props, global_props );
 
             $.each( Object.keys( global_props ), function( ndx, val )
                 {
@@ -242,7 +262,7 @@ function setGlobalProps( tag, props, global_props_list=[] )
 
 var specialTagProperties = { value: 'val', html: 'html', text: 'text', style: 'attr', css: 'css' };
 
-function addSpecialTagProps( tag, props )
+function addSpecialTagProps( tag, props, globals={} )
 {
     $.each( Object.keys( specialTagProperties ),
         function( ndx, val )
@@ -262,6 +282,13 @@ function addSpecialTagProps( tag, props )
             delete props[val];
         }
     );
+
+    if( props.children )
+    {
+        tag.append( buildTags( props.children, globals ) );
+
+        delete props.children;
+    }
 }
 
 //Assigns all object properties to the tag as key='value'
