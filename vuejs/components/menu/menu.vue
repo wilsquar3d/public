@@ -1,6 +1,5 @@
-  
 <template>
-	<div>
+	<div id='wrapper'>
 		<div id='menu'>
 			<div class='menu_item_wrapper'>
 				<div
@@ -12,8 +11,8 @@
 		</div>
 		<div id='display_wrapper'>
 			<div id='display'>
-				<template v-if='selected_item'>
-					<component :is='selected_item'></component>
+				<template v-if='selected_item.component'>
+					<component :is='selected_item.component'></component>
 				</template>
 			</div>
 		</div>
@@ -25,24 +24,36 @@
 	{
 		data: () => {
 			return {
-				selected_item: ''
+				selected_item: {}
 			}
 		},
 		props:
 		{
-			menu_items: { type: Array, required: true }
+			menu_items: { type: Array, required: true },
+			default_item: { type: String, default: '' }
+		},
+		created()
+		{
+			if( this.default_item )
+			{
+				this.selected_item = this.menu_items.find( item => item.name == this.default_item );
+			}
 		},
 		methods:
 		{
 			setSelected( menu_item )
 			{
-				this.selected_item = menu_item.component;
+				this.selected_item = menu_item;
 			}
 		}
 	}
 </script>
 
 <style>
+	#wrapper
+	{
+		height: 100%;
+	}
 	#menu
 	{
 		height: 100%;
