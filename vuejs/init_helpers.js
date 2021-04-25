@@ -47,7 +47,7 @@ function vuejs_init( load )
 function vuejs_menu( menu_items, default_item='', file_components=[], local_components=[] )
 {
     let load = {
-        template: '<menu-component :menu_items="menu_items"></menu-component>',
+        template: '<menu-component :menu_items="menu_items", :default_item="default_item"></menu-component>',
         data:
         {
             menu_items: menu_items,
