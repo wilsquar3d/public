@@ -7,8 +7,8 @@ components.importExport = {
 	<div class='full'>
 		<textarea class='output' v-model='data'></textarea>
 		<div class='actions'>
-			<input type='button' value='Import' @click='import_data' style='margin-right:10px;' />
-			<input type='button' value='Export' @click='export_data' />
+			<input type='button' value='Import' @click='import_data( this )' style='margin-right:10px;' />
+			<input type='button' value='Export' @click='export_data( this )' />
 		</div>
 		
 		<component is='style'>
@@ -37,11 +37,11 @@ components.importExport = {
 		};
 	},
 	methods: {
-		import_data()
+		import_data( _this )
 		{
 			//import this.data to ?
 		},
-		export_data()
+		export_data( _this )
 		{
 			//export ? to this.data
 		}
