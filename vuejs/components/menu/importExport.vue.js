@@ -21,7 +21,7 @@ components.importExport = {
 			.output
 			{
 				width: 100%;
-				height: calc( 100% - 35px );
+				height: calc( 100% - 25px );
 				white-space: nowrap;
 			}
 			.valid
@@ -35,7 +35,6 @@ components.importExport = {
 			.actions
 			{
 				margin: 5px 0;
-				height: 25px;
 			}
 		</component>
 	</div>
