@@ -1,7 +1,7 @@
 //https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/components/menu/importExport.vue.js
 //requires utils.js
 
-var components = components || {};
+components = components || {};
 
 components.importExport = {
 	template: `
