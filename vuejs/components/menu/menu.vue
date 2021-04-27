@@ -7,6 +7,7 @@
 				<div
 					v-for='menu_item, ndx in menu_items'
 					class='menu_item'
+					:class='menu_item == selected_item ? "menu_item_selected" : "menu_item_unselected"'
 					@click='setSelected( menu_item )'
 				>{{menu_item.name}}</div>
 			</div>
@@ -71,12 +72,21 @@
 	.menu_item
 	{
 		cursor: pointer;
-		margin-bottom: 10px;
-		background-color: #FFF;
+		padding: 3px 0;
 	}
 	.menu_item:hover
 	{
 		background-color: #CCC;
+	}
+	.menu_item_unselected
+	{
+		color: #000;
+		background-color: #FFF;
+	}
+	.menu_item_selected
+	{
+		color: #FFF;
+		background-color: #000;
 	}
 	#display_wrapper
 	{
