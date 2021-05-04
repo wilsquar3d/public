@@ -83,15 +83,16 @@ components.importExportSelective = {
 			//examples
 			//importExportSelective "this": components.importExport.methods.import_data = function(){ this.data = JSON.stringify( {} ); };
 			//external component "this": components.importExportSelective.methods.import_data = () => { return this.sample; };
-			//import ? to this.data or return the data
 		},
-		export_data()
+		export_data( data )
 		{
-			//export this.data to ?
+			//examples
+			//importExportSelective "this": components.importExport.methods.export_data = function(){ console.log( this.data ); };
+			//external component "this": components.importExportSelective.methods.export_data = ( data ) => { console.log( data ): };
 		},
 		filter_import_data()
 		{
-			set_import_data();
+			this.set_import_data();
 			
 			//reset fields
 			this.filterData = '{}';
@@ -122,8 +123,7 @@ components.importExportSelective = {
 				model[last] = JSON.parse( this.filterData );
 			}
 			
-			this.filterData = JSON.stringify( model, true, '  ' );
-			this.export_data();
+			this.export_data( this.data );
 		},
 		show_data()
 		{
