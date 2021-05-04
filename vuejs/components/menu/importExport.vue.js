@@ -6,10 +6,10 @@ components = components || {};
 components.importExport = {
 	template: `
 	<div class='full'>
-		<textarea class='output' :class='isValid ? "valid" : "invalid"' v-model='data' @keyup='onChange'></textarea>
+		<textarea class='output' :class='isValid ? "valid" : "invalid"' v-model='stringData' @keyup='onChange'></textarea>
 		<div class='actions'>
 			<input type='button' value='Import' @click='import_formatted_data' style='margin-right:10px;' />
-			<input type='button' value='Export' @click='export_data' />
+			<input type='button' value='Export' @click='wrap_export_data' />
 		</div>
 		
 		<component is='style'>
@@ -41,33 +41,42 @@ components.importExport = {
 	`,
 	data: () => {
 		return {
-			data: '{}',
+			data: {},
+			stringData: '{}',
 			isValid: true
 		};
 	},
 	methods: {
 		import_data()
 		{
-			//example: components.importExport.methods.import_data = function(){ this.data = JSON.stringify( {} ); };
-			//import this.data to ?
+			//examples
+			//importExport"this": components.importExport.methods.import_data = function(){ this.data = JSON.stringify( {} ); };
+			//external component "this": components.importExport.methods.import_data = () => { return this.sample; };
 		},
-		export_data()
+		export_data( data )
 		{
-			//export ? to this.data
+			//examples
+			//importExport "this": components.importExport.methods.export_data = function(){ console.log( this.data ); };
+			//external component "this": components.importExport.methods.export_data = ( data ) => { console.log( data ): };
+		},
+		wrap_export_data()
+		{
+			this.export_data( JSON.parse( this.stringData ) );
 		},
 		onChange()
 		{
-			this.isValid = isJson( this.data );
+			this.isValid = isJson( this.stringData );
 		},
 		import_formatted_data()
 		{
-			this.import_data();
-			this.data = this.format_data();
+			let temp = this.import_data();
+			if( temp )
+			{
+				this.data = temp;
+			}
+			
+			this.stringData = JSON.stringify( this.data, true, '  ' );
 			this.onChange();
-		},
-		format_data()
-		{
-			return JSON.stringify( JSON.parse( this.data ), true, '  ' );
 		}
 	}
 };
