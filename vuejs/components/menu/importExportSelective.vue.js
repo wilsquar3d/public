@@ -81,13 +81,13 @@ components.importExportSelective = {
 		import_data()
 		{
 			//examples
-			//importExportSelective "this": components.importExport.methods.import_data = function(){ this.data = JSON.stringify( {} ); };
+			//importExportSelective "this": components.importExportSelective.methods.import_data = function(){ this.data = JSON.stringify( {} ); };
 			//external component "this": components.importExportSelective.methods.import_data = () => { return this.sample; };
 		},
 		export_data( data )
 		{
 			//examples
-			//importExportSelective "this": components.importExport.methods.export_data = function(){ console.log( this.data ); };
+			//importExportSelective "this": components.importExportSelective.methods.export_data = function(){ console.log( this.data ); };
 			//external component "this": components.importExportSelective.methods.export_data = ( data ) => { console.log( data ): };
 		},
 		filter_import_data()
