@@ -96,10 +96,12 @@
 		margin: 0px;
 		border-left: 2px solid rgb(0, 0, 0);
 		float: left;
+		overflow-y: hidden;
 	}
 	#display
 	{
 		margin: 10px;
 		height: calc( 100% - 20px );
+		overflow-y: scroll;
 	}
 </style>
