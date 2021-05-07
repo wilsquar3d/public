@@ -102,6 +102,6 @@
 	{
 		margin: 10px;
 		height: calc( 100% - 20px );
-		overflow-y: scroll;
+		overflow-y: auto;
 	}
 </style>
