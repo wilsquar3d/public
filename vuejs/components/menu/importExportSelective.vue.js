@@ -115,7 +115,14 @@ components.importExportSelective = {
 			
 			if( !path.length )
 			{
-				this.data = JSON.parse( this.filterData );
+				if( last )
+				{
+					this.data[last] = JSON.parse( this.filterData );
+				}
+				else
+				{
+					this.data = JSON.parse( this.filterData );
+				}
 			}
 			else
 			{
@@ -155,9 +162,9 @@ components.importExportSelective = {
 			{
 				this.$set( this.selected, layer, this.$refs[layer][0].value );
 				
-				//remove and following layers
+				//remove following layers
 				layer = 'layer-' + ( ++ndx );
-				while( this.selected[layer] )
+				while( Object.keys( this.selected ).includes( layer ) )
 				{
 					this.$delete( this.selected, layer );
 					layer = 'layer-' + ( ++ndx );
