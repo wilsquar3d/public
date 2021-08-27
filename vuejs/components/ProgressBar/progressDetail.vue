@@ -5,28 +5,28 @@
 
 		<div class='progressDetail'>
 
-		<div
-			v-if='title'
-			class='progressTitle'
-		>{{title}}</div>
+			<div
+				v-if='title'
+				class='progressTitle'
+			>{{title}}</div>
 
-		<div
-			v-if='description'
-			class='progressDesc'
-		>{{description}}</div>
+			<div
+				v-if='description'
+				class='progressDesc'
+			>{{description}}</div>
 
-		<div class='progressBar'>
-			<progress-bar
-				:progress='progress'
-				:description='progressDescription'
-			></progress-bar>
-		</div>
+			<div class='progressBar'>
+				<progress-bar
+					:progress='progress'
+					:description='progressDescription'
+				></progress-bar>
+			</div>
 
-		<template v-if='log.length'>
-			<div class='progressLog'>{{displayLog}}</div>
+			<template v-if='log.length'>
+				<div class='progressLog'>{{displayLog}}</div>
 
-			<div class='progressLogCollapse'></div>
-		</template>
+				<div class='progressLogCollapse'></div>
+			</template>
 
 		</div>
 
@@ -70,7 +70,7 @@
 		components:
 		{
 			'progress-bar': httpVueLoader( 'https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/components/ProgressBar/progressBar.vue' )
-		}
+		},
 		computed:
 		{
 			displayLog()
