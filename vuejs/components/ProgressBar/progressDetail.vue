@@ -88,6 +88,7 @@
 		padding: 10px;
 		border-radius: 7px;
 		border: 1px solid lavender;
+		text-align: left;
 	}
 	.progressDetail
 	{
