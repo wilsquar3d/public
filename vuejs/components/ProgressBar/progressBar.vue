@@ -52,8 +52,8 @@
 <style scoped>
 	.progressBarDisplay
 	{
-		width: calc( 100% - 50px );
-		display: inline-block;
+		width: 100%;
+		display: table-cell;
 		vertical-align: middle;
 	}
 	.progressBarSvg
@@ -74,8 +74,8 @@
 	.progressBarPercent
 	{
 		width: 50px;
-		display: inline-block;
-		padding-left: 10px;
+		display: table-cell;
+		padding-left: 5px;
 		font-size: 12pt;
 	}
 	.progressBarDesc
