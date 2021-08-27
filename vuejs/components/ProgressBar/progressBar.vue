@@ -50,37 +50,37 @@
 </script>
 
 <style scoped>
-.progressBarDisplay
-{
-  width: calc( 100% - 50px );
-  display: inline-block;
-  vertical-align: middle;
-}
-.progressBarSvg
-{
-  height: 10px;
-  width: 100%;
-}
-.backgroundLine
-{
-  stroke: lavender;
-  stroke-width: 10;
-}
-.progressBarLine
-{
-  stroke: #000;
-  stroke-width: 10;
-}
-.progressBarPercent
-{
-  width: 50px;
-  display: inline-block;
-  padding-left: 10px;
-  font-size: 12pt;
-}
-.progressBarDesc
-{
-  font-size: 10pt;
-  color: grey;
-}
+	.progressBarDisplay
+	{
+		width: calc( 100% - 50px );
+		display: inline-block;
+		vertical-align: middle;
+	}
+	.progressBarSvg
+	{
+		height: 10px;
+		width: 100%;
+	}
+	.backgroundLine
+	{
+		stroke: lavender;
+		stroke-width: 10;
+	}
+	.progressBarLine
+	{
+		stroke: #000;
+		stroke-width: 10;
+	}
+	.progressBarPercent
+	{
+		width: 50px;
+		display: inline-block;
+		padding-left: 10px;
+		font-size: 12pt;
+	}
+	.progressBarDesc
+	{
+		font-size: 10pt;
+		color: grey;
+	}
 </style>
