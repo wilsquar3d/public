@@ -2,17 +2,15 @@
 
 <template>
 	<div class='progressPage'>
-    <div class='progressPageDetail'>
-      <progress-detail
-        :title='title'
-        :description='description'
-        :progress='progress'
-        :progressDescription='progressDescription'
-        :log='log'
-        :logCollapse='logCollapse'
-        :width='width'
-      ></progress-detail>
-    </div>
+		<progress-detail
+			:title='title'
+			:description='description'
+			:progress='progress'
+			:progressDescription='progressDescription'
+			:log='log'
+			:logCollapse='logCollapse'
+			:width='width'
+		></progress-detail>
 	</div>
 </template>
 
@@ -64,16 +62,8 @@
 		padding: 0;
 		margin: 0;
 		text-align: left;
-    overflow: hidden;
-    width: 100vw;
-    height: 100vh;
+		overflow: hidden;
+		width: 100%;
+		height: 100%;
 	}
-  .progressPageDetail
-  {
-    position: relative;
-    margin-left: 50%;
-    transform: translateX( -50% );
-    margin-top: 50%;
-    transform: translateY( -50% );
-  }
 </style>
