@@ -1,7 +1,11 @@
 //https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/components/ProgressBar/progressDetail.vue
 
 <template>
-	<div class='progressDetailWrap' :style='"width:" + width'>
+	<div
+		class='progressDetailWrap'
+		:style='"width:" + width'
+		:class='alignCenter ? "progressCenter" : ""'
+	>
 
 		<div class='progressDetail'>
 
@@ -65,6 +69,10 @@
 			width: {
 				type: String,
 				default: '100%'
+			},
+			alignCenter: {
+				type: Boolean,
+				default: false
 			}
 		},
 		components:
@@ -110,5 +118,12 @@
 	.progressBar
 	{
 		margin: 10px 0 15px 0;
+	}
+	.progressCenter
+	{
+		position: relative;
+		margin-left: 50%;
+		margin-top: 50%;
+		transform: translate( -50%, -50% );
 	}
 </style>
