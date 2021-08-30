@@ -100,3 +100,18 @@ function clearAllData( exclusions=[] )
         });
 
 }
+
+function requiredObjectProperties( obj, fields, defaultValue, logFailures=false )
+{
+    fields.map( field => {
+        if( !obj.hasOwnProperty( field ) )
+        {
+            obj[field] = defaultValue;
+
+            if( logFailures )
+            {
+                console.log( fields + ' = ' + defaultValue );
+            }
+        }
+    } );
+}
