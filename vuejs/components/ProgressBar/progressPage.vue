@@ -59,7 +59,7 @@
 <style scoped>
 	.progressPage
 	{
-		background-color: white;
+		background-color: #5a5a5a;
 		padding: 0;
 		margin: 0;
 		text-align: left;
