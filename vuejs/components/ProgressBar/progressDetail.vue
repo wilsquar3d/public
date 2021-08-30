@@ -4,7 +4,7 @@
 	<div
 		class='progressDetailWrap'
 		:style='"width:" + width'
-		:class='alignCenter ? "progressCenter" : ""'
+		:class='align_center ? "progressCenter" : ""'
 	>
 
 		<div class='progressDetail'>
@@ -22,7 +22,7 @@
 			<div class='progressBar'>
 				<progress-bar
 					:progress='progress'
-					:description='progressDescription'
+					:description='progress_description'
 				></progress-bar>
 			</div>
 
@@ -54,7 +54,7 @@
 				type: [Number, String],
 				default: 0
 			},
-			progressDescription: {
+			progress_description: {
 				type: String,
 				default: ''
 			},
@@ -62,7 +62,7 @@
 				type: Array,
 				default: () => []
 			},
-			logCollapse: {
+			log_collapse: {
 				type: Boolean,
 				default: false
 			},
@@ -70,7 +70,7 @@
 				type: String,
 				default: '100%'
 			},
-			alignCenter: {
+			align_center: {
 				type: Boolean,
 				default: false
 			}
