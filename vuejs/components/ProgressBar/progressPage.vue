@@ -6,11 +6,11 @@
 			:title='title'
 			:description='description'
 			:progress='progress'
-			:progressDescription='progressDescription'
+			:progress_description='progress_description'
 			:log='log'
-			:logCollapse='logCollapse'
+			:log_collapse='log_collapse'
 			:width='width'
-			alignCenter
+			align_center
 		></progress-detail>
 	</div>
 </template>
@@ -32,7 +32,7 @@
 				type: [Number, String],
 				default: 0
 			},
-			progressDescription: {
+			progress_description: {
 				type: String,
 				default: ''
 			},
@@ -40,7 +40,7 @@
 				type: Array,
 				default: () => []
 			},
-			logCollapse: {
+			log_collapse: {
 				type: Boolean,
 				default: false
 			},
