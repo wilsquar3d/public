@@ -25,7 +25,7 @@
 		<div class='progressBarPercent'>{{progress}}%</div>
 
 		<div
-			v-if='description.length'
+			v-if='description'
 			class='progressBarDesc'
 		>{{description}}</div>
 
