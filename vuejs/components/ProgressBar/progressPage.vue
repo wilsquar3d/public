@@ -10,7 +10,7 @@
 			:log='log'
 			:logCollapse='logCollapse'
 			:width='width'
-			alignCenter='true'
+			alignCenter
 		></progress-detail>
 	</div>
 </template>
