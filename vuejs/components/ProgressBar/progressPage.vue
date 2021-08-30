@@ -1,4 +1,4 @@
-//https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/components/ProgressBar/progressDetail.vue
+//https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/components/ProgressBar/progressPage.vue
 
 <template>
 	<div class='progressPage'>
