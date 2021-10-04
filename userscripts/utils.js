@@ -10,6 +10,7 @@ function createSafeID( id )
     return id.replace( /[\W_]+/g, '_' ).toLowerCase();
 }
 
+// string is JSON
 function isJson( text )
 {
     try
