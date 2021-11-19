@@ -50,3 +50,87 @@ function sortObjectKeys( obj )
         {}
     );
 }
+
+// Combines 2 JSON structures - appending array elements or merging object properties
+function jsonMerge( jsonLeft, jsonRight, rules={ tie: 'left' } )
+{
+    if( isObject( jsonLeft ) )
+    {
+        // Object has simple additive merge with ties broken by left/right rule
+        if( isObject( jsonRight ) )
+        {
+            let leftKeys = Object.keys( jsonLeft );
+            let rightKeys = Object.keys( jsonRight );
+
+            for( const key of rightKeys )
+            {
+                if( leftKeys.includes( key ) )
+                {
+                    if( 'right' == rules.tie )
+                    {
+                        jsonLeft[key] = jsonRight[key];
+                    }
+                }
+                else
+                {
+                    jsonLeft[key] = jsonRight[key];
+                }
+            }
+        }
+        else if( Array.isArray( jsonRight ) )
+        {
+            for( const elem of jsonRight )
+            {
+                jsonMerge( jsonLeft, elem, rules );
+            }
+        }
+    }
+    // Array is additive only - rules may allow condition adding eventually
+    else if( Array.isArray( jsonLeft ) )
+    {
+        if( Array.isArray( jsonRight ) )
+        {
+            jsonLeft = jsonLeft.concat( jsonRight );
+        }
+        else
+        {
+            jsonLeft.push( jsonRight );
+        }
+    }
+
+    return jsonLeft;
+}
+
+// Removes object keys from json
+function jsonFilter( json, keys )
+{
+    let response = {};
+
+    let objKeys = Object.keys( json );
+    for( const k of objKeys )
+    {
+        if( !keys.includes( k ) )
+        {
+            response[k] = json[k];
+        }
+    }
+
+    return response;
+}
+
+// Keeps only object keys from json
+function jsonKeep( json, keys )
+{
+    let response = {};
+
+    let objKeys = Object.keys( json );
+    for( const k of keys )
+    {
+        if( objKeys.includes( k ) )
+        {
+            response[k] = json[k];
+        }
+    }
+
+    return response;
+}
