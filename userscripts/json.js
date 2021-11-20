@@ -52,6 +52,7 @@ function sortObjectKeys( obj )
 }
 
 // Combines 2 JSON structures - appending array elements or merging object properties
+// rules: { tie: left/right, ident: <object identifying key> }
 function jsonMerge( jsonLeft, jsonRight, rules={ tie: 'left' } )
 {
     if( isObject( jsonLeft ) )
@@ -88,13 +89,33 @@ function jsonMerge( jsonLeft, jsonRight, rules={ tie: 'left' } )
     // Array is additive only - rules may allow condition adding eventually
     else if( Array.isArray( jsonLeft ) )
     {
-        if( Array.isArray( jsonRight ) )
+        // unknown - add as a single item
+        if( !Array.isArray( jsonRight ) )
         {
-            jsonLeft = jsonLeft.concat( jsonRight );
+            jsonRight = [jsonRight];
         }
-        else
+
+        for( const item of jsonRight )
         {
-            jsonLeft.push( jsonRight );
+            if( rules.ident )
+            {
+                let leftItem = jsonLeft.find( elem => elem[rules.ident] == item[rules.ident] );
+
+                if( 'right' == rules.tie || !leftItem )
+                {
+                    if( leftItem )
+                    {
+                        jsonLeft = jsonLeft.filter( elem => elem[rules.ident] == item[rules.ident] );
+                    }
+
+                    jsonLeft.push( item );
+                }
+            }
+            // no identity rule - add all
+            else
+            {
+                jsonLeft.push( item );
+            }
         }
     }
 
