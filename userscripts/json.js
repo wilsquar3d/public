@@ -51,6 +51,44 @@ function sortObjectKeys( obj )
     );
 }
 
+function sortObjects( json, key, sortFunc=null )
+{
+    if( !sortFunc )
+    {
+        sortFunc = ( a, b ) =>
+        {
+            if( a[key] === b[key] )
+            {
+                return 0;
+            }
+
+            if( a[key] === null )
+            {
+                return 1;
+            }
+
+            if( b[key] === null )
+            {
+                return -1;
+            }
+
+            return a[key] < b[key] ? -1 : ( a[key] > b[key] ? 1 : 0 );
+        };
+    }
+
+    return json.sort( sortFunc );
+}
+
+function toJSON( text )
+{
+    return JSON.parse( text.trim() );
+}
+
+function fromJSON( json, indent=null )
+{
+    return indent ? JSON.stringify( json, true, indent ) : JSON.stringify( json );
+}
+
 // Combines 2 JSON structures - appending array elements or merging object properties
 // rules: { tie: left/right, ident: <object identifying key> }
 function jsonMerge( jsonLeft, jsonRight, rules={ tie: 'left' } )
@@ -122,9 +160,30 @@ function jsonMerge( jsonLeft, jsonRight, rules={ tie: 'left' } )
     return jsonLeft;
 }
 
-// Removes object keys from json
+// Removes object keys from each object of an array
+function jsonFilterList( json, keys )
+{
+    if( !Array.isArray( keys ) )
+    {
+        keys = [keys];
+    }
+
+    for( var i = 0; i < json.length; ++i )
+    {
+        json[i] = jsonFilter( json[i], keys );
+    }
+
+    return json;
+}
+
+// Removes object keys from json object
 function jsonFilter( json, keys )
 {
+    if( !Array.isArray( keys ) )
+    {
+        keys = [keys];
+    }
+
     let response = {};
 
     let objKeys = Object.keys( json );
@@ -139,9 +198,30 @@ function jsonFilter( json, keys )
     return response;
 }
 
-// Keeps only object keys from json
+// keeps only object keys from each object of an array
+function jsonKeepList( json, keys )
+{
+    if( !Array.isArray( keys ) )
+    {
+        keys = [keys];
+    }
+
+    for( var i = 0; i < json.length; ++i )
+    {
+        json[i] = jsonKeep( json[i], keys );
+    }
+
+    return json;
+}
+
+// Keeps only object keys from json object
 function jsonKeep( json, keys )
 {
+    if( !Array.isArray( keys ) )
+    {
+        keys = [keys];
+    }
+
     let response = {};
 
     let objKeys = Object.keys( json );
@@ -154,4 +234,34 @@ function jsonKeep( json, keys )
     }
 
     return response;
+}
+
+function jsonExtract( json, key )
+{
+    return json[key];
+}
+
+// String replace key of each object of an array
+function jsonKeyStringListReplace( json, key, replaceWhat, replaceWith='' )
+{
+    for( var i = 0; i < json.length; ++i )
+    {
+        if( json[i][key] )
+        {
+            json[i] = jsonKeyStringReplace( json[i], key, replaceWhat, replaceWith );
+        }
+    }
+
+    return json;
+}
+
+// String replace key of object
+function jsonKeyStringReplace( json, key, replaceWhat, replaceWith='' )
+{
+    if( json[key] )
+    {
+        json[key] = json[key].replace( new RegExp( replaceWhat, 'g' ), replaceWith );
+    }
+
+    return json;
 }
