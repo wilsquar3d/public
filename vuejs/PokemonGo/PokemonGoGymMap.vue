@@ -3,14 +3,14 @@
 <template>
 	<div id='gym-map-wrap'>
 		
-		<!-- map-point-component
+		<component is='map-point-component'
 			v-if='imageLoaded'
 			:height='mapHeight'
 			:latitude='gym.latitude'
 			:longitude='gym.longitude'
 			:icon='iconGym'
 			:iconScale='iconScale'
-		/ -->
+		/>
 
 		<template v-if='gym.url'>
 			<img class='image' :src='gym.url' :alt='gym.url' @load='onImageLoaded' :style='"max-height:" + mapHeight' />
