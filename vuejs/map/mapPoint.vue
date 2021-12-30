@@ -1,6 +1,20 @@
 //https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/map/mapPoint.vue
 // @require      https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/build/ol.js
 // @resource     https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/css/ol.css
+/*
+    const script = document.createElement( 'script' );
+    script.setAttribute( 'type', 'text/javascript' );
+    script.setAttribute( 'src', 'https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/build/ol.js' );
+    script.async = true;
+    document.head.appendChild( script );
+
+    const style = document.createElement( 'link' );
+    style.setAttribute( 'type', 'text/css' );
+    style.setAttribute( 'rel', 'stylesheet' );
+    style.setAttribute( 'href', 'https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/css/ol.css' );
+    style.async = true;
+    document.head.appendChild( style );
+*/
 
 <template>
     <div class='map-wrap' :style='"height:" + height'>
