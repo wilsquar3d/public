@@ -34,9 +34,10 @@
         {
             gym: { type: Object, required: true }
         },
-	components:
+	created()
 	{
-		'map-point-component': httpVueLoader( 'https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/map/mapPoint.vue' )
+		console.log(Vue.options.components);
+		console.log(vm.$options.components);
 	},
         methods:
         {
