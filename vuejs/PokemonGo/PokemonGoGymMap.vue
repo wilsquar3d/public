@@ -37,7 +37,7 @@
         },
 	created()
 	{
-		console.log(Vue.options.components || "unknown");
+		console.log(Vue ? Vue.options.components : "unknown");
 	},
         methods:
         {
