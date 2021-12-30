@@ -34,9 +34,9 @@
         {
             gym: { type: Object, required: true }
         },
-	created()
+	components:
 	{
-		console.log(vm.$options.components);
+		'map-point-component': MapPoint
 	},
         methods:
         {
