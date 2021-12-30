@@ -3,7 +3,7 @@
 <template>
 	<div id='gym-map-wrap'>
 		
-		<component is='map-point-component'
+		<map-point-component
 			v-if='imageLoaded'
 			:height='mapHeight'
 			:latitude='gym.latitude'
@@ -34,9 +34,9 @@
         {
             gym: { type: Object, required: true }
         },
-	created()
+	components:
 	{
-		console.log(Vue.options.components);
+		map-point-component
 	},
         methods:
         {
