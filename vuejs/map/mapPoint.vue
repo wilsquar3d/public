@@ -30,11 +30,6 @@
         },
         mounted()
         {
-			const plugin = document.createElement( 'script' );
-			plugin.setAttribute( 'src', 'https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/build/ol.js' );
-			plugin.async = true;
-			document.head.appendChild( plugin );
-
             this.createMap();
             this.createStyle();
             this.createMarkersLayer();
