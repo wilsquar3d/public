@@ -45,7 +45,7 @@
                 this.imageLoaded = true;
             }
         }
-    };
+    }
 </script>
 
 <style>
