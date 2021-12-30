@@ -25,6 +25,7 @@
 <script>
     module.exports =
     {
+    	name: 'MapPoint',
         data: () => {
             return {
                 map: null,
