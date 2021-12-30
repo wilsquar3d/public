@@ -1,4 +1,4 @@
-//https://github.com/wilsquar3d/public/blob/master/vuejs/PokemonGo/PokemonGoGymMap.vue
+//https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/PokemonGo/PokemonGoGymMap.vue
 
 <template>
 	<div id='gym-map-wrap'>
