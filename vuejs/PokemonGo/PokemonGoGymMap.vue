@@ -35,10 +35,6 @@
         {
             gym: { type: Object, required: true }
         },
-	components:
-	{
-		'map-point-component': MapPoint
-	},
         methods:
         {
             onImageLoaded()
