@@ -1,4 +1,4 @@
-//https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/components/map/mapPoint.vue
+//https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/map/mapPoint.vue
 // @require      https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/build/ol.js
 // @resource     https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/css/ol.css
 
