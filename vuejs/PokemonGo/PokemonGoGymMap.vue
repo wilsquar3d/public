@@ -34,6 +34,10 @@
         {
             gym: { type: Object, required: true }
         },
+	created()
+	{
+		console.log(vm.$options.components);
+	},
         methods:
         {
             onImageLoaded()
