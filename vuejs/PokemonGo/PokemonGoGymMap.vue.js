@@ -1,4 +1,4 @@
-//https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/PokemonGo/PokemonGoGymMap.vue
+//https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/PokemonGo/PokemonGoGymMap.vue.js
 
 components = components || {};
 
