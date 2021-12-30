@@ -37,7 +37,7 @@
         },
 	components:
 	{
-		'map-point-component': httpVueLoader( ''https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/map/mapPoint.vue )
+		'map-point-component': httpVueLoader( 'https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/map/mapPoint.vue' )
 	},
         methods:
         {
