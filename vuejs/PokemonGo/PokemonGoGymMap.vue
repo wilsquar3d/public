@@ -36,7 +36,7 @@
         },
 	created()
 	{
-		console.log(vm.$options.components);
+		console.log(Vue.options.components);
 	},
         methods:
         {
