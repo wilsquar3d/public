@@ -30,6 +30,11 @@
         },
         mounted()
         {
+			const plugin = document.createElement( 'script' );
+			plugin.setAttribute( 'src', 'https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/build/ol.js' );
+			plugin.async = true;
+			document.head.appendChild( plugin );
+
             this.createMap();
             this.createStyle();
             this.createMarkersLayer();
@@ -39,10 +44,10 @@
         {
             createMap()
             {
-                this.map = new this.$ol.Map( {
+                this.map = new ol.Map( {
                     target: this.uniqueId,
-                    layers: [ new this.$ol.layer.Tile( { source: new this.$ol.source.OSM() } ) ],
-                    view: new this.$ol.View( {
+                    layers: [ new ol.layer.Tile( { source: new ol.source.OSM() } ) ],
+                    view: new ol.View( {
                         center: this.center,
                         zoom: this.zoom
                     } )
@@ -52,8 +57,8 @@
             {
                 if( this.icon )
                 {
-                    this.style = new this.$ol.style.Style( {
-                        image: new this.$ol.style.Icon( {
+                    this.style = new ol.style.Style( {
+                        image: new ol.style.Icon( {
                             anchor: [0, 0],
                             src: this.icon,
                             scale: this.iconScale
@@ -63,8 +68,8 @@
             },
             createMarkersLayer()
             {
-                this.layerMarkers = new this.$ol.layer.Vector( {
-                    source: new this.$ol.source.Vector( {
+                this.layerMarkers = new ol.layer.Vector( {
+                    source: new ol.source.Vector( {
                         features: [],
                         style: this.style
                     } )
@@ -74,8 +79,8 @@
             },
             createCenterMarker()
             {
-                var marker = new this.$ol.Feature( {
-                    geometry: new this.$ol.geom.Point( this.center ),
+                var marker = new ol.Feature( {
+                    geometry: new ol.geom.Point( this.center ),
                 } );
 
                 if( this.style )
@@ -98,7 +103,7 @@
             },
             center()
             {
-                return this.$ol.proj.fromLonLat( [ this.longitude, this.latitude ] );
+                return ol.proj.fromLonLat( [ this.longitude, this.latitude ] );
             }
         }
     }
