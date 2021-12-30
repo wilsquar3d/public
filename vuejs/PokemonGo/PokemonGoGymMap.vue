@@ -2,7 +2,7 @@
 
 <template>
 	<div id='gym-map-wrap'>
-
+		{{JSON.stringify(gym)}}
 		<map-point-component
 			v-if='imageLoaded'
 			:height='mapHeight'
