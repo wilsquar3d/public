@@ -22,6 +22,7 @@
 <script>
     module.exports =
     {
+    	name: 'PokemonGoGymMap',
         data: () => {
             return {
                 iconGym: 'https://kwcg.pokegta.com/static/sprites/gym/ingame/gym/0.png',
