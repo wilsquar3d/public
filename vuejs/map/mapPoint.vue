@@ -17,8 +17,8 @@
 */
 
 <template>
-    <div class='map-wrap' :style='"height:" + height'>
-        <div :id='uniqueId' class='map' ref='map'></div>
+	<div class='map-wrap' :style='"height:" + height'>
+		<div :id='uniqueId' class='map' ref='map'></div>
 	</div>
 </template>
 
@@ -45,10 +45,10 @@
         },
         mounted()
         {
-            this.createMap();
+            /*this.createMap();
             this.createStyle();
             this.createMarkersLayer();
-            this.createCenterMarker();
+            this.createCenterMarker();*/
         },
         methods:
         {
