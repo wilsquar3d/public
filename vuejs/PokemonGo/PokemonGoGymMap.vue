@@ -20,33 +20,29 @@
 </template>
 
 <script>
-    module.exports =
-    {
-    	name: 'PokemonGoGymMap',
-        data: () => {
-            return {
-                iconGym: 'https://kwcg.pokegta.com/static/sprites/gym/ingame/gym/0.png',
-                iconScale: 0.5,
-                mapHeight: 'calc( (100vh * .8) - 20px )',
-                imageLoaded: false
-            };
-        },
-		created()
-		{
-			console.log(this.options.components);
+	module.exports =
+	{
+		name: 'PokemonGoGymMap',
+		data: () => {
+			return {
+				iconGym: 'https://kwcg.pokegta.com/static/sprites/gym/ingame/gym/0.png',
+				iconScale: 0.5,
+				mapHeight: 'calc( (100vh * .8) - 20px )',
+				imageLoaded: false
+			};
 		},
-        props:
-        {
+		props:
+		{
 			gym: { type: Object, required: true }
 		},
-        methods:
-        {
+		methods:
+		{
 			onImageLoaded()
 			{
 				this.imageLoaded = true;
 			}
-        }
-    }
+		}
+	}
 </script>
 
 <style>
