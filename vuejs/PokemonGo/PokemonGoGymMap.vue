@@ -35,6 +35,10 @@
 		{
 			gym: { type: Object, required: true }
 		},
+		created()
+		{
+			console.log(Vue);
+		},
 		methods:
 		{
 			onImageLoaded()
