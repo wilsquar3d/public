@@ -45,8 +45,8 @@
         },
         mounted()
         {
-            /*this.createMap();
-            this.createStyle();
+            this.createMap();
+            /*this.createStyle();
             this.createMarkersLayer();
             this.createCenterMarker();*/
         },
