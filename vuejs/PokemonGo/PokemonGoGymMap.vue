@@ -31,31 +31,35 @@
                 imageLoaded: false
             };
         },
+		created()
+		{
+			console.log(this.options.components);
+		},
         props:
         {
-            gym: { type: Object, required: true }
-        },
+			gym: { type: Object, required: true }
+		},
         methods:
         {
-            onImageLoaded()
-            {
-                this.imageLoaded = true;
-            }
+			onImageLoaded()
+			{
+				this.imageLoaded = true;
+			}
         }
     }
 </script>
 
 <style>
-    #gym-map-wrap
-    {
-        width: calc( 100% - 20px );
-        max-height: 80vh;
-        display: flex;
-        margin: 10px;
-    }
-    .image
-    {
-        padding-left: 10px;
-        max-width: 50%;
-    }
+	#gym-map-wrap
+	{
+		width: calc( 100% - 20px );
+		max-height: 80vh;
+		display: flex;
+		margin: 10px;
+	}
+	.image
+	{
+		padding-left: 10px;
+		max-width: 50%;
+	}
 </style>
