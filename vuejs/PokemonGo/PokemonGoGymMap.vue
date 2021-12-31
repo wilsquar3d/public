@@ -35,9 +35,9 @@
 		{
 			gym: { type: Object, required: true }
 		},
-		components:
+		created()
 		{
-			'map-point-component': httpVueLoader( 'https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/PokemonGo/PokemonGoGymMap.vue' )
+			console.log(this);
 		},
 		methods:
 		{
