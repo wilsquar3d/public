@@ -35,9 +35,9 @@
 		{
 			gym: { type: Object, required: true }
 		},
-		created()
+		components:
 		{
-			console.log(Vue);
+			'map-point-component': mapPoint
 		},
 		methods:
 		{
