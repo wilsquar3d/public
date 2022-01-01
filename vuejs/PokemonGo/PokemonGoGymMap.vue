@@ -35,10 +35,6 @@
 		{
 			gym: { type: Object, required: true }
 		},
-		created()
-		{
-			console.log(this);
-		},
 		methods:
 		{
 			onImageLoaded()
