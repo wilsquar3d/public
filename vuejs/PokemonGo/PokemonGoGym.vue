@@ -65,7 +65,7 @@
     {
       console.log(this);
       console.log(this.template);
-    }
+    },
     methods:
     {
       dataChanged( field, value )
