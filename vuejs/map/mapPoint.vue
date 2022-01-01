@@ -39,10 +39,11 @@
 			zoom: { type: Number, default: 15 },
 			markers: { type: Array, default: [] }, //TODO validate lat/lng list
 			icon: { type: String, default: null },
-			iconScale: { type: Number, default: 0.5 }
+			iconScale: { type: Number, default: 1 }
 		},
 		mounted()
 		{
+			console.log(this);
 			if( this.isLibReady() )
 			{
 				this.createMap();
