@@ -9,7 +9,7 @@
 				:latitude='gym.latitude'
 				:longitude='gym.longitude'
 				:icon='iconGym'
-				:iconScale='iconScale'
+				:icon_scale='iconScale'
 			/>
 		</template>
 
