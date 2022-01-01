@@ -10,41 +10,45 @@
         :value='gym.name'
         @changed='dataChanged( "name", ...arguments )'
       ></editable-rule-field>
+      
       <editable-rule-field
         class='field'
         :type='template["city"]'
         :value='gym.city'
         @changed='dataChanged( "city", ...arguments )'
-      />
+      ></editable-rule-field>
+      
       <editable-rule-field
         class='field latlong'
         :value='gym.latitude'
-      />
+      ></editable-rule-field>
+      
       <editable-rule-field
         class='field latlong'
         :value='gym.longitude'
-      />
+      ></editable-rule-field>
+      
       <editable-rule-field
         class='field'
         :type='template["level"]'
         :value='gym.level'
         @changed='dataChanged( "level", ...arguments )'
-      />
+      ></editable-rule-field>
+      
       <editable-rule-field
         class='field'
         :type='template["priority"]'
         :value='gym.priority'
         @changed='dataChanged( "priority", ...arguments )'
-      />
+      ></editable-rule-field>
 
       <button @click='showMap = !showMap'>Show Map</button>
     </div>
 
-    <template v-if='showMap'>
-      <pokemon-go-gym-map
-        :gym='gym'
-      />
-    </template>
+    <pokemon-go-gym-map
+      v-if='showMap'
+      :gym='gym'
+    ></pokemon-go-gym-map>
 
   </div>
 </template>
