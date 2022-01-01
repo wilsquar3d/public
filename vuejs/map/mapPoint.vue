@@ -39,11 +39,10 @@
 			zoom: { type: Number, default: 15 },
 			markers: { type: Array, default: [] }, //TODO validate lat/lng list
 			icon: { type: String, default: null },
-			iconScale: { type: Number, default: 1 }
+			icon_scale: { type: Number, default: 1 }
 		},
 		mounted()
 		{
-			console.log(this);
 			if( this.isLibReady() )
 			{
 				this.createMap();
@@ -82,7 +81,7 @@
 						image: new ol.style.Icon( {
 							anchor: [0, 0],
 							src: this.icon,
-							scale: this.iconScale
+							scale: this.icon_scale
 						} )
 					} );
 				}
