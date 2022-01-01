@@ -69,10 +69,7 @@
     {
       dataChanged( field, value )
       {
-        console.log(field);
-        console.log(value);
         this.gym[field] = value;
-        console.log(this.gym);
         this.$emit( 'save' );
       }
     },
