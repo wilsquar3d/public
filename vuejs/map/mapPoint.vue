@@ -45,13 +45,13 @@
 		},
 		mounted()
 		{
-			/*if( this.isLibReady() )
+			if( this.isLibReady() )
 			{
 				this.createMap();
 				this.createStyle();
 				this.createMarkersLayer();
 				this.createCenterMarker();
-			}*/
+			}
 		},
 		methods:
 		{
