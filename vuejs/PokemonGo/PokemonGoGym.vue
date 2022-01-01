@@ -73,7 +73,27 @@
     {
       template()
       {
-        return get_data_template();
+        return {
+          name: { type: 'label', editable: true },
+          city: { type: 'enum', values: [
+            '',
+            'Guelph',
+            'Kitchener',
+            'Waterloo',
+            'Woodstock',
+            'Erin',
+            'Cambridge',
+            'Breslau',
+            'Elmira',
+            'Bloomingdale',
+            'New Hamburg',
+            'Wilmot',
+            'Doon',
+            'Rockwood'
+          ] },
+          level: { type: 'enum', values: ['', 'Bronze', 'Silver', 'Gold'] },
+          priority: { type: 'integer', range: { min: 0, max: 10 } }
+        };
       }
     }
   }
