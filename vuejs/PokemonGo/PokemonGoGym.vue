@@ -11,12 +11,6 @@
         @changed='dataChanged( "name", ...arguments )'
       />
       <editable-rule-field
-        class='field'
-        :type='template["city"]'
-        :value='gym.city'
-        @changed='dataChanged( "city", ...arguments )'
-      />
-      <editable-rule-field
         class='field latlong'
         :value='gym.latitude'
       />
@@ -100,31 +94,31 @@
 </script>
     
 <style>
-.pokemon-gym
-  {
-    width: 100%;
-    margin: 2px 10px 2px 0;
-    border: 1px solid #000;
-    border-radius: 3px;
-    padding: 3px;
-  }
-  .pokemon-gym:hover
-  {
-    background-color: #CCC;
-  }
-  .gym-details
-  {
-  }
-  .field
-  {
-    margin-left: 5px;
-  }
-  .name
-  {
-    width: 450px;
-  }
-  .latlong
-  {
-    width: 100px;
-  }
+  .pokemon-gym
+    {
+      width: 100%;
+      margin: 2px 10px 2px 0;
+      border: 1px solid #000;
+      border-radius: 3px;
+      padding: 3px;
+    }
+    .pokemon-gym:hover
+    {
+      background-color: #CCC;
+    }
+    .gym-details
+    {
+    }
+    .field
+    {
+      margin-left: 5px;
+    }
+    .name
+    {
+      width: 450px;
+    }
+    .latlong
+    {
+      width: 100px;
+    }
 </style>
