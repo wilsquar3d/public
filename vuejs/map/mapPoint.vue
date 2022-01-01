@@ -5,14 +5,12 @@
 	const script = document.createElement( 'script' );
 	script.setAttribute( 'type', 'text/javascript' );
 	script.setAttribute( 'src', 'https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/build/ol.js' );
-	script.async = true;
 	document.head.appendChild( script );
 
 	const style = document.createElement( 'link' );
 	style.setAttribute( 'type', 'text/css' );
 	style.setAttribute( 'rel', 'stylesheet' );
 	style.setAttribute( 'href', 'https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/css/ol.css' );
-	style.async = true;
 	document.head.appendChild( style );
 */
 
@@ -41,7 +39,7 @@
 			zoom: { type: Number, default: 15 },
 			markers: { type: Array, default: [] }, //TODO validate lat/lng list
 			icon: { type: String, default: null },
-			iconScale: { type: Number, default: 1 }
+			iconScale: { type: Number, default: 0.5 }
 		},
 		mounted()
 		{
