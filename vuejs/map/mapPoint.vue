@@ -45,7 +45,6 @@
 		},
 		mounted()
 		{
-			console.log( ol );
 			if( this.isLibReady() )
 			{
 				this.createMap();
