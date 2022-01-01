@@ -1,4 +1,4 @@
-//
+//https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/PokemonGo/PokemonGoGym/PokemonGoGym.vue
 
 <template>
   <div class='pokemon-gym'>
