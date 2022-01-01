@@ -9,7 +9,7 @@
         :type='template["name"]'
         :value='gym.name'
         @changed='dataChanged( "name", ...arguments )'
-      />
+      ></editable-rule-field>
       <editable-rule-field
         class='field'
         :type='template["city"]'
