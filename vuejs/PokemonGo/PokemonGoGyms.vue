@@ -31,25 +31,11 @@
     {
       prop_data: { type: Array, default: null }
     },
-    created()
-    {
-      this.data = this.import_data();
-    },
     methods:
     {
-      import_data()
-      {
-        //override this method in userscript not using props
-        return this.prop_data ? this.prop_data : [];
-      },
-      export_data( data )
-      {
-        //override this method
-        console.log( data );
-      },
       save()
       {
-        this.export_data( this.data );
+        this.$emit( 'export', this.data );
       }
     },
     computed:
