@@ -31,6 +31,10 @@
     {
       prop_data: { type: Array, default: null }
     },
+    created()
+    {
+      this.data = this.prop_data;
+    },
     methods:
     {
       save()
