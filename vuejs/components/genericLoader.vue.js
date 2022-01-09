@@ -1,4 +1,4 @@
-
+//https://raw.githubusercontent.com/wilsquar3d/public/master/vuejs/components/GenericLoader.vue.js
 
 function generic_load_component( component_suffix=null )
 {
