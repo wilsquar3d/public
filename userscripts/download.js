@@ -1,5 +1,33 @@
 //https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/download.js
 
+// Can show a limited number of images (#), all (true) or none (false)
+function display_imagesDownloadPage( id, imgs, name, showImgs=true )
+{
+    let keys = Object.keys( imgs );
+
+    $( id )
+        .append( $( '<div style="font-size:24pt;padding:10px;margin:20px;background-color:lightgrey;">' + name + ' (' + keys.length + ')</div>' )
+            .append( $( '<input type="button" value="Download All" style="margin-left: 10px;" />' ).click( function(){ downloadAll( imgs, 'image/png', false ); } ) ) );
+
+    if( showImgs )
+    {
+        let limit = parseInt( showImgs ) || keys.length;
+        let cnt = 0;
+
+        $.each( keys,
+            function( ndx, key )
+            {
+                $( id ).append( '<img style="max-height:100px;" title="' + name + '" src="' + imgs[key] + '" />' );
+
+                if( ++cnt == limit )
+                {
+                    return false;
+                }
+            }
+        );
+    }
+}
+
 function downloadAll( elems, type='image/png', addExt=true, tout=0, inter=300 )
 {
     let timeout = tout;
