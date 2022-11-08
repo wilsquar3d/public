@@ -1,4 +1,4 @@
-
+//https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/download.js
 
 function autoDownload( filename, url, type='image/png' )
 {
