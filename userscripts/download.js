@@ -1,13 +1,13 @@
 //https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/download.js
 
 // Can show a limited number of images (#), all (true) or none (false)
-function display_imagesDownloadPage( id, imgs, name, showImgs=true )
+function display_imagesDownloadPage( id, imgs, name, showImgs=true, type='image/png', addExt=false )
 {
     let keys = Object.keys( imgs );
 
     $( id )
         .append( $( '<div style="font-size:24pt;padding:10px;margin:20px;background-color:lightgrey;">' + name + ' (' + keys.length + ')</div>' )
-            .append( $( '<input type="button" value="Download All" style="margin-left: 10px;" />' ).click( function(){ downloadAll( imgs, 'image/png', false ); } ) ) );
+            .append( $( '<input type="button" value="Download All" style="margin-left: 10px;" />' ).click( function(){ downloadAll( imgs, type, addExt ); } ) ) );
 
     if( showImgs )
     {
