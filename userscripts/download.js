@@ -1,7 +1,7 @@
 //https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/download.js
 
 // Can show a limited number of images (#), all (true) or none (false)
-function display_imagesDownloadPage( id, imgs, name, showImgs=true, type='image/png', addExt=false )
+function display_imagesDownloadPage( id, imgs, name, showImgs=true, addExt=true, type='image/png' )
 {
     let keys = Object.keys( imgs );
 
