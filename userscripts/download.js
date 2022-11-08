@@ -17,7 +17,7 @@ function display_imagesDownloadPage( id, imgs, name, showImgs=true, addExt=true,
         $.each( keys,
             function( ndx, key )
             {
-                $( id ).append( '<img style="max-height:100px;" title="' + name + '" src="' + imgs[key] + '" />' );
+                $( id ).append( '<img style="max-height:100px;" title="' + key + '" src="' + imgs[key] + '" />' );
 
                 if( ++cnt == limit )
                 {
