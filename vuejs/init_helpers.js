@@ -66,6 +66,7 @@ function vuejs_menu_components_load( menu_items )
             else
             {
                 console.error( 'Missing component: "' + menu_item.component + '"' );
+                console.log(menu_item.component);
             }
         }
     }
