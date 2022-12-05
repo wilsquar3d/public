@@ -11,7 +11,7 @@ components.importExport = {
 			<input type='button' value='Import' @click='import_formatted_data' style='margin-right:10px;' />
 			<input type='button' value='Export' @click='wrap_export_data' />
 		</div>
-		
+
 		<component is='style'>
 			.full
 			{
@@ -46,7 +46,14 @@ components.importExport = {
 			isValid: true
 		};
 	},
+	created() {
+		this.on_created();
+	},
 	methods: {
+		on_created()
+		{
+			//override method
+		},
 		import_data()
 		{
 			//examples
@@ -74,9 +81,22 @@ components.importExport = {
 			{
 				this.data = temp;
 			}
-			
+
 			this.stringData = JSON.stringify( this.data, true, '  ' );
 			this.onChange();
+		},
+
+		// default import/export
+		gm_import_data()
+		{
+		    return GM_listValues().reduce( (acc, key) => ( acc[key] = GM_getValue( key, {} ), acc ), {} );
+		},
+		gm_export_data( data )
+		{
+		    for( const key of Object.keys( data ) )
+		    {
+                GM_setValue( key, data[key] );
+		    }
 		}
 	}
 };
