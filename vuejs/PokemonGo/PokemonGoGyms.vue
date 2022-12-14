@@ -46,11 +46,11 @@
     {
       level_stats()
       {
-        return this.data.reduce( ( acc, item ) => { acc[item.level || ""] = ++acc[item.level] || 1; return acc; }, {} );
+        return this.data.reduce( ( acc, item ) => { acc[item.level || ""] = ++acc[item.level || ""] || 1; return acc; }, {} );
       },
       city_stats()
       {
-        return this.data.reduce( ( acc, item ) => { acc[item.city || ""] = ++acc[item.city] || 1; return acc; }, {} );
+        return this.data.reduce( ( acc, item ) => { acc[item.city || ""] = ++acc[item.city || ""] || 1; return acc; }, {} );
       }
     }
   }
