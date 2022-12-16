@@ -93,7 +93,8 @@
             'New Hamburg',
             'Wilmot',
             'Doon',
-            'Rockwood'
+            'Rockwood',
+            'Baden'
           ] },
           level: { type: 'enum', values: ['', 'Bronze', 'Silver', 'Gold'] },
           priority: { type: 'integer', range: { min: 0, max: 10 } }
