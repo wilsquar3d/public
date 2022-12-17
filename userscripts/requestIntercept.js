@@ -1,4 +1,5 @@
 //https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/requestIntercept.js
+// @grant        GM_xmlhttpRequest
 
 function intercept_requestHeaders( propName='headers_store', func=null )
 {
@@ -66,6 +67,32 @@ function intercept_responses( funcSuccess, funcFailure, eventListener='readystat
             open.apply( this, arguments );
         };
     } )(XMLHttpRequest.prototype.open);
+}
+
+// capture: { request: <func> }
+// capture: { response: <func> }
+// capture: { request: <func>, response: <func> }
+function intercept_fetch( capture = {} )
+{
+    const { fetch: originalFetch } = unsafeWindow;
+
+    unsafeWindow.fetch = async ( ...args ) => {
+        let [resource, config] = args;
+
+        if( capture.request )
+        {
+            capture.request( resource, config );
+        }
+
+        const response = await originalFetch( resource, config );
+
+        if( capture.response )
+        {
+            capture.response( response );
+        }
+
+        return response;
+    };
 }
 
 function intercept_default( request, ...args )
