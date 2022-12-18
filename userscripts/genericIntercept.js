@@ -1,8 +1,9 @@
-function intercept_windowMethodAsync( funcName, beforeFunc=null, afterFunc=null )
+function intercept_methodAsync( funcName, beforeFunc=null, afterFunc=null, source=null )
 {
-    const { [funcName]: originalFunc } = unsafeWindow;
+    source = source || unsafeWindow;
+    const { [funcName]: originalFunc } = source;
 
-    unsafeWindow[funcName] = async ( ...args ) => {
+    source[funcName] = async ( ...args ) => {
         if( beforeFunc )
         {
             beforeFunc( ...args );
@@ -19,9 +20,12 @@ function intercept_windowMethodAsync( funcName, beforeFunc=null, afterFunc=null 
     };
 }
 
-function intercept_windowMethod( funcName, beforeFunc=null, afterFunc=null )
+function intercept_method( funcName, beforeFunc=null, afterFunc=null, source=null )
 {
-    unsafeWindow[funcName] = ( ...args ) => {
+    source = source || unsafeWindow;
+    const { [funcName]: originalFunc } = source;
+    
+    source[funcName] = ( ...args ) => {
         if( beforeFunc )
         {
             beforeFunc( ...args );
