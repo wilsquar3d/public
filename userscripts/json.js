@@ -40,11 +40,50 @@ function syntaxHighlight( json, indent='    ' )
     );
 }
 
+// Sort object properties by keys
 function sortObjectKeys( obj )
 {
     return Object.keys( obj ).sort().reduce( function( result, key )
         {
             result[key] = obj[key];
+            return result;
+        },
+        {}
+    );
+}
+
+// Sort object properties by value or sub-property value
+function sortObjectValues( obj, key )
+{
+    let obj_key = '__obj__';
+    let map = {};
+
+    // Create map of key: original key
+    $.each( Object.keys( obj ),
+        function( ndx, val )
+        {
+            let dataKey = key ? obj[val][key] : obj[val];
+
+            if( !map[dataKey] )
+            {
+                map[dataKey] = { [obj_key]: [] };
+            }
+
+            map[dataKey][obj_key].push( val );
+        }
+    );
+
+    // Sort new keys and create new object in sorted order using associated old keys (also sorts by object values)
+    return Object.keys( map ).sort().reduce(
+        function( result, key )
+        {
+            $.each( map[key][obj_key].sort(),
+                function( ndx, orig_key )
+                {
+                    result[orig_key] = obj[map[key][obj_key]];
+                }
+            );
+
             return result;
         },
         {}
