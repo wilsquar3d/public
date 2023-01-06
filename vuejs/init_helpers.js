@@ -63,7 +63,7 @@ function vuejs_menu_components_load( menu_items )
             {
                 Vue.component( menu_item.component, components[menu_item.component] );
             }
-            else
+            else if( 'none' != menu_item.component )
             {
                 console.error( 'Missing component: "' + menu_item.component + '"' );
                 console.log(menu_item.component);
