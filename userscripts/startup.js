@@ -45,11 +45,12 @@ var startup = {
     },
 
     // default startup function using registered handlers and settings
-    startupHandler: function()
+    // startup not this to allow running in any scope, as function ref, etc.
+    startupHandler: () =>
     {
-        for( const handler of this.handlers )
+        for( const handler of startup.handlers )
         {
-            if( handler.includes.reduce( (r, x) => r && this.siteURL.includes( x ), true ) )
+            if( handler.includes.reduce( (r, x) => r && startup.siteURL.includes( x ), true ) )
             {
                 let ret = handler.func();
 
@@ -65,7 +66,7 @@ var startup = {
             }
         }
 
-        return this.settings.ret;
+        return startup.settings.ret;
     },
 
     // runFunc
