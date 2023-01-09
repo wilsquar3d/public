@@ -16,26 +16,26 @@ var startup = {
     handlers: [],
 
     // initialize siteURL, appID and startup default return value
-    init: ( id, ret=false ) =>
+    init: function( id, ret=false )
     {
-        startup.siteURL = window.location.href;
-        startup.appID = id;
+        this.siteURL = window.location.href;
+        this.appID = id;
 
-        startup.registerSettings( ret );
+        this.registerSettings( ret );
     },
 
     // register settings (default return value)
-    registerSettings: ( ret=false ) =>
+    registerSettings: function( ret=false )
     {
-        startup.settings = {
+        this.settings = {
             ret: ret
         };
     },
 
     // add a siteURL handler if the includes are matched, calls func and returns the expected value.
-    registerHandler: ( includes, func, useFuncRet=false, hasRet=true, ret=true ) =>
+    registerHandler: function( includes, func, useFuncRet=false, hasRet=true, ret=true )
     {
-        startup.handlers.push( {
+        this.handlers.push( {
             includes: Array.isArray( includes ) ? includes : [includes],
             func: func,
             useFuncRet: useFuncRet,
@@ -45,11 +45,11 @@ var startup = {
     },
 
     // default startup function using registered handlers and settings
-    startupHandler: () =>
+    startupHandler: function()
     {
-        for( const handler of startup.handlers )
+        for( const handler of this.handlers )
         {
-            if( handler.includes.reduce( (r, x) => r && startup.siteURL.includes( x ), true ) )
+            if( handler.includes.reduce( (r, x) => r && this.siteURL.includes( x ), true ) )
             {
                 let ret = handler.func();
 
@@ -65,12 +65,12 @@ var startup = {
             }
         }
 
-        return startup.settings.ret;
+        return this.settings.ret;
     },
 
     // runFunc
-    run: ( func=null ) =>
+    run: function( func=null )
     {
-        runFunc( func || startup.startupHandler );
+        runFunc( func || this.startupHandler );
     }
 };
