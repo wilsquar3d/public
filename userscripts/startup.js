@@ -1,10 +1,12 @@
 //https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/startup.js
 // @require      https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/execControl.js
+// @require      https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/utils.js
 /*
 startup.init( 'appID_name' );
 
-startup.registerHandler( ['blanksite.com', '?menu_page_name'], menuPageFunc );
+startup.registerHandler( ['blanksite.com', '?menu_page_name'], loadDisplay );
 startup.registerHandler( 'data_page.com', dataPageFunc );
+startup.registerHandler( function(){ return true; }, dataPageFunc );
 
 startup.run();
 */
@@ -33,10 +35,13 @@ var startup = {
     },
 
     // add a siteURL handler if the includes are matched, calls func and returns the expected value.
-    registerHandler: function( includes, func, useFuncRet=false, hasRet=true, ret=true )
+    registerHandler: function( match, func, useFuncRet=false, hasRet=true, ret=true )
     {
+        let isFunc = isFunction( match ) || ( Array.isArray( match ) && match.length && isFunction( match[0] ) );
+
         this.handlers.push( {
-            includes: Array.isArray( includes ) ? includes : [includes],
+            includes: isFunc ? null : Array.isArray( match ) ? match : [match],
+            match: isFunc ? Array.isArray( match ) ? match : [match] : null,
             func: func,
             useFuncRet: useFuncRet,
             hasRet: hasRet,
@@ -50,7 +55,11 @@ var startup = {
     {
         for( const handler of startup.handlers )
         {
-            if( handler.includes.reduce( (r, x) => r && startup.siteURL.includes( x ), true ) )
+            let matchResult = handler.includes
+                ? handler.includes.reduce( (r, x) => r && startup.siteURL.includes( x ), true )
+                : handler.match.reduce( (r, x) => r && x(), true );
+
+            if( matchResult )
             {
                 let ret = handler.func();
 
