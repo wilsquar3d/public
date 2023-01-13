@@ -13,8 +13,6 @@ startup.registerHandler( 'includes', null, bindFunc ); // no include/condition f
 startup.registerHandler( 'includes', matchFunc, { dom: 'body', action: 'DOMSubtreeModified', func: bindFunc } ); // include/condition with a match function and full custom binding
 
 startup.run();
-
-// TODO support includes and functions in match
 */
 
 var startup = {
