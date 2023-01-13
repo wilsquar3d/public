@@ -8,10 +8,13 @@ startup.init( 'appID_name' );
 startup.registerHandler( ['blanksite.com', '?menu_page_name'], loadDisplay ); // array siteURL includes
 startup.registerHandler( 'data_page.com', dataPageFunc ); // single siteURL includes
 startup.registerHandler( function(){ return true; }, dataPageFunc ); // function condition
+startup.registerHandler( ['somesite.com', () => true], loadDisplay ); // array siteURL include and function condition
 startup.registerHandler( 'includes', null, bindFunc ); // no include/condition function with binding function
 startup.registerHandler( 'includes', matchFunc, { dom: 'body', action: 'DOMSubtreeModified', func: bindFunc } ); // include/condition with a match function and full custom binding
 
 startup.run();
+
+// TODO support includes and functions in match
 */
 
 var startup = {
@@ -41,7 +44,29 @@ var startup = {
     // bind adds a DOM change handler. Can supply just handler function for default body/change handler or full params object
     registerHandler: function( match, func, bind=null, useFuncRet=false, hasRet=true, ret=true )
     {
-        let isFunc = isFunction( match ) || ( Array.isArray( match ) && match.length && isFunction( match[0] ) );
+        // force match to be an array
+        if( !Array.isArray( match ) )
+        {
+            match = [match];
+        }
+
+        let matchFuncs = [];
+        let includes = [];
+
+        for( const m of match )
+        {
+            if( m )
+            {
+                if( isFunction( m ) )
+                {
+                    matchFuncs.push( m );
+                }
+                else
+                {
+                    includes.push( m );
+                }
+            }
+        }
 
         // Only bind handler function supplied
         if( bind && isFunction( bind ) )
@@ -50,8 +75,8 @@ var startup = {
         }
 
         this.handlers.push( {
-            includes: isFunc ? null : Array.isArray( match ) ? match : [match],
-            match: isFunc ? Array.isArray( match ) ? match : [match] : null,
+            includes: includes,
+            match: matchFuncs,
             func: func,
             bind: bind,
             useFuncRet: useFuncRet,
@@ -66,9 +91,8 @@ var startup = {
     {
         for( const handler of startup.handlers )
         {
-            let matchResult = handler.includes
-                ? handler.includes.reduce( (r, x) => r && startup.siteURL.includes( x ), true )
-                : handler.match.reduce( (r, x) => r && x(), true );
+            let matchResult = handler.includes.reduce( (r, x) => r && startup.siteURL.includes( x ), true ) &&
+                handler.match.reduce( (r, x) => r && x(), true );
 
             if( matchResult )
             {
