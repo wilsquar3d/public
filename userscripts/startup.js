@@ -4,9 +4,12 @@
 /*
 startup.init( 'appID_name' );
 
-startup.registerHandler( ['blanksite.com', '?menu_page_name'], loadDisplay );
-startup.registerHandler( 'data_page.com', dataPageFunc );
-startup.registerHandler( function(){ return true; }, dataPageFunc );
+// any combination of the following is supported
+startup.registerHandler( ['blanksite.com', '?menu_page_name'], loadDisplay ); // array siteURL includes
+startup.registerHandler( 'data_page.com', dataPageFunc ); // single siteURL includes
+startup.registerHandler( function(){ return true; }, dataPageFunc ); // function condition
+startup.registerHandler( 'includes', null, bindFunc ); // no include/condition function with binding function
+startup.registerHandler( 'includes', matchFunc, { dom: 'body', action: 'DOMSubtreeModified', func: bindFunc } ); // include/condition with a match function and full custom binding
 
 startup.run();
 */
@@ -34,15 +37,23 @@ var startup = {
         };
     },
 
-    // add a siteURL handler if the includes are matched, calls func and returns the expected value.
-    registerHandler: function( match, func, useFuncRet=false, hasRet=true, ret=true )
+    // add a handler if [match] are string(s) included in siteURL or function(s) that all return true, then calls func and returns the output (useFuncRet=true), the default (ret, if hasRet=true) or no value.
+    // bind adds a DOM change handler. Can supply just handler function for default body/change handler or full params object
+    registerHandler: function( match, func, bind=null, useFuncRet=false, hasRet=true, ret=true )
     {
         let isFunc = isFunction( match ) || ( Array.isArray( match ) && match.length && isFunction( match[0] ) );
+
+        // Only bind handler function supplied
+        if( bind && isFunction( bind ) )
+        {
+            bind = { dom: 'body', action: 'DOMSubtreeModified', func: bind };
+        }
 
         this.handlers.push( {
             includes: isFunc ? null : Array.isArray( match ) ? match : [match],
             match: isFunc ? Array.isArray( match ) ? match : [match] : null,
             func: func,
+            bind: bind,
             useFuncRet: useFuncRet,
             hasRet: hasRet,
             ret: ret
@@ -61,7 +72,12 @@ var startup = {
 
             if( matchResult )
             {
-                let ret = handler.func();
+                let ret = handler.func ? handler.func() : false;
+
+                if( handler.bind )
+                {
+                    $( handler.bind.dom ).bind( handler.bind.action, handler.bind.func );
+                }
 
                 if( handler.useFuncRet )
                 {
