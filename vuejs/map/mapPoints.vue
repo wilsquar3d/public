@@ -36,7 +36,7 @@
 		{
 			height: { type: String, default: '100vh' },
 			zoom: { type: Number, default: 10 },
-			markers: { type: Object, default: {} },
+			markers: { type: Array, default: [] },
 			icon: { type: String, default: null },
 			icon_scale: { type: Number, default: 1 }
 		},
@@ -98,28 +98,28 @@
 			},
 			createMarkers()
 			{
-        for( const mark of this.markers )
-        {
-          let marker = new ol.Feature( {
-            geometry: new ol.geom.Point( this.createPoint( mark ) )
-          } );
+				for( const mark of this.markers )
+				{
+					let marker = new ol.Feature( {
+						geometry: new ol.geom.Point( this.createPoint( mark ) )
+					} );
 
-          if( this.style )
-          {
-            marker.setStyle( this.style );
-          }
+					if( this.style )
+					{
+						marker.setStyle( this.style );
+					}
 
-          this.addMarkerToMap( marker );
-        }
+					this.addMarkerToMap( marker );
+				}
 			},
 			addMarkerToMap( marker )
 			{
 				this.layerMarkers.getSource().addFeature( marker );
 			},
-      createPoint( point )
-      {
-        return ol.proj.fromLonLat( [ point.longitude, point.latitude ] );
-      }
+			createPoint( point )
+			{
+				return ol.proj.fromLonLat( [ point.longitude, point.latitude ] );
+			}
 		},
 		computed:
 		{
@@ -127,15 +127,15 @@
 			{
 				return ( 'map-wrap_' + this.markers[0].latitude + '_' + this.markers[0].longitude ).replaceAll( '.', '' );
 			},
-      center()
-      {
-        let lat_min = Math.min( ...this.markers.map( x => x.latitude ) );
-        let lat_max = Math.max( ...this.markers.map( x => x.latitude ) );
-        let lng_min = Math.min( ...this.markers.map( x => x.longitude ) );
-        let lat_max = Math.max( ...this.markers.map( x => x.longitude ) );
-        
-        return ol.proj.fromLonLat( [ ( lng_min + lng_max ) / 2.0, ( lat_min + lat_max ) / 2.0 ] );
-      }
+			center()
+			{
+				let lat_min = Math.min( ...this.markers.map( x => x.latitude ) );
+				let lat_max = Math.max( ...this.markers.map( x => x.latitude ) );
+				let lng_min = Math.min( ...this.markers.map( x => x.longitude ) );
+				let lat_max = Math.max( ...this.markers.map( x => x.longitude ) );
+
+				return ol.proj.fromLonLat( [ ( lng_min + lng_max ) / 2.0, ( lat_min + lat_max ) / 2.0 ] );
+			}
 		}
 	}
 </script>
