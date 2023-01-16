@@ -23,7 +23,7 @@
 <script>
 	module.exports =
 	{
-		name: 'MapPoint',
+		name: 'MapPoints',
 		data: () => {
 			return {
 				map: null,
