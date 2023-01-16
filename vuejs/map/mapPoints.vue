@@ -16,6 +16,7 @@
 
 <template>
 	<div class='map-wrap' :style='"height:" + height'>
+		{{markers.length}}
 		<div :id='uniqueId' class='map' ref='map'></div>
 	</div>
 </template>
