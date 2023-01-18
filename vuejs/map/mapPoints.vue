@@ -99,11 +99,7 @@
 				this.layerMarkers = new ol.layer.Vector( {
 					source: new ol.source.Vector( {
 						features: []
-					} ),
-					style: function( feature ) {
-						this.style.getText().setText( feature.get( 'name' ) );
-						return [this.style];
-					}
+					} )
 				} );
 
 				this.map.addLayer( this.layerMarkers );
@@ -113,13 +109,15 @@
 				for( const mark of this.markers )
 				{
 					let marker = new ol.Feature( {
-						geometry: new ol.geom.Point( this.createPoint( mark ) ),
-						name: mark.name
+						geometry: new ol.geom.Point( this.createPoint( mark ) )
 					} );
 					
 					if( this.style )
 					{
-						marker.setStyle( this.style );
+						let style = this.style.clone();
+                        			style.getText().setText( mark.name );
+						
+						marker.setStyle( style );
 					}
 
 					this.addMarkerToMap( marker );
