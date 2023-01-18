@@ -100,8 +100,8 @@
 					source: new ol.source.Vector( {
 						features: [],
 						style: function( feature ) {
-							style.getText().setText( feature.get( 'name' ) );
-							return style;
+							this.style.getText().setText( feature.get( 'name' ) );
+							return this.style;
 						}
 					} )
 				} );
