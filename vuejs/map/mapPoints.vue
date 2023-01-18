@@ -120,7 +120,6 @@
 
 					if( this.style )
 					{
-						this.style.getText().setText( mark.name );
 						marker.setStyle( JSON.parse( JSON.stringify( this.style ) ) );
 					}
 
