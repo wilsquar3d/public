@@ -132,7 +132,7 @@
 				let lat_min = Math.min( ...this.markers.map( x => x.latitude ) );
 				let lat_max = Math.max( ...this.markers.map( x => x.latitude ) );
 				let lng_min = Math.min( ...this.markers.map( x => x.longitude ) );
-				let lat_max = Math.max( ...this.markers.map( x => x.longitude ) );
+				let lng_max = Math.max( ...this.markers.map( x => x.longitude ) );
 
 				return ol.proj.fromLonLat( [ ( lng_min + lng_max ) / 2.0, ( lat_min + lat_max ) / 2.0 ] );
 			}
