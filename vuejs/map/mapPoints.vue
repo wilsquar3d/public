@@ -82,7 +82,6 @@
 							scale: this.icon_scale
 						} ),
 						text: new ol.style.Text( {
-							text: '',
 							font: 'bold 10px Calibri,sans-serif',
 							fill: new ol.style.Fill( {
 								color: 'black'
@@ -117,11 +116,6 @@
 						geometry: new ol.geom.Point( this.createPoint( mark ) ),
 						name: mark.name
 					} );
-
-					if( this.style )
-					{
-						marker.setStyle( JSON.parse( JSON.stringify( this.style ) ) );
-					}
 
 					this.addMarkerToMap( marker );
 				}
