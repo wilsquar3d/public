@@ -119,7 +119,9 @@
 					
 					if( this.style )
 					{
-						marker.setStyle( this.style );
+						let style = JSON.parse( JSON.stringify( this.style ) );
+						style.getText().setText( mark.name );
+						marker.setStyle( style );
 					}
 
 					this.addMarkerToMap( marker );
