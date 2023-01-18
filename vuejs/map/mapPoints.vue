@@ -102,7 +102,7 @@
 					} ),
 					style: function( feature ) {
 						this.style.getText().setText( feature.get( 'name' ) );
-						return this.style;
+						return [this.style];
 					}
 				} );
 
@@ -119,9 +119,7 @@
 					
 					if( this.style )
 					{
-						let style = JSON.parse( JSON.stringify( this.style ) );
-						style.getText().setText( mark.name );
-						marker.setStyle( style );
+						marker.setStyle( this.style );
 					}
 
 					this.addMarkerToMap( marker );
