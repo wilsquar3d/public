@@ -116,7 +116,7 @@
 
 					if( this.style )
 					{
-						this.style.text.text = mark.name;
+						this.style.getText().setText( mark.name );
 						marker.setStyle( this.style );
 					}
 
