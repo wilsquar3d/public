@@ -98,12 +98,12 @@
 			{
 				this.layerMarkers = new ol.layer.Vector( {
 					source: new ol.source.Vector( {
-						features: [],
-						style: function( feature ) {
-							this.style.getText().setText( feature.get( 'name' ) );
-							return this.style;
-						}
-					} )
+						features: []
+					} ),
+					style: function( feature ) {
+						this.style.getText().setText( feature.get( 'name' ) );
+						return this.style;
+					}
 				} );
 
 				this.map.addLayer( this.layerMarkers );
