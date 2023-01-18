@@ -101,7 +101,8 @@
 				for( const mark of this.markers )
 				{
 					let marker = new ol.Feature( {
-						geometry: new ol.geom.Point( this.createPoint( mark ) )
+						geometry: new ol.geom.Point( this.createPoint( mark ) ),
+						name: mark.name
 					} );
 
 					if( this.style )
