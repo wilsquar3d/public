@@ -16,7 +16,6 @@
 
 <template>
 	<div class='map-wrap' :style='"height:" + height'>
-		{{markers.length}}
 		<div :id='uniqueId' class='map' ref='map'></div>
 	</div>
 </template>
@@ -81,6 +80,17 @@
 							anchor: [0, 0],
 							src: this.icon,
 							scale: this.icon_scale
+						} ),
+						text: new ol.style.Text( {
+							text: '',
+							font: 'bold 10px Calibri,sans-serif',
+							fill: new ol.style.Fill( {
+								color: 'black'
+							} ),
+							stroke: new ol.style.Stroke( {
+								color: 'white',
+								width: 2,
+							} )
 						} )
 					} );
 				}
@@ -101,12 +111,12 @@
 				for( const mark of this.markers )
 				{
 					let marker = new ol.Feature( {
-						geometry: new ol.geom.Point( this.createPoint( mark ) ),
-						name: mark.name
+						geometry: new ol.geom.Point( this.createPoint( mark ) )
 					} );
 
 					if( this.style )
 					{
+						this.style.text.text = mark.name;
 						marker.setStyle( this.style );
 					}
 
