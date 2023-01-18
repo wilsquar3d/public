@@ -100,7 +100,10 @@
 				this.layerMarkers = new ol.layer.Vector( {
 					source: new ol.source.Vector( {
 						features: [],
-						style: this.style
+						style: function( feature ) {
+							style.getText().setText( feature.get( 'name' ) );
+							return style;
+						}
 					} )
 				} );
 
@@ -111,7 +114,8 @@
 				for( const mark of this.markers )
 				{
 					let marker = new ol.Feature( {
-						geometry: new ol.geom.Point( this.createPoint( mark ) )
+						geometry: new ol.geom.Point( this.createPoint( mark ) ),
+						name: mark.name
 					} );
 
 					if( this.style )
