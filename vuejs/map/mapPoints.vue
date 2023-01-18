@@ -116,6 +116,11 @@
 						geometry: new ol.geom.Point( this.createPoint( mark ) ),
 						name: mark.name
 					} );
+					
+					if( this.style )
+					{
+						marker.setStyle( this.style );
+					}
 
 					this.addMarkerToMap( marker );
 				}
