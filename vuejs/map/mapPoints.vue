@@ -37,7 +37,8 @@
 			zoom: { type: Number, default: 10 },
 			markers: { type: Array, default: [] },
 			icon: { type: String, default: null },
-			icon_scale: { type: Number, default: 1 }
+			icon_scale: { type: Number, default: 1 },
+            		show_label: { type: Boolean, default: false }
 		},
 		mounted()
 		{
