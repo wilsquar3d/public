@@ -33,7 +33,7 @@
 		},
 		props:
 		{
-			height: { type: String, default: '100vh' },
+			height: { type: String, default: '100%' },
 			zoom: { type: Number, default: 10 },
 			markers: { type: Array, default: [] },
 			icon: { type: String, default: null },
@@ -73,26 +73,32 @@
 			},
 			createStyle()
 			{
+				let style = {};
+
 				if( this.icon )
 				{
-					this.style = new ol.style.Style( {
-						image: new ol.style.Icon( {
-							anchor: [0, 0],
-							src: this.icon,
-							scale: this.icon_scale
-						} ),
-						text: new ol.style.Text( {
-							font: 'bold 10px Calibri,sans-serif',
-							fill: new ol.style.Fill( {
-								color: 'black'
-							} ),
-							stroke: new ol.style.Stroke( {
-								color: 'white',
-								width: 2,
-							} )
-						} )
-					} );
+				    style.image = new ol.style.Icon( {
+					anchor: [0, 0],
+					src: this.icon,
+					scale: this.icon_scale
+				    } );
 				}
+
+				if( this.show_label )
+				{
+							style.text = new ol.style.Text( {
+					font: 'bold 10px Calibri,sans-serif',
+					fill: new ol.style.Fill( {
+					    color: 'black'
+					} ),
+					stroke: new ol.style.Stroke( {
+					    color: 'white',
+					    width: 2,
+					} )
+				    } );
+						}
+
+				this.style = new ol.style.Style( style );
 			},
 			createMarkersLayer()
 			{
@@ -115,7 +121,11 @@
 					if( this.style )
 					{
 						let style = this.style.clone();
-                        			style.getText().setText( mark.name );
+                        			
+						if( this.show_label )
+						{
+						    style.getText().setText( mark.name );
+						}
 						
 						marker.setStyle( style );
 					}
