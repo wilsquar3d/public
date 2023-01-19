@@ -117,7 +117,8 @@
 		{
             getType()
             {
-                let type = isString( this.fieldType ) ? this.fieldType : this.fieldType.type;
+	    	let isString = this.fieldType && this.fieldType !== Object( this.fieldType ) && isNaN( this.fieldType );
+                let type = isString ? this.fieldType : this.fieldType.type;
 
                 return type.trim().toLowerCase();
             },
