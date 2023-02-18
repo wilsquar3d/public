@@ -1,5 +1,5 @@
 //https://raw.githubusercontent.com/wilsquar3d/public/master/github/github_api.proxy.js
-// requires request.js
+// requires request.js, util.js
 
 /*
 // usage example
@@ -49,11 +49,17 @@ var github_api = {
         };
     },
     payload: function( commit_data, sha, msg='' ) {
-        return {
+        let payload = {
             message: msg,
-            content: btoa( commit_data ),
-            sha: sha
+            content: btoa( commit_data )
         };
+
+        if( sha )
+        {
+            payload.sha = sha;
+        }
+
+        return payload;
     },
 
     get: async function() {
@@ -96,8 +102,14 @@ var github_api = {
     sha: async function() {
         let result = await this.get();
         let response = JSON.parse( result.response );
-        let content = JSON.parse( response.content );
 
-        return content.sha;
+        if( isJson( response ) && response.content )
+        {
+            let content = JSON.parse( response.content );
+
+            return content.sha;
+        }
+
+        return null;
     }
 };
