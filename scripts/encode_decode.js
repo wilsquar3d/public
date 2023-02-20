@@ -1,4 +1,4 @@
-// 
+//https://raw.githubusercontent.com/wilsquar3d/public/master/scripts/encode_decode.js
 /*
 // Examples
 let text = 'abcdefghijklmnopqrstuvwxyz';
