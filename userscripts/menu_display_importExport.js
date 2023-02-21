@@ -56,7 +56,7 @@ function display_importExport( id )
 // props: { token: <base64, password encrypted token>, repo: <repository>, path: <file/path.ext> }
 function display_importExportWithGit( id, props )
 {
-    var displayDataID = createID( id.replace( '#', '' ), 'importExportDataGit' );
+    let displayDataID = createID( id.replace( '#', '' ), 'importExportDataGit' );
 
     $( id ).append(
         $( '<div style="width:100%;height:100%;" />' ).append(
@@ -68,8 +68,8 @@ function display_importExportWithGit( id, props )
                 $( '<input type="button" value="Import" id="import" style="margin-right:10px;" />' ).click(
                     function()
                     {
-                        var displayData = JSON.parse( $( '#' + displayDataID ).val() );
-                        var keys = Object.keys( data );
+                        let displayData = JSON.parse( $( '#' + displayDataID ).val() );
+                        let keys = Object.keys( data );
 
                         $.each( keys,
                             function( ndx, key )
@@ -81,7 +81,7 @@ function display_importExportWithGit( id, props )
                 $( '<input type="button" value="Export" id="export" style="margin-right:10px;" />' ).click(
                     function()
                     {
-                        var displayData = {};
+                        let displayData = {};
 
                         $.each( GM_listValues(),
                             function( ndx, key )
@@ -101,7 +101,7 @@ function display_importExportWithGit( id, props )
                 $( '<input type="button" value="Commit" id="commit" />' ).click(
                     async function()
                     {
-                        var displayData = {};
+                        let displayData = {};
 
                         $.each( GM_listValues(),
                             function( ndx, key )
