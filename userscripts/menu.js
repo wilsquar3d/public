@@ -59,6 +59,7 @@ function createMenu( menuItems=[], displayCSS=null, menuItemsCSS=null, menuCSS=n
 }
 
 //displayFunc will accept the selector to attach to
+//displayFunc can be a function() or object { func: function(), props: [props]]
 function menuItem( name, displayFunc, css=null, hover=null )
 {
     if( !css )
@@ -71,12 +72,19 @@ function menuItem( name, displayFunc, css=null, hover=null )
         hover = global_defaults.css.menuItemHover;
     }
 
+    let props = [];
+    if( isObject( displayFunc ) )
+    {
+        props = Array.isArray( displayFunc.props ) ? displayFunc.props : [displayFunc.props];
+        displayFunc = displayFunc.func;
+    }
+
     return $( '<div />' )
         .css( css )
         .hover( function(){ $( this ).css( hover.on ); }, function(){ $( this ).css( hover.off ); } )
         .text( name )
         .attr( 'id', createSafeID( name ) )
-        .click( function(){ $( '#display' ).html( '' ); displayFunc( '#display' ); } );
+        .click( function(){ $( '#display' ).html( '' ); displayFunc( '#display', ...props ); } );
 }
 
 function jsonEditBoxGM( gmVar, cssJsonEdit=null, cssJsonText=null, jsonFormat=null, hover=null )
