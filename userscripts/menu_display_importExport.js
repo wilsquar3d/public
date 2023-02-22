@@ -1,6 +1,6 @@
 //https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/menu_display_importExport.js
 //requires menu.js, utils.js, request.js
-// WithGit also requires: github_api.proxy.js, https://crypto.stanford.edu/sjcl/sjcl.js
+// WithGit also requires: github_api.proxy.js, encode_decode.js, https://crypto.stanford.edu/sjcl/sjcl.js
 
 function display_importExport( id )
 {
@@ -137,4 +137,13 @@ function display_importExportWithGit( id, props )
     );
 
     $( '#export' ).click();
+}
+
+function loadGitProps( repo, path )
+{
+    return {
+        token: encode_decode.expandDecode( encode_decode.splitShuffleReverseDecode( encode_decode.base64Decode( sharedVars.token.github ), 3 ), 2 ),
+        repo: repo,
+        path: path
+    };
 }
