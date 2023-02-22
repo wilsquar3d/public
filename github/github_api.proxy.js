@@ -51,7 +51,7 @@ var github_api = {
     payload: function( commit_data, sha, msg='' ) {
         let payload = {
             message: msg,
-            content: btoa( commit_data )
+            content: this.payloadContentEncode( commit_data )
         };
 
         if( sha )
@@ -60,6 +60,14 @@ var github_api = {
         }
 
         return payload;
+    },
+    
+    payloadContentEncode: function( str ) {
+        return btoa( unescape( encodeURIComponent( str ) ) );
+    },
+    
+    payloadContentDecode: function( str ) {
+        return decodeURIComponent( escape( atob( str ) ) );
     },
 
     get: async function() {
