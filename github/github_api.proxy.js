@@ -111,7 +111,7 @@ var github_api = {
         let result = await this.get();
         let response = JSON.parse( result.response );
 
-        if( isJson( response ) && response.content )
+        if( isJson( response.content ) && response.content )
         {
             let content = JSON.parse( response.content );
 
