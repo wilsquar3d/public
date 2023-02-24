@@ -8,8 +8,8 @@ components.importExport = {
 	<div class='full'>
 		<textarea class='output' :class='isValid ? "valid" : "invalid"' v-model='stringData' @keyup='onChange'></textarea>
 		<div class='actions'>
-			<input type='button' value='Import' @click='import_formatted_data' style='margin-right:10px;' />
-			<input type='button' value='Export' @click='wrap_export_data' />
+			<input type='button' value='Import / Load' @click='import_formatted_data' style='margin-right:10px;' />
+			<input type='button' value='Export / Save' @click='wrap_export_data' />
 		</div>
 
 		<component is='style'>
