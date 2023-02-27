@@ -9,10 +9,10 @@ components.importExportWithGit = {
 	<div class='full'>
 		<textarea class='output' :class='isValid ? "valid" : "invalid"' v-model='stringData' @keyup='onChange'></textarea>
 		<div class='actions'>
-			<input type='button' value='Import / Load' @click='import_formatted_data' style='margin-right:10px;' />
+			<input type='button' value='Import / Load' @click='import_formatted_data' />
 			<input type='button' value='Export / Save' @click='wrap_export_data' />
-      <input type='text' v-model='password' />
-      <input type='button' value='Commit' @click='gitCommit' />
+			<input type='password' v-model='password' />
+			<input type='button' value='Commit' @click='gitCommit' />
 		</div>
 
 		<component is='style'>
@@ -47,7 +47,7 @@ components.importExportWithGit = {
 			data: {},
 			stringData: '{}',
 			isValid: true,
-      password: ''
+      			password: ''
 		};
 	},
 	created() {
@@ -61,20 +61,20 @@ components.importExportWithGit = {
 		import_data()
 		{
 			//examples
-			//importExport"this": components.importExport.methods.import_data = function(){ this.data = JSON.stringify( {} ); };
-			//external component "this": components.importExport.methods.import_data = () => { return this.sample; };
+			//importExport"this": components.importExportWithGit.methods.import_data = function(){ this.data = JSON.stringify( {} ); };
+			//external component "this": components.importExportWithGit.methods.import_data = () => { return this.sample; };
 		},
 		export_data( data )
 		{
 			//examples
-			//importExport "this": components.importExport.methods.export_data = function(){ console.log( this.data ); };
-			//external component "this": components.importExport.methods.export_data = ( data ) => { console.log( data ): };
+			//importExport "this": components.importExportWithGit.methods.export_data = function(){ console.log( this.data ); };
+			//external component "this": components.importExportWithGit.methods.export_data = ( data ) => { console.log( data ): };
 		},
-    gitProps_data()
-    {
-      //example
-      //loadGitProps( '<repo>', '<path>/<file.ext>' )
-    },
+		gitProps_data()
+		{
+			//example
+			//components.importExportWithGit.methods.gitProps_data = function(){ return loadGitProps( '<repo>', '<path>/<file.ext>' )' };
+		},
 		wrap_export_data()
 		{
 			this.export_data( JSON.parse( this.stringData ) );
