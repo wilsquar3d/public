@@ -95,25 +95,25 @@ components.importExportWithGit = {
 			this.onChange();
 		},
     
-    async gitCommit()
-    {
-      let props = this.gitProps_data();
+		async gitCommit()
+		{
+			let props = this.gitProps_data();
 
-      try
-      {
-          let token = sjcl.decrypt( this.password, atob( props.token ) );
+			try
+			{
+				let token = sjcl.decrypt( this.password, atob( props.token ) );
 
-          github_api.setConfig( token, props.repo, props.path );
-          await github_api.put( this.stringData );
+				github_api.setConfig( token, props.repo, props.path );
+				await github_api.put( this.stringData );
 
-          this.password = '';
-      }
-      catch( ex )
-      {
-          console.log( 'Commit failed' );
-          console.error( ex );
-      }
-    },
+				this.password = '';
+			}
+			catch( ex )
+			{
+				console.log( 'Commit failed' );
+				console.error( ex );
+			}
+		},
 
 		// default import/export
 		gm_import_data()
@@ -124,7 +124,7 @@ components.importExportWithGit = {
 		{
 		    for( const key of Object.keys( data ) )
 		    {
-                GM_setValue( key, data[key] );
+                	GM_setValue( key, data[key] );
 		    }
 		}
 	}
