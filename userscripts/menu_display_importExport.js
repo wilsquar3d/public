@@ -138,12 +138,3 @@ function display_importExportWithGit( id, props )
 
     $( '#export' ).click();
 }
-
-function loadGitProps( repo, path )
-{
-    return {
-        token: encode_decode.expandDecode( encode_decode.splitShuffleReverseDecode( encode_decode.base64Decode( sharedVars.token.github ), 3 ), 2 ),
-        repo: repo,
-        path: path
-    };
-}
