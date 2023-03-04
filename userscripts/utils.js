@@ -116,3 +116,13 @@ function requiredObjectProperties( obj, fields, defaultValue, logFailures=false 
         }
     } );
 }
+
+function valDefined( val, prefix='', postfix='', def='' )
+{
+    return val ? `${prefix}${val}${postfix}` : def;
+}
+
+function sleep( ms )
+{
+    return new Promise( resolve => setTimeout( resolve, ms ) );
+}
