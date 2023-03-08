@@ -9,6 +9,7 @@ let path = '<PATH>/<FILE.EXE>';
 let content = '<FILE CONTENT>';
 
 github_api.setConfig( token, repo, path, <requestType> );
+github_api.setDebug();
 console.log( await github_api.sha() );
 console.log( await github_api.get() );
 console.log( await github_api.get( github_api.requestTypes.commit ) );
@@ -35,6 +36,8 @@ var github_api = {
         commit: 'commits'
     },
 
+    debug: false,
+
     setProxyUrl: function( url )
     {
         this.proxy_url = url;
@@ -53,6 +56,10 @@ var github_api = {
         this.config.repo = repo;
         this.config.path = path;
         this.config.requestType = requestType || this.requestTypes.content;
+    },
+    setDebug: function( isDebug )
+    {
+        this.debug = isDebug;
     },
 
     url: function( requestType )
@@ -103,8 +110,7 @@ var github_api = {
     get: async function( requestType )
     {
         let request = buildRequest( this.url( requestType ), 'GET', this.headers(), '', 'application/json' );
-        let proxy_request = buildRequest( this.proxy_url, 'POST', { 'Content-Type': 'application/json' }, request, '' );
-        let response = await httpRequest( proxy_request );
+        let response = await this.sendProxy( request );
 
         return response;
     },
@@ -125,8 +131,7 @@ var github_api = {
     {
         let sha = await this.sha();
         let request = buildRequest( this.url(), 'PUT', this.headers(), this.payload( commit_data, sha, msg ), 'application/json' );
-        let proxy_request = buildRequest( this.proxy_url, 'POST', { 'Content-Type': 'application/json' }, request, '' );
-        let response = await httpRequest( proxy_request );
+        let response = await this.sendProxy( request );
 
         return response;
     },
@@ -184,6 +189,53 @@ var github_api = {
         let response = JSON.parse( result.response );
 
         return response;
+    },
+
+    ///////////////////////////////////////////////////////////////
+
+    sendProxy: async function( request )
+    {
+        let proxy_request = buildRequest( this.proxy_url, 'POST', { 'Content-Type': 'application/json' }, request, '' );
+        this.output( request, 'Request' );
+        this.output( proxy_request, 'Proxy Request' );
+
+        let response = await httpRequest( proxy_request );
+        this.output( response, 'Response' );
+
+        return response;
+    },
+
+    ///////////////////////////////////////////////////////////////
+
+    output: function( data, type )
+    {
+        if( !this.debug )
+        {
+            return;
+        }
+
+        console.log( `*** ${type} - Debug Log Start ***` );
+        console.log( data );
+
+        if( data.response && isJson( data.response ) )
+        {
+            let response = JSON.parse( data.response );
+            console.log( response );
+
+            if( response.content && isJson( response.content ) )
+            {
+                let content = JSON.parse( response.content );
+                console.log( content );
+
+                if( content.content )
+                {
+                    console.log( content.content );
+                    console.log( atob( content.content ) );
+                }
+            }
+        }
+
+        console.log( `*** ${type} - Debug Log End ***` );
     }
 };
 
