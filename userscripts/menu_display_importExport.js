@@ -65,7 +65,7 @@ function display_importExportWithGit( id, props )
                     $( '<textarea id="' + displayDataID + '" style="width:100%;height:100%;white-space:nowrap;" />' )
                         .on( 'input change', function(){ isJson( $( this ), global_defaults.css.bgWhite, global_defaults.css.bgRed, $( '#import' ) ) } )
                 ),
-                $( '<input type="button" value="Import" id="import" style="margin-right:10px;" />' ).click(
+                $( '<input type="button" value="Import/Save" id="import" style="margin-right:10px;" />' ).click(
                     function()
                     {
                         let displayData = JSON.parse( $( '#' + displayDataID ).val() );
@@ -78,7 +78,7 @@ function display_importExportWithGit( id, props )
                             });
                     }
                 ),
-                $( '<input type="button" value="Export" id="export" style="margin-right:10px;" />' ).click(
+                $( '<input type="button" value="Export/Load" id="export" style="margin-right:10px;" />' ).click(
                     function()
                     {
                         let displayData = {};
@@ -98,7 +98,7 @@ function display_importExportWithGit( id, props )
                     }
                 ),
                 $( '<input type="password" id="password" style="margin-right:10px;" />' ),
-                $( '<input type="button" value="Commit" id="commit" />' ).click(
+                $( '<input type="button" value="Commit" id="commit" style="margin-right:10px;" />' ).click(
                     async function()
                     {
                         let displayData = {};
@@ -130,6 +130,34 @@ function display_importExportWithGit( id, props )
                             console.error( ex );
                         }
                     }
+                ),
+                $( '<input type="button" value="Pull" id="pull" />' ).click(
+                    async function()
+                    {
+                        try
+                        {
+                            let token = sjcl.decrypt( $( '#password' ).val(), atob( props.token ) );
+
+                            github_api.setConfig( token, props.repo, props.path );
+                            let result = await github_api.get();
+
+                            $( '#password' ).val( '' );
+
+                            let response = JSON.parse( result.response );
+
+                            if( isJson( response.content ) && response.content )
+                            {
+                                let content = JSON.parse( response.content );
+
+                                $( '#' + displayDataID ).val( atob( content.content ) );
+                            }
+                        }
+                        catch( ex )
+                        {
+                            console.log( 'Fetch failed' );
+                            console.error( ex );
+                        }
+                    }
                 )
             ]
 
@@ -137,4 +165,13 @@ function display_importExportWithGit( id, props )
     );
 
     $( '#export' ).click();
+}
+
+function loadGitProps( repo, path )
+{
+    return {
+        token: encode_decode.expandDecode( encode_decode.splitShuffleReverseDecode( encode_decode.base64Decode( sharedVars.token.github ), 3 ), 2 ),
+        repo: repo,
+        path: path
+    };
 }
