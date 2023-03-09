@@ -11,8 +11,10 @@ components.importExportWithGit = {
 		<div class='actions'>
 			<input type='button' value='Import / Load' @click='import_formatted_data' />
 			<input type='button' value='Export / Save' @click='wrap_export_data' />
+			<input type='button' value='Clear' @click='clear_data' />
 			<input type='password' v-model='password' />
 			<input type='button' value='Commit' @click='gitCommit' />
+            		<input type='button' value='Pull' @click='gitPull' />
 		</div>
 
 		<component is='style'>
@@ -94,6 +96,12 @@ components.importExportWithGit = {
 			this.stringData = JSON.stringify( this.data, true, '  ' );
 			this.onChange();
 		},
+		clear_data()
+		{
+			this.data = {};
+			this.stringData = '';
+			this.onChange();
+		},
     
 		async gitCommit()
 		{
@@ -114,18 +122,48 @@ components.importExportWithGit = {
 				console.error( ex );
 			}
 		},
+		async gitPull()
+		{
+            		let props = this.gitProps_data();
+
+			try
+			{
+				let token = sjcl.decrypt( this.password, atob( props.token ) );
+
+				github_api.setConfig( token, props.repo, props.path );
+				let result = await github_api.get();
+
+				this.password = '';
+
+				let response = JSON.parse( result.response );
+
+				if( isJson( response.content ) && response.content )
+				{
+					let content = JSON.parse( response.content );
+
+					this.data = JSON.parse( atob( content.content ) );
+					this.stringData = JSON.stringify( this.data, true, '  ' );
+					this.onChange();
+				}
+			}
+			catch( ex )
+			{
+				console.log( 'pull failed' );
+				console.error( ex );
+			}
+        	},
 
 		// default import/export
 		gm_import_data()
 		{
-		    return GM_listValues().reduce( (acc, key) => ( acc[key] = GM_getValue( key, {} ), acc ), {} );
+			return GM_listValues().reduce( (acc, key) => ( acc[key] = GM_getValue( key, {} ), acc ), {} );
 		},
 		gm_export_data( data )
 		{
-		    for( const key of Object.keys( data ) )
-		    {
-                	GM_setValue( key, data[key] );
-		    }
+			for( const key of Object.keys( data ) )
+			{
+				GM_setValue( key, data[key] );
+			}
 		}
 	}
 };
