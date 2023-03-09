@@ -163,7 +163,7 @@ function display_importExportWithGit( id, props )
                         }
                         catch( ex )
                         {
-                            console.log( 'Fetch failed' );
+                            console.log( 'pull failed' );
                             console.error( ex );
                         }
                     }
