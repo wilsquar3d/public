@@ -97,6 +97,13 @@ function display_importExportWithGit( id, props )
                         $( '#' + displayDataID ).change();
                     }
                 ),
+                $( '<input type="button" value="Clear" id="clear" style="margin-right:10px;" />' ).click(
+                    function()
+                    {
+                        $( '#' + displayDataID ).val( '' );
+                        $( '#' + displayDataID ).change();
+                    }
+                ),
                 $( '<input type="password" id="password" style="margin-right:10px;" />' ),
                 $( '<input type="button" value="Commit" id="commit" style="margin-right:10px;" />' ).click(
                     async function()
@@ -134,6 +141,8 @@ function display_importExportWithGit( id, props )
                 $( '<input type="button" value="Pull" id="pull" />' ).click(
                     async function()
                     {
+                        $( '#' + displayDataID ).val( '' );
+                        
                         try
                         {
                             let token = sjcl.decrypt( $( '#password' ).val(), atob( props.token ) );
@@ -149,7 +158,7 @@ function display_importExportWithGit( id, props )
                             {
                                 let content = JSON.parse( response.content );
 
-                                $( '#' + displayDataID ).val( atob( content.content ) );
+                                $( '#' + displayDataID ).val( atob( content.content ) ).change();
                             }
                         }
                         catch( ex )
