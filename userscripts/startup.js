@@ -122,3 +122,146 @@ var startup = {
         runFunc( func || this.startupHandler );
     }
 };
+
+/*
+gmData.setAutoReload( false );
+gmData.set( { a: [1,2,3,4,5], b: { c: 'C', d: 'D', e: { f: 7 } } } );
+gmData.setSub( 'dddd', 'b', 'd' );
+gmData.setSub( { g: 6, h: 7 }, ...['b', 'e', 'f'] );
+gmData.setSub( 'G', 'b', 'e', 'f', 'g' );
+gmData.setSub( ['a','a'], 'aa' );
+gmData.delete( 'b', 'c' );
+gmData.get().a.push( 6 );
+gmData.setFixedIds( 'b' );
+gmData.get().z = 'Z';
+console.log( gmData );
+*/
+var gmData = {
+    data: {},
+    fixedIds: [],
+    defaultValue: {},
+    lastUpdated: true,
+    lastUpdatedKey: 'last_update',
+    autoReload: true,
+
+    setFixedIds( ...ids )
+    {
+        this.fixedIds = ids.flat();
+    },
+    setDefaultValue( val )
+    {
+        this.defaultValue = val;
+    },
+    setLastUpdated( val )
+    {
+        this.lastUpdated = val;
+    },
+    setLastUpdatedKey( val )
+    {
+        this.lastUpdatedKey = val;
+    },
+    setAutoReload( val )
+    {
+        this.autoReload = val;
+    },
+
+    load: function( default_value )
+    {
+        let val = default_value || this.defaultValue;
+
+        this.data = GM_getValue( startup.appID, val ) || val;
+    },
+
+    get: function( ...ids )
+    {
+        return this.getDefault( this.defaultValue, ...ids );
+    },
+    getSub: function( ...ids )
+    {
+        if( !ids.length )
+        {
+            return [null, null];
+        }
+
+        let last = ids.pop();
+
+        return [last, this.getDefault( this.defaultValue, ...ids )];
+    },
+    getDefault: function( default_value, ...ids )
+    {
+        if( this.autoReload )
+        {
+            this.load( default_value );
+        }
+
+        let dataLoad = this.data;
+
+        if( this.fixedIds && this.fixedIds.length )
+        {
+            for( const id of this.fixedIds )
+            {
+                dataLoad = dataLoad[id];
+            }
+        }
+
+        if( ids && ids.length )
+        {
+            for( const id of ids.flat() )
+            {
+                dataLoad = dataLoad[id];
+            }
+        }
+
+        return dataLoad;
+    },
+
+    set: function( value )
+    {
+        this.data = value;
+    },
+    setSub: function( value, ...ids )
+    {
+        let [last, dataLoad] = this.getSub( ...ids );
+
+        if( dataLoad )
+        {
+            dataLoad[last] = value;
+        }
+    },
+
+    save: function( dataSave )
+    {
+        if( this.lastUpdated )
+        {
+            dataSave[this.lastUpdatedKey] = Date.now();
+        }
+
+        dataSave = dataSave || this.data;
+
+        GM_setValue( startup.appID, dataSave );
+
+        this.data = dataSave;
+    },
+
+    delete: function( ...ids )
+    {
+        let [last, dataLoad] = this.getSub( ...ids );
+
+        if( dataLoad )
+        {
+            delete dataLoad[last];
+        }
+    },
+
+    prettyLastUpdated( data )
+    {
+        let dataLoad = data || get();
+
+        if( Object.keys( dataLoad ).includes( this.lastUpdatedKey ) )
+        {
+            return new Date( dataLoad[this.lastUpdatedKey] ).toLocaleString();
+        }
+
+        return null;
+    }
+};
