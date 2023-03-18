@@ -125,12 +125,10 @@ var startup = {
 
 /*
 let gmLoad = new GM_Data( 'test' );
-gmLoad.setAutoReload( false );
 gmLoad.load();
 console.log( gmLoad );
 
 let gmData = new GM_Data( 'test' );
-gmData.setAutoReload( false );
 gmData.set( { a: [1,2,3,4,5], b: { c: 'C', d: 'D', e: { f: 7 } } } );
 gmData.setSub( 'dddd', 'b', 'd' );
 gmData.setSub( { g: 6, h: 7 }, ...['b', 'e', 'f'] );
@@ -305,15 +303,23 @@ class GM_Data
 
 /*
 let gmNewData = new GM_NewData( 'data' );
-gmNewData.setAutoReload( false );
 gmNewData.clear();
 gmNewData.add( 'a', 'A' );
 gmNewData.add( 'a', 'B' );
 gmNewData.add( 'foo', 'bar' );
 gmNewData.merge();
 gmNewData.add( 'a', 'C' );
-console.log( gmNewData );
-gmNewData.save();
+console.log( copyJson( gmNewData ) );
+gmNewData.add( 'k', { arr: ['key1','key2'], n: 7, s: 'foobar' } );
+gmNewData.add( 'ar', [1,2,3] );
+console.log( copyJson( gmNewData ) );
+gmNewData.merge();
+gmNewData.add( 'k', { arr: ['key1','key2'], n: 7, s: 'foobar' } );
+gmNewData.add( 'ar', [1,2,3] );
+console.log( copyJson( gmNewData ) );
+gmNewData.add( 'k', { arr: ['key1','key2'], n: 7, s: 'changed' } );
+gmNewData.add( 'ar', [3,2,1] );
+console.log( copyJson( gmNewData ) );
 */
 
 class GM_NewData
@@ -321,10 +327,10 @@ class GM_NewData
     data = null;
     newData = null;
 
-    constructor( id, lastUpdated=false, autoReload=false )
+    constructor( id, newId=null, lastUpdated=false, autoReload=false )
     {
         let dataId = id || startup.appID || 'data';
-        let newDataId = dataId + '_new';
+        let newDataId = newId || dataId + '_new';
 
         this.data = new GM_Data( dataId, lastUpdated, autoReload );
         this.newData = new GM_Data( newDataId, lastUpdated, autoReload );
@@ -375,9 +381,9 @@ class GM_NewData
 
         if( val )
         {
-            update = compareFunc
+            update = !( compareFunc
                 ? compareFunc( val, value, key )
-                : GM_NewData.defaultCompareFunc( val, value, key );
+                : GM_NewData.defaultCompareFunc( val, value, key ) );
         }
 
         if( update )
@@ -408,6 +414,42 @@ class GM_NewData
 
     static defaultCompareFunc( left, right, key )
     {
-        return left != right;
+        if( Array.isArray( left ) )
+        {
+            if( Array.isArray( right ) && left.length == right.length )
+            {
+                // Ordered array comparison
+                for( let i = 0; i < left.length; ++i )
+                {
+                    if( !GM_NewData.defaultCompareFunc( left[i], right[i], key ) )
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+        else if ( isObject( left ) )
+        {
+            if( isObject( right ) )
+            {
+                for( const k of Object.keys( left ) )
+                {
+                    if( !GM_NewData.defaultCompareFunc( left[k], right[k], key ) )
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        return left == right;
     }
 }
