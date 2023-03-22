@@ -123,6 +123,22 @@ var startup = {
     }
 };
 
+var startupUnique = {
+    run: function( loc, id )
+    {
+        let unique = $( loc ).find( `#${id}` );
+
+        if( unique.length )
+        {
+            return false;
+        }
+
+        $( loc ).append( $( `<span id='${id}'></span>` ) );
+
+        return true;
+    }
+};
+
 /*
 let gmLoad = new GM_Data( 'test' );
 gmLoad.load();
