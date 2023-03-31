@@ -3,7 +3,7 @@
 
 class JQueryHelper
 {
-    static validSelector( qry )
+    static isValidSelector( qry )
     {
         try
         {
