@@ -1,13 +1,17 @@
 // https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/StyleHelper.js
 // @require      https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/utils.js
+// @require      https://raw.githubusercontent.com/wilsquar3d/public/master/scripts/jqueryHelper.js
 // @grant        GM_addStyle
 
 class StyleHelper
 {
+    // qry can be query, element or string
     static content( qry )
     {
-        return $( qry ).length
-            ? $( qry ).val() || $( qry ).text()
+        let [valid, elem] = JQueryHelper.isValidSelector( qry );
+
+        return valid && elem.length
+            ? elem.val() || elem.text()
             : qry;
     }
 
@@ -28,7 +32,7 @@ class StyleHelper
     }
 
     // src can be query or element
-    // copy can be query or element
+    // copy can be query, element or string
     static copyToClipboard( src, copy )
     {
         let elem = $( src );
@@ -38,7 +42,7 @@ class StyleHelper
     }
 
     // content can be text or element
-    // copy can be query or element
+    // copy can be query, element or string
     static copyToClipboardLink( content, copy, className='' )
     {
         let elem = StyleHelper.link( content, '#', className )
