@@ -6,7 +6,9 @@ class StyleHelper
 {
     static content( qry )
     {
-        return $( qry ).val() || $( qry ).text();
+        return $( qry ).length
+            ? $( qry ).val() || $( qry ).text()
+            : qry;
     }
 
     // wrapper to return the element after setting text
