@@ -69,7 +69,7 @@ function display_importExportWithGit( id, props )
                     function()
                     {
                         let displayData = JSON.parse( $( '#' + displayDataID ).val() );
-                        let keys = Object.keys( data );
+                        let keys = Object.keys( displayData );
 
                         $.each( keys,
                             function( ndx, key )
