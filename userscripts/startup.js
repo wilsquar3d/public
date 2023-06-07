@@ -191,6 +191,7 @@ class GM_Data
     setFixedIds( ...ids )
     {
         this.fixedIds = ids.flat();
+        this.initFixedIds();
     }
     setDefaultValue( val )
     {
@@ -207,6 +208,21 @@ class GM_Data
     setAutoReload( val )
     {
         this.autoReload = val;
+    }
+
+    initFixedIds()
+    {
+        let dataLoad = this.data;
+
+        for( const id of this.fixedIds )
+        {
+            if( !Object.keys( dataLoad ).includes( id ) )
+            {
+                dataLoad[id] = {};
+            }
+
+            dataLoad = dataLoad[id];
+        }
     }
 
     load( default_value )
