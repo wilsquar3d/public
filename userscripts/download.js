@@ -1,5 +1,31 @@
 //https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/download.js
 
+// menuItems: list to add menu items to
+function imagesViewAndDownload( menuItems, viewTitleFunc=null, downloadTitleFunc=null )
+{
+    let gmKeys = GM_listValues();
+
+    for( const key of gmKeys )
+    {
+        let tempData = GM_getValue( key, null );
+
+        if( tempData )
+        {
+            menuItems.push( menuItem( viewTitleFunc( key ), { func: imagesDownloadPage, props: { key: key } } ) );
+            menuItems.push( menuItem( downloadTitleFunc( key ), { func: imagesDownloadPage, props: { key: key, showAll: 10 } } ) );
+        }
+    }
+}
+
+// props: { key: <gm data id>, title: <optional>, showAll: <optional true|number>, addExt: <optional true|false> }
+function imagesDownloadPage( id, props )
+{
+    let tempData = GM_getValue( props.key, {} );
+    let dlData = Object.keys( tempData ).reduce( (acc, key) => { acc[key] = tempData[key].image; return acc; }, {} ); // name: image url
+
+    display_imagesDownloadPage( id, dlData, props.title || id, props.showAll || true, props.addExt || false );
+}
+
 // Can show a limited number of images (#), all (true) or none (false)
 function display_imagesDownloadPage( id, imgs, name, showImgs=true, addExt=true, type='image/png' )
 {
