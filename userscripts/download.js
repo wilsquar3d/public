@@ -21,7 +21,7 @@ function imagesViewAndDownload( menuItems, viewTitleFunc=null, downloadTitleFunc
 function imagesDownloadPage( id, props )
 {
     let tempData = GM_getValue( props.key, {} );
-    let dlData = Object.keys( tempData ).reduce( (acc, key) => { acc[props.nameKey ? tempData[key][nameKey] : key] = tempData[key][imgKey || 'image']; return acc; }, {} ); // name: image url
+    let dlData = Object.keys( tempData ).reduce( (acc, key) => { acc[props.nameKey ? tempData[key][nameKey] : key] = tempData[key][props.imgKey || 'image']; return acc; }, {} ); // name: image url
 
     display_imagesDownloadPage( id, dlData, props.title || id, props.showAll || true, props.addExt || false );
 }
