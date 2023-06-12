@@ -8,7 +8,7 @@ var global_defaults =
             //menu
             body: { padding: 0, margin: 0 },
             menuItems: { padding: '10px' },
-            menu: { height: '100%', width: '200px', padding: 0, margin: 0, float: 'left' },
+            menu: { height: '100%', width: '200px', padding: 0, margin: 0, float: 'left', 'overflow-y': 'scroll' },
             display: { height: '100%', width: 'calc(100% - 202px)', padding: 0, margin: 0, 'border-left': '2px #000 solid', float: 'left' },
             //menuItem
             menuItem: { cursor: 'pointer', 'margin-bottom': '10px' },
