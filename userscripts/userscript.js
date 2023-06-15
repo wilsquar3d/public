@@ -2,6 +2,9 @@
 // userscript must grant: GM_xmlhttpRequest
 // requires request.js, proxy.js
 
+unsafeWindow.gm_version = unsafeWindow.gm_version || {};
+unsafeWindow.gm_version.userscript = { version: '1.0.0', source: 'https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/userscript.js' };
+
 /*
 console.log( Userscript.version() );
 console.log( Userscript.needsUpdating( Userscript.version() ) ); // false
@@ -24,9 +27,43 @@ class Userscript
         return Userscript.metadata().version;
     }
 
+    static async versionUrl( url )
+    {
+        let request = ProxyServer.request( url, 'GET' );
+        let response = await ProxyServer.send( request );
+        let html = $.parseHTML( response.responseText );
+        let version = $( html ).find( 'span:contains("@version")' ).first().parent().text().split( 'version' )[1].trim();
+
+        return version;
+    }
+
+    static async gmVersionUrl( url )
+    {
+        let request = ProxyServer.request( url, 'GET' );
+        let response = await ProxyServer.send( request );
+        let html = $.parseHTML( response.responseText );
+        let version = $( html ).find( 'span:contains("unsafeWindow.gm_version.")' );
+
+        version = version.length ? version.first().parent().text().split( '=' )[1].trim() : null;
+
+        if( version )
+        {
+            version = JSON.parse( version ).version;
+        }
+
+        return version;
+    }
+
     static needsUpdating( ver )
     {
-        let thisVer = Userscript.version().split( '.' );
+        let thisVer = Userscript.version();
+
+        return Userscript.isNotUpToDate( thisVer, ver );
+    }
+
+    static isNotUpToDate( thisVer, ver )
+    {
+        thisVer = thisVer.split( '.' );
         ver = ver.split( '.' );
 
         for( let n = 0; n < ver.length; ++n )
@@ -47,11 +84,28 @@ class Userscript
 
     static async needsUpdatingUrl( url )
     {
-        let request = Proxy.request( url, 'GET' );
-        let response = await Proxy.send( request );
-        let html = $.parseHTML( response.responseText );
-        let version = $( html ).find( 'span:contains("@version")' ).first().parent().text().split( 'version' )[1].trim();
+        let version = await Userscript.versionUrl( url );
 
         return Userscript.needsUpdating( version );
+    }
+
+    static async gmLibsNeedUpdating()
+    {
+        let versions = {};
+
+        for( const key in unsafeWindow.gm_version )
+        {
+            let local = unsafeWindow.gm_version[key].version;
+            let remote = await Userscript.gmVersionUrl( unsafeWindow.gm_version[key].source );
+            let needsUpdating = remote ? Userscript.isNotUpToDate( local, remote ) : false;
+
+            versions[key] = {
+                local: local,
+                remote: remote,
+                needsUpdating: needsUpdating
+            };
+        }
+
+        return versions;
     }
 }
