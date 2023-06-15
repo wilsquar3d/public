@@ -3,7 +3,7 @@
 // requires request.js, proxy.js
 
 unsafeWindow.gm_version = unsafeWindow.gm_version || {};
-unsafeWindow.gm_version.userscript = { version: '1.0.0', source: 'https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/userscript.js' };
+unsafeWindow.gm_version.userscript = { "version": "1.0.0", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/userscript.js" };
 
 /*
 console.log( Userscript.version() );
