@@ -27,6 +27,7 @@ class Userscript
         return Userscript.metadata().version;
     }
 
+    // TODO github response has changed
     static async versionUrl( url )
     {
         let request = ProxyServer.request( url, 'GET' );
@@ -41,10 +42,10 @@ class Userscript
     {
         let request = ProxyServer.request( url, 'GET' );
         let response = await ProxyServer.send( request );
-        let html = $.parseHTML( response.responseText );
-        let version = $( html ).find( 'span:contains("unsafeWindow.gm_version.")' );
+        let json = JSON.parse( response.responseText );
+        let version = json.text.split( 'unsafeWindow.gm_version.' );
 
-        version = version.length ? version.first().parent().text().split( '=' )[1].trim() : null;
+        version = version.length ? version[1].split( ';' )[0].split( '=' )[1].trim() : null;
 
         if( version )
         {
