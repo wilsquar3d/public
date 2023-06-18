@@ -1,6 +1,9 @@
 //https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/menu.js
 //requires utils.js
 
+unsafeWindow.gm_version = unsafeWindow.gm_version || {};
+unsafeWindow.gm_version.menu = { "version": "1.0.0", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/menu.js" };
+
 var global_defaults =
     {
         css:
@@ -26,6 +29,26 @@ var global_defaults =
             settings: { indent: '  ' }
         }
     };
+
+function createMenu2( menuItems, props={} )
+{
+    createMenu( menuItems, props.displayCSS, props.menuItemsCSS, props.menuCSS, props.bodyCSS );
+
+    let pageParts = window.location.href.split( 'startPage=' );
+
+    if( pageParts.length > 1 )
+    {
+        $( '#' + createSafeID( decodeURI( pageParts[1].split( '&' )[0] ) ) ).click();
+    }
+    else if( props.startPage )
+    {
+        $( '#' + createSafeID( props.startPage ) ).click();
+    }
+    else
+    {
+        $( '#' + createSafeID( menuItems[0].text() ) ).click();
+    }
+}
 
 function createMenu( menuItems=[], displayCSS=null, menuItemsCSS=null, menuCSS=null, bodyCSS=null )
 {
