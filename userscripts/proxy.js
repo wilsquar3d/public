@@ -3,7 +3,7 @@
 // requires request.js
 
 unsafeWindow.gm_version = unsafeWindow.gm_version || {};
-unsafeWindow.gm_version.proxy = { "version": "1.0.0", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/proxy.js" };
+unsafeWindow.gm_version.proxy = { "version": "1.0.1", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/proxy.js" };
 
 class ProxyServer
 {
@@ -22,5 +22,31 @@ class ProxyServer
         let response = await httpRequest( request );
 
         return response;
+    }
+
+    ////////////////////////////////////////////
+
+    static async pingRequest( url=null )
+    {
+        let request = ProxyServer.request( url || ProxyServer.url, 'PING', {}, '' );
+        let response = await ProxyServer.send( request );
+
+        return [request, response];
+    }
+
+    static async commandOutputRequest( url=null, cmds=[] )
+    {
+        let request = ProxyServer.request( url || ProxyServer.url, 'COMMAND', {}, { cmd: `echo ${cmds.join( ' & echo ' )}` } );
+        let response = await ProxyServer.send( request );
+
+        return [request, response];
+    }
+
+    static async commandRequest( url=null, cmd='' )
+    {
+        let request = ProxyServer.request( url || ProxyServer.url, 'COMMAND', {}, { cmd: cmd } );
+        let response = await ProxyServer.send( request );
+
+        return [request, response];
     }
 }
