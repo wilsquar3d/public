@@ -3,7 +3,7 @@
 // requires request.js
 
 unsafeWindow.gm_version = unsafeWindow.gm_version || {};
-unsafeWindow.gm_version.proxy = { "version": "1.1.0", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/proxy.js" };
+unsafeWindow.gm_version.proxy = { "version": "1.1.1", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/proxy.js" };
 
 class ProxyServer
 {
@@ -32,6 +32,10 @@ class ProxyCommand
         windows: 'windows'
     };
     static platform = null;
+    static nodeLocation = {
+        linux: '/home/wwilson/git/wilsquar3d/nodejs/',
+        windows: 'C:/nodejs/'
+    };
 
     static async setPlatform()
     {
@@ -135,6 +139,16 @@ class ProxyCommand
     static async osCommandRequest( cmdWin='', cmdLin='' )
     {
         let cmd = await ProxyCommand.osCommand( cmdWin, cmdLin );
+
+        return await ProxyCommand.commandRequest( cmd );
+    }
+
+    ///////////////////////////////////////////////////
+
+    static async nodeCommandRequest( cmd )
+    {
+        let os = await ProxyCommand.getPlatform();
+        cmd = 'node ' + ProxyCommand.nodeLocation[os] + cmd;
 
         return await ProxyCommand.commandRequest( cmd );
     }
