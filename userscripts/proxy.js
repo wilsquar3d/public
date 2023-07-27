@@ -3,16 +3,11 @@
 // requires request.js
 
 unsafeWindow.gm_version = unsafeWindow.gm_version || {};
-unsafeWindow.gm_version.proxy = { "version": "1.0.2", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/proxy.js" };
+unsafeWindow.gm_version.proxy = { "version": "1.1.0", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/proxy.js" };
 
 class ProxyServer
 {
     static url = 'http://localhost:8000/ProxyServer.py';
-    static platforms = {
-        linux: 'linux',
-        windows: 'windows'
-    };
-    static platform = null;
 
     static request( url, type, headers={}, payload={}, responseType='application/json' )
     {
@@ -28,34 +23,41 @@ class ProxyServer
 
         return response;
     }
+}
 
-    ////////////////////////////////////////////
+class ProxyCommand
+{
+    static platforms = {
+        linux: 'linux',
+        windows: 'windows'
+    };
+    static platform = null;
 
     static async setPlatform()
     {
-        if( await ProxyServer.isWindows() )
+        if( await ProxyCommand.isWindows() )
         {
-            ProxyServer.platform = ProxyServer.platforms.windows;
+            ProxyCommand.platform = ProxyCommand.platforms.windows;
         }
-        else if( await ProxyServer.isLinux() )
+        else if( await ProxyCommand.isLinux() )
         {
-            ProxyServer.platform = ProxyServer.platforms.linux;
+            ProxyCommand.platform = ProxyCommand.platforms.linux;
         }
     }
 
     static async getPlatform()
     {
-        if( !ProxyServer.platform )
+        if( !ProxyCommand.platform )
         {
-            await ProxyServer.setPlatform();
+            await ProxyCommand.setPlatform();
         }
 
-        return ProxyServer.platform;
+        return ProxyCommand.platform;
     }
 
     static async isWindows()
     {
-        let [request, response] = await ProxyServer.commandRequest( 'ver' );
+        let [request, response] = await ProxyCommand.commandRequest( 'ver' );
         let json = JSON.parse( response.response );
 
         return json.text.length > 0 && json.text.join( '' ).toLowerCase().includes( 'windows' ) && 0 == json.error.length;
@@ -63,11 +65,13 @@ class ProxyServer
 
     static async isLinux()
     {
-        let [request, response] = await ProxyServer.commandRequest( 'uname -a' );
+        let [request, response] = await ProxyCommand.commandRequest( 'uname -a' );
         let json = JSON.parse( response.response );
 
         return 1 == json.text.length && json.text[0].toLowerCase().includes( 'linux' ) && 0 == json.error.length;
     }
+
+    ///////////////////////////////////////////////////
 
     static async pingRequest()
     {
@@ -77,65 +81,61 @@ class ProxyServer
         return [request, response];
     }
 
-    static async osCommandOutputRequest( cmdsWin=[], cmdsLin=[] )
-    {
-        let cmds = [];
-
-        switch( await ProxyServer.getPlatform() )
-        {
-            case ProxyServer.platforms.windows:
-                cmds = cmdsWin;
-                break;
-            case ProxyServer.platforms.linux:
-                cmds = cmdsLin;
-                break;
-        }
-
-        return await ProxyServer.commandOutputRequest( cmds );
-    }
-
-    static async commandOutputRequest( cmds=[] )
-    {
-        let cmd = '';
-
-        switch( await ProxyServer.getPlatform() )
-        {
-            case ProxyServer.platforms.windows:
-                cmd = `echo ${cmds.join( ' & echo ' )}`;
-                break;
-            case ProxyServer.platforms.linux:
-                cmd = `${cmds.join( ';' )}`;
-                break;
-        }
-
-        let request = ProxyServer.request( ProxyServer.url, 'COMMAND', {}, { cmd: cmd } );
-        let response = await ProxyServer.send( request );
-
-        return [request, response];
-    }
-
-    static async osCommandRequest( cmdWin='', cmdLin='' )
-    {
-        let cmd = '';
-
-        switch( await ProxyServer.getPlatform() )
-        {
-            case ProxyServer.platforms.windows:
-                cmd = cmdWin;
-                break;
-            case ProxyServer.platforms.linux:
-                cmd = cmdLin;
-                break;
-        }
-
-        return await ProxyServer.commandRequest( cmd );
-    }
-
     static async commandRequest( cmd='' )
     {
         let request = ProxyServer.request( ProxyServer.url, 'COMMAND', {}, { cmd: cmd } );
         let response = await ProxyServer.send( request );
 
         return [request, response];
+    }
+
+    ///////////////////////////////////////////////////
+
+    static async osCommand( cmdWin, cmdLin )
+    {
+        let cmd = null;
+
+        switch( await ProxyCommand.getPlatform() )
+        {
+            case ProxyCommand.platforms.windows:
+                cmd = cmdWin;
+                break;
+            case ProxyCommand.platforms.linux:
+                cmd = cmdLin;
+                break;
+        }
+
+        return cmd;
+    }
+
+    static async osCommandOutputRequest( cmdsWin=[], cmdsLin=[] )
+    {
+        let cmds = await ProxyCommand.osCommand( cmdsWin, cmdsLin );
+
+        return await ProxyCommand.commandOutputRequest( cmds );
+    }
+
+    static async commandOutputRequest( cmds=[] )
+    {
+        let cmd = '';
+
+        switch( await ProxyCommand.getPlatform() )
+        {
+            case ProxyCommand.platforms.windows:
+                cmd = `echo ${cmds.join( ' & echo ' )}`;
+                break;
+            case ProxyCommand.platforms.linux:
+                cmd = `${cmds.join( ';' )}`;
+                break;
+        }
+
+        return await ProxyCommand.commandRequest( cmd );
+    }
+
+    static async osCommandRequest( cmdWin='', cmdLin='' )
+    {
+        let cmd = await ProxyCommand.osCommand( cmdWin, cmdLin );
+
+        return await ProxyCommand.commandRequest( cmd );
     }
 }
