@@ -3,7 +3,7 @@
 // requires request.js
 
 unsafeWindow.gm_version = unsafeWindow.gm_version || {};
-unsafeWindow.gm_version.proxy = { "version": "1.1.1", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/proxy.js" };
+unsafeWindow.gm_version.proxy = { "version": "1.2.0", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/proxy.js" };
 
 class ProxyServer
 {
@@ -32,9 +32,13 @@ class ProxyCommand
         windows: 'windows'
     };
     static platform = null;
-    static nodeLocation = {
-        linux: '/home/wwilson/git/wilsquar3d/nodejs/',
-        windows: 'C:/nodejs/'
+
+    static locations = {
+        node: {
+            value: '',
+            linux: '/home/wwilson/git/wilsquar3d/nodejs/',
+            windows: 'C:/nodejs/'
+        }
     };
 
     static async setPlatform()
@@ -58,6 +62,35 @@ class ProxyCommand
 
         return ProxyCommand.platform;
     }
+
+    static async setLocation( key )
+    {
+        let os = await ProxyCommand.getPlatform();
+
+        ProxyCommand.locations[key].value = ProxyCommand.locations[key][os];
+    }
+
+    static async getLocation( key )
+    {
+        if( !ProxyCommand.locations[key] )
+        {
+            return null;
+        }
+
+        if( !ProxyCommand.locations[key].value )
+        {
+            await ProxyCommand.setLocation( key );
+        }
+
+        return ProxyCommand.locations[key].value;
+    }
+
+    static async getNodeLocation()
+    {
+        return await ProxyCommand.getLocation( 'node' );
+    }
+
+    ///////////////////////////////////////////////////
 
     static async isWindows()
     {
@@ -95,6 +128,7 @@ class ProxyCommand
 
     ///////////////////////////////////////////////////
 
+    // pick the right OS output
     static async osCommand( cmdWin, cmdLin )
     {
         let cmd = null;
@@ -112,6 +146,7 @@ class ProxyCommand
         return cmd;
     }
 
+    // run different command(s) based on the running OS
     static async osCommandOutputRequest( cmdsWin=[], cmdsLin=[] )
     {
         let cmds = await ProxyCommand.osCommand( cmdsWin, cmdsLin );
@@ -119,6 +154,7 @@ class ProxyCommand
         return await ProxyCommand.commandOutputRequest( cmds );
     }
 
+    // format and combine commands for OS output(s)
     static async commandOutputRequest( cmds=[] )
     {
         let cmd = '';
@@ -136,6 +172,7 @@ class ProxyCommand
         return await ProxyCommand.commandRequest( cmd );
     }
 
+    // run raw command
     static async osCommandRequest( cmdWin='', cmdLin='' )
     {
         let cmd = await ProxyCommand.osCommand( cmdWin, cmdLin );
@@ -147,9 +184,25 @@ class ProxyCommand
 
     static async nodeCommandRequest( cmd )
     {
-        let os = await ProxyCommand.getPlatform();
-        cmd = 'node ' + ProxyCommand.nodeLocation[os] + cmd;
+        let loc = await ProxyCommand.getNodeLocation();
+        cmd = 'node ' + loc + cmd;
 
         return await ProxyCommand.commandRequest( cmd );
+    }
+}
+
+class ProxyNodeCommand
+{
+    static async urlCache( imgUrl )
+    {
+        return await ProxyCommand.nodeCommandRequest( `file_cacher/url_cacher.js --url ${imgUrl}` );
+    }
+}
+
+class ProxyTerminalCommand
+{
+    static async datetime()
+    {
+        return await ProxyCommand.osCommandRequest( 'echo %date% %time%', 'date' );
     }
 }
