@@ -44,6 +44,17 @@ class Colour
         };
     }
 
+    static invert( str )
+    {
+        let obj = Colour.toRgbObj( str );
+
+        obj.r = 255 - obj.r;
+        obj.g = 255 - obj.g;
+        obj.b = 255 - obj.b;
+
+        return `rgb(${obj.r},${obj.g},${obj.b})`;
+    }
+
     static rgbToHex( r, g, b )
     {
         return "#" + ( "0" + r.toString( 16 ) ).slice( -2 ) + ( "0" + g.toString( 16 ) ).slice( -2 ) + ( "0" + b.toString( 16 ) ).slice( -2 );
@@ -80,10 +91,28 @@ class Colour
     {
         str = str.replace( '#', '' ).trim();
 
+        // RGBA string
+        if( str.startsWith( 'RGBA' ) )
+        {
+            let rgb = str.replace( 'RGBA', '' ).replace( '(', '' ).replace( ')' ).trim().split( ',' );
+
+            if( 4 != rgb.length )
+            {
+                return null;
+            }
+
+            // TODO transparency support
+            return {
+                r: parseInt( rgb[0] ),
+                g: parseInt( rgb[1] ),
+                b: parseInt( rgb[2] )
+            };
+        }
+
         // RGB string
         if( str.startsWith( 'RGB' ) )
         {
-            let rgb = str.replace( 'RGB', '' ).replace( '(', '' ).replsce( ')' ).trim().split( ',' );
+            let rgb = str.replace( 'RGB', '' ).replace( '(', '' ).replace( ')' ).trim().split( ',' );
 
             if( 3 != rgb.length )
             {
