@@ -1,4 +1,4 @@
-//https://raw.githubusercontent.com/wilsquar3d/public/master/specific/Sierpinski/SVG.js
+//https://raw.githubusercontent.com/wilsquar3d/public/master/specific/Sierpinski.js
 // @require      https://raw.githubusercontent.com/wilsquar3d/public/master/scripts/Geometry.js
 // @require      https://raw.githubusercontent.com/wilsquar3d/public/master/scripts/SVG.js
 
