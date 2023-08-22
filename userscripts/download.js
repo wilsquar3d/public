@@ -11,8 +11,8 @@ function imagesViewAndDownload( menuItems, viewTitleFunc=null, downloadTitleFunc
 
         if( tempData )
         {
-            menuItems.push( menuItem( viewTitleFunc( key ), { func: imagesDownloadPage, props: { key: key } } ) );
-            menuItems.push( menuItem( downloadTitleFunc( key ), { func: imagesDownloadPage, props: { key: key, showAll: 10 } } ) );
+            menuItems.push( menuItem( viewTitleFunc( key ), { func: imagesDownloadPage, props: { key: key, title: key } } ) );
+            menuItems.push( menuItem( downloadTitleFunc( key ), { func: imagesDownloadPage, props: { key: key, title: key, showAll: 10 } } ) );
         }
     }
 }
