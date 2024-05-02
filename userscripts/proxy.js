@@ -195,7 +195,7 @@ class ProxyNodeCommand
 {
     static async urlCache( imgUrl )
     {
-        return await ProxyCommand.nodeCommandRequest( `file_cacher/url_cacher.js --url ${imgUrl}` );
+        return await ProxyCommand.nodeCommandRequest( `file_cacher/url_cacher.js --url "${imgUrl}"` );
     }
 }
 
