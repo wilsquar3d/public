@@ -2,7 +2,7 @@
 //requires utils.js
 
 unsafeWindow.gm_version = unsafeWindow.gm_version || {};
-unsafeWindow.gm_version.menu = { "version": "1.1.0", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/menu.js" };
+unsafeWindow.gm_version.menu = { "version": "1.1.1", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/menu.js" };
 
 var global_defaults =
     {
@@ -12,7 +12,7 @@ var global_defaults =
             body: { padding: 0, margin: 0 },
             menuItems: { padding: '10px' },
             menu: { height: '100%', width: '200px', padding: 0, margin: 0, float: 'left', 'overflow-y': 'scroll' },
-            display: { height: '100%', width: 'calc(100% - 202px)', padding: 0, margin: 0, 'border-left': '2px #000 solid', float: 'left' },
+            display: { height: '100%', width: 'calc(100% - 202px)', padding: 0, margin: 0, 'border-left': '2px #000 solid', float: 'left', overflow: 'auto' },
             //menuItem
             menuItem: { cursor: 'pointer', 'margin-bottom': '10px' },
             menuItemHover: { on: { 'background-color': '#CCC' }, off: { 'background-color': '#FFF' } },
