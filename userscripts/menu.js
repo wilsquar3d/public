@@ -2,7 +2,7 @@
 //requires utils.js
 
 unsafeWindow.gm_version = unsafeWindow.gm_version || {};
-unsafeWindow.gm_version.menu = { "version": "1.1.1", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/menu.js" };
+unsafeWindow.gm_version.menu = { "version": "1.1.2", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/menu.js" };
 
 var global_defaults =
     {
@@ -73,11 +73,12 @@ function menuItem( name, displayFunc, props={ css: null, hover: null } )
     let css = props.css || global_defaults.css.menuItem;
     let hover = props.hover || global_defaults.css.menuItemHover;
 
+    let func = displayFunc;
     let funcProps = [];
     if( isObject( displayFunc ) )
     {
         funcProps = Array.isArray( displayFunc.props ) ? displayFunc.props : [displayFunc.props];
-        displayFunc = displayFunc.func;
+        func = displayFunc.func;
     }
 
     return $( '<div />' )
@@ -85,7 +86,20 @@ function menuItem( name, displayFunc, props={ css: null, hover: null } )
         .hover( function(){ $( this ).css( hover.on ); }, function(){ $( this ).css( hover.off ); } )
         .text( name )
         .attr( 'id', createSafeID( name ) )
-        .click( function(){ $( '#display' ).html( '' ); displayFunc( '#display', ...funcProps ); } );
+        .click(
+            function()
+            {
+                $( '#display' ).html( '' );
+
+                if( displayFunc.obj )
+                {
+                    displayFunc.obj[func || 'display']( '#display', ...funcProps );
+                }
+                else
+                {
+                    func( '#display', ...funcProps );
+                }
+            } );
 }
 
 function jsonEditBoxGM( gmVar, props={ cssJsonEdit: null, cssJsonText: null, jsonFormat: null, hover: null } )
