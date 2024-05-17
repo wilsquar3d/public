@@ -304,3 +304,18 @@ function jsonKeyStringReplace( json, key, replaceWhat, replaceWith='' )
 
     return json;
 }
+
+// returns the object property at 'path'.
+// path can be an array of keys or string of keys 'key1.key2'
+function jsonPath( obj, path )
+{
+    path = Array.isArray( path ) ? path.split( '.' ) : [path];
+
+    let current = obj;
+    while( path.length )
+    {
+        current = current[path.shift()];
+    }
+
+    return current;
+}
