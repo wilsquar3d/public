@@ -108,6 +108,46 @@ function autoDownload( filename, url, type='image/png' )
     );
 }
 
+async function downloadImageFile( filename, url, type='image/png' )
+{
+    return new Promise( (resolve, reject) => {
+        GM_xmlhttpRequest(
+            {
+                method: 'GET',
+                url: url,
+                responseType: 'blob',
+                onload: function( response )
+                {
+                    if( 200 == response.status )
+                    {
+                        var data = new Blob( [new Uint8Array( response.responseText.split( '' ).map( ch => ch.charCodeAt( 0 ) ) )], { type: type } );
+                        var fileURL = window.URL.createObjectURL( data );
+
+                        const link = document.createElement( 'a' );
+                        link.href = fileURL;
+                        link.setAttribute( 'download', filename );
+                        document.body.appendChild( link );
+                        link.click();
+                        link.remove();
+
+                        window.URL.revokeObjectURL( fileURL );
+
+                        resolve( response.responseText );
+                    }
+                    else
+                    {
+                        reject( response );
+                    }
+                },
+                onerror: function( error )
+                {
+                    reject( error );
+                }
+            }
+        );
+    } );
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////
 
 class ImagesDisplay
