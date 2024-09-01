@@ -61,3 +61,38 @@ async function waitForCondition( func, limit=5000, interval=500 )
     }
 }
 
+function promiseWrapper( func, ...args )
+{
+    return new Promise(
+        function( resolve, reject )
+        {
+            try
+            {
+                let result = func( ... args );
+                resolve( result );
+            }
+            catch ( ex )
+            {
+                reject( ex );
+            }
+        }
+    );
+}
+
+function promiseWrapperAsync( func, ...args )
+{
+    return new Promise(
+        async function( resolve, reject )
+        {
+            try
+            {
+                let result = await func( ... args );
+                resolve( result );
+            }
+            catch ( ex )
+            {
+                reject( ex );
+            }
+        }
+    );
+}
