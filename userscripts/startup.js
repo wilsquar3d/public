@@ -10,7 +10,7 @@ startup.registerHandler( 'data_page.com', dataPageFunc ); // single siteURL incl
 startup.registerHandler( function(){ return true; }, dataPageFunc ); // function condition
 startup.registerHandler( ['somesite.com', () => true], loadDisplay ); // array siteURL include and function condition
 startup.registerHandler( 'includes', null, bindFunc ); // no include/condition function with binding function
-startup.registerHandler( 'includes', matchFunc, { dom: 'body', action: 'DOMSubtreeModified', func: bindFunc } ); // include/condition with a match function and full custom binding
+startup.registerHandler( 'includes', matchFunc, { dom: 'body', func: bindFunc, config: {} } ); // include/condition with a match function and full custom binding
 
 startup.run();
 */
@@ -69,7 +69,7 @@ var startup = {
         // Only bind handler function supplied
         if( bind && isFunction( bind ) )
         {
-            bind = { dom: 'body', action: 'DOMSubtreeModified', func: bind };
+            bind = { dom: 'body', func: bind, config: {} };
         }
 
         this.handlers.push( {
@@ -81,6 +81,29 @@ var startup = {
             hasRet: hasRet,
             ret: ret
         } );
+    },
+
+    // selector is jQuery selector, default 'body'
+    watchDom: ( handlerFunc, selector, configOverride={} ) =>
+    {
+        const conifg = { childList: true, characterData: false, attributes: false, subtree: true };
+        Object.keys( configOverride ).forEach( key => config[key] = configOverride[key] );
+        
+        let MutationObserver = window.MutationObserver || window.WebKitMutationObserver || unsafeWindow.MutationObserver || unsafeWindow.WebKitMutationObserver;
+        let observer = new MutationObserver( handlerFunc );
+        let observerConfig = {
+            childList: conifg.childList,
+            characterData: conifg.characterData,
+            attributes: conifg.attributes,
+            subtree: conifg.subtree
+        };
+    
+        $( selector || 'body' ).each(
+            function()
+            {
+                observer.observe( this, observerConfig );
+            }
+        );
     },
 
     // default startup function using registered handlers and settings
@@ -98,7 +121,8 @@ var startup = {
 
                 if( handler.bind )
                 {
-                    $( handler.bind.dom ).bind( handler.bind.action, handler.bind.func );
+                    // $( handler.bind.dom ).bind( handler.bind.action, handler.bind.func );
+                    this.watchDom( handler.bind.func, handler.bind.dom, handler.bind.config );
                 }
 
                 if( handler.useFuncRet )
