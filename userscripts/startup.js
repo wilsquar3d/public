@@ -13,6 +13,28 @@ startup.registerHandler( 'includes', null, bindFunc ); // no include/condition f
 startup.registerHandler( 'includes', matchFunc, { dom: 'body', func: bindFunc, config: {} } ); // include/condition with a match function and full custom binding
 
 startup.run();
+
+// startup::watchDom::handlerFunc example:
+function mutationHandler( records )
+{
+    console.info( `Mutation Handler [${records.length}]` );
+
+    records.forEach(
+        function( record )
+        {
+            if( typeof record.removedNodes == "object" )
+            {
+                console.log( `${record.type} [object]` );
+                console.log( $( record ) );
+            }
+            else
+            {
+                console.log( 'Non-object' );
+                console.log( record );
+            }
+        }
+    );
+}
 */
 
 var startup = {
@@ -84,6 +106,7 @@ var startup = {
     },
 
     // selector is jQuery selector, default 'body'
+    // handlerFunc( records ) {}
     watchDom: ( handlerFunc, selector, configOverride={} ) =>
     {
         const conifg = { childList: true, characterData: false, attributes: false, subtree: true };
