@@ -5,6 +5,7 @@ function loadWindowAndClose( url, maxRetries=10, interval=500 )
     return new Promise(
         function( resolve, reject )
         {
+            let retries = maxRetries;
             let win = window.open( url );
 
             const id = setInterval( () => {
@@ -19,7 +20,7 @@ function loadWindowAndClose( url, maxRetries=10, interval=500 )
                     resolve();
                 }
 
-                if( --maxRetries <= 0 )
+                if( --retries <= 0 )
                 {
                     reject( `Maximum number of retries '${maxRetries}' exceeded!` );
                 }
