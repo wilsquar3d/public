@@ -61,6 +61,27 @@ async function waitForCondition( func, limit=5000, interval=500 )
     }
 }
 
+// selector is jQuery selector, default 'body'
+// handlerFunc( records ) {}
+function watchDom( handlerFunc, selector, defaultConifg = { childList: true, characterData: false, attributes: false, subtree: true } )
+{
+    let MutationObserver = window.MutationObserver || window.WebKitMutationObserver || unsafeWindow.MutationObserver || unsafeWindow.WebKitMutationObserver;
+    let observer = new MutationObserver( handlerFunc );
+    let observerConfig = {
+        childList: defaultConifg.childList,
+        characterData: defaultConifg.characterData,
+        attributes: defaultConifg.attributes,
+        subtree: defaultConifg.subtree
+    };
+
+    $( selector || 'body' ).each(
+        function()
+        {
+            observer.observe( this, observerConfig );
+        }
+    );
+}
+
 function promiseWrapper( func, ...args )
 {
     return new Promise(
