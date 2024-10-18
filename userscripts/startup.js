@@ -135,7 +135,8 @@ var startup = {
     {
         for( const handler of startup.handlers )
         {
-            let matchResult = handler.includes.reduce( (r, x) => r && startup.siteURL.includes( x ), true ) &&
+            // do not use startup.siteURL - window URL could change inline
+            let matchResult = handler.includes.reduce( (r, x) => r && window.location.href.includes( x ), true ) &&
                 handler.match.reduce( (r, x) => r && x(), true );
 
             if( matchResult )
