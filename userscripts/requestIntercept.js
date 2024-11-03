@@ -4,7 +4,7 @@
 function intercept_requestHeaders( propName='headers_store', func=null )
 {
     (function( setRequestHeader ) {
-        XMLHttpRequest.prototype.setRequestHeader = function() {
+        unsafeWindow.XMLHttpRequest.prototype.setRequestHeader = function() {
             //store header on the request
             if( propName )
             {
@@ -24,7 +24,7 @@ function intercept_requestHeaders( propName='headers_store', func=null )
 
             setRequestHeader.apply( this, arguments );
         };
-    } )(XMLHttpRequest.prototype.setRequestHeader);
+    } )(unsafeWindow.XMLHttpRequest.prototype.setRequestHeader);
 }
 
 //can combine with intercept_requestHeaders to include a copy of all headers of the request
@@ -33,7 +33,7 @@ function intercept_requests( func, propName='headers_store' )
     func = func || intecept_default;
 
     (function( send ) {
-        XMLHttpRequest.prototype.send = function() {
+        unsafeWindow.XMLHttpRequest.prototype.send = function() {
             func( this );
 
             if( propname && Object.keys( this ).includes( propName ) )
@@ -43,7 +43,7 @@ function intercept_requests( func, propName='headers_store' )
 
             send.apply( this, arguments );
         };
-    } )(XMLHttpRequest.prototype.send);
+    } )(unsafeWindow.XMLHttpRequest.prototype.send);
 }
 
 function intercept_responses( funcSuccess, funcFailure, eventListener='readystatechange' )
@@ -51,7 +51,7 @@ function intercept_responses( funcSuccess, funcFailure, eventListener='readystat
     funcSuccess = funcSuccess || intercept_default;
 
     (function( open ) {
-        XMLHttpRequest.prototype.open = function() {
+        unsafeWindow.XMLHttpRequest.prototype.open = function() {
             this.addEventListener( eventListener, function() {
                 //ready and status is 2##
                 if( 4 == this.readyState && this.status - 200 < 100 )
@@ -66,7 +66,7 @@ function intercept_responses( funcSuccess, funcFailure, eventListener='readystat
 
             open.apply( this, arguments );
         };
-    } )(XMLHttpRequest.prototype.open);
+    } )(unsafeWindow.XMLHttpRequest.prototype.open);
 }
 
 // capture: { request: <func> }
