@@ -146,7 +146,7 @@ var startup = {
                 if( handler.bind )
                 {
                     // $( handler.bind.dom ).bind( handler.bind.action, handler.bind.func );
-                    this.watchDom( handler.bind.func, handler.bind.dom, handler.bind.config );
+                    startup.watchDom( handler.bind.func, handler.bind.dom, handler.bind.config );
                 }
 
                 if( handler.useFuncRet )
