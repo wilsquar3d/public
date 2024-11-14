@@ -46,13 +46,19 @@ function httpRequest( request, callback, ...args )
 //responseType: document, text, arraybuffer, etc.
 function buildRequest( url, method, headers, payload, responseType )
 {
-    return {
+    let obj = {
         method: method,
         url: url,
         headers: headers,
-        data: JSON.stringify( payload ),
         responseType: responseType
     }
+
+    if( payload != null )
+    {
+        obj.data = JSON.stringify( payload );
+    }
+
+    return obj;
 }
 
 //automatic 200 validation: ex. httpRequest( buildRequest( url, method, headers, payload, responseType ), validateHttpRequest, callback_func, <other args> );
