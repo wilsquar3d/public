@@ -2,7 +2,14 @@
 //requires utils.js
 
 unsafeWindow.gm_version = unsafeWindow.gm_version || {};
-unsafeWindow.gm_version.menu = { "version": "1.1.2", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/menu.js" };
+unsafeWindow.gm_version.menu = { "version": "1.1.3", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/menu.js" };
+
+GM_addStyle( `
+    .menuItemSelected {
+        border: 2px solid #000;
+        border-radius: 7px;
+    }
+` );
 
 var global_defaults =
     {
@@ -68,10 +75,11 @@ function createMenuHelper( menuItems=[], props={ displayCSS: null, menuItemsCSS:
 
 //displayFunc will accept the selector to attach to
 //displayFunc can be a function() or object { func: function(), props: [props]]
-function menuItem( name, displayFunc, props={ css: null, hover: null } )
+function menuItem( name, displayFunc, props={ css: null, hover: null, selected: null } )
 {
     let css = props.css || global_defaults.css.menuItem;
     let hover = props.hover || global_defaults.css.menuItemHover;
+    let selectedClass = props.selected || 'menuItemSelected';
 
     let func = displayFunc;
     let funcProps = [];
@@ -99,6 +107,9 @@ function menuItem( name, displayFunc, props={ css: null, hover: null } )
                 {
                     func( '#display', ...funcProps );
                 }
+
+                $( `.${selectedClass}` ).removeClass( selectedClass );
+                $( this ).addClass( selectedClass );
             } );
 }
 
