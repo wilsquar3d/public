@@ -441,7 +441,7 @@ class ImagesDisplay
 
     buildTitleBar( imgs, subTitle=null )
     {
-        let titleBar = $( `<div style='font-size:24pt;padding:10px;margin:20px;background-color:lightgrey;'>${this.props.titlebar.title || this.id} (${Object.keys( imgs ).length})${subTitle ? ` [${subTitle}]` : ''}</div>` );
+        let titleBar = $( `<div style='font-size:24pt;padding:10px;background-color:lightgrey;'>${this.props.titlebar.title || this.id} (${Object.keys( imgs ).length})${subTitle ? ` [${subTitle}]` : ''}</div>` );
 
         if( this.props.titlebar.downloadAll )
         {
@@ -483,7 +483,10 @@ class ImagesDisplay
             ] );
         }
 
-        return titleBar;
+        let titleWrapper = $( '<div style="position: sticky;top: 0;padding: 20px;background: #FFF;"></div>' );
+        titleWrapper.append( titleBar );
+
+        return titleWrapper;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
