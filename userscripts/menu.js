@@ -89,11 +89,29 @@ function menuItem( name, displayFunc, props={ css: null, hover: null, selected: 
         func = displayFunc.func;
     }
 
-    return $( '<div />' )
+    let ret = $( '<div />' )
         .css( css )
-        .hover( function(){ $( this ).css( hover.on ); }, function(){ $( this ).css( hover.off ); } )
-        .text( name )
-        .attr( 'id', createSafeID( name ) )
+        .hover( function(){ $( this ).css( hover.on ); }, function(){ $( this ).css( hover.off ); } );
+
+    let id = name; // must supply ID if name isn't plain string
+
+    if( isString( name ) )
+    {
+        ret.text( name );
+    }
+    else if( name.name )
+    {
+        ret.text( name.name );
+        id = name.id;
+    }
+    else // whole element supplied
+    {
+        ret.append( name.elem );
+        id = name.id;
+    }
+
+    return ret
+        .attr( 'id', createSafeID( id ) )
         .click(
             function()
             {
