@@ -142,7 +142,7 @@ function display_importExportWithGit( id, props )
                     async function()
                     {
                         $( '#' + displayDataID ).val( '' );
-                        
+
                         try
                         {
                             let token = sjcl.decrypt( $( '#password' ).val(), atob( props.token ) );
@@ -158,7 +158,21 @@ function display_importExportWithGit( id, props )
                             {
                                 let content = JSON.parse( response.content );
 
-                                $( '#' + displayDataID ).val( atob( content.content ) ).change();
+                                if( content.content )
+                                {
+                                    $( '#' + displayDataID ).val( atob( content.content ) ).change();
+                                }
+                                else if( content.download_url ) // use download url
+                                {
+                                    let dlRequest = buildRequest( content.download_url, 'GET', '', null, 'application/json' );
+                                    let response = await httpRequest( dlRequest );
+
+                                    $( '#' + displayDataID ).val( response.response ).change();
+                                }
+                                else
+                                {
+                                    console.error( response );
+                                }
                             }
                         }
                         catch( ex )
