@@ -135,6 +135,7 @@ class ImagesDisplay
 
             loadData: false, // load the data variable with GM data
             showAll: true, // true|false|number
+            reverse: false, // true| false list of images should be reversed
             showAllIncludeCached: false,
             showAllIncludeSaved: false,
             deleteKeepKeys: false, // delete removes object properties, but keeps keys
@@ -336,6 +337,12 @@ class ImagesDisplay
         }
 
         let keys = Object.keys( imgs );
+
+        if( this.props.reverse )
+        {
+            keys.reverse();
+        }
+
         let limit = parseInt( this.props.showAll ) || keys.length;
         let cnt = 0;
 
