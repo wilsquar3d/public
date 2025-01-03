@@ -453,40 +453,40 @@ class ImagesDisplay
         if( this.props.titlebar.downloadAll )
         {
             titleBar.append( [
-                $( `<input type='button' value='Download All' style='margin-left: 10px;' />` ).click( $.proxy( function(){ this.downloadAllImages(); }, this ) ),
-                $( `<input type='checkbox' id='${this.html.id.downloadAll}' title='include not visible' style='vertical-align: bottom; margin-bottom: 5px;' />` )
+                $( `<input type='button' value='Download All' style='margin-left: 10px; vertical-align: middle;' />` ).click( $.proxy( function(){ this.downloadAllImages(); }, this ) ),
+                $( `<input type='checkbox' id='${this.html.id.downloadAll}' title='include not visible' style='vertical-align: bottom; margin-bottom: 5px; vertical-align: middle;' />` )
             ] );
         }
 
         if( this.props.titlebar.deleteAll )
         {
             titleBar.append( [
-                $( `<input type='button' value='Delete All' style='margin-left: 10px;' />` ).click( $.proxy( function(){ this.deleteAllImages(); }, this ) ),
-                $( `<input type='checkbox' id='${this.html.id.deleteAll}' title='include not visible' style='vertical-align: bottom; margin-bottom: 5px;' />` )
+                $( `<input type='button' value='Delete All' style='margin-left: 10px; vertical-align: middle;' />` ).click( $.proxy( function(){ this.deleteAllImages(); }, this ) ),
+                $( `<input type='checkbox' id='${this.html.id.deleteAll}' title='include not visible' style='vertical-align: bottom; margin-bottom: 5px; vertical-align: middle;' />` )
             ] );
         }
 
         if( this.props.titlebar.hideAll )
         {
             titleBar.append( [
-                $( `<input type='button' value='Hide All' style='margin-left: 10px;' />` ).click( $.proxy( function(){ this.hideAllImages(); }, this ) ),
-                $( `<input type='checkbox' id='${this.html.id.hideAll}' title='include not visible' style='vertical-align: bottom; margin-bottom: 5px;' />` )
+                $( `<input type='button' value='Hide All' style='margin-left: 10px; vertical-align: middle;' />` ).click( $.proxy( function(){ this.hideAllImages(); }, this ) ),
+                $( `<input type='checkbox' id='${this.html.id.hideAll}' title='include not visible' style='vertical-align: bottom; margin-bottom: 5px; vertical-align: middle;' />` )
             ] );
         }
 
         if( this.props.titlebar.keepAll )
         {
             titleBar.append( [
-                $( `<input type='button' value='Keep All' style='margin-left: 10px;' />` ).click( $.proxy( function(){ this.keepAllImages(); }, this ) ),
-                $( `<input type='checkbox' id='${this.html.id.keepAll}' title='include not visible' style='vertical-align: bottom; margin-bottom: 5px;' />` )
+                $( `<input type='button' value='Keep All' style='margin-left: 10px; vertical-align: middle;' />` ).click( $.proxy( function(){ this.keepAllImages(); }, this ) ),
+                $( `<input type='checkbox' id='${this.html.id.keepAll}' title='include not visible' style='vertical-align: bottom; margin-bottom: 5px; vertical-align: middle;' />` )
             ] );
         }
 
         if( this.props.titlebar.cacheAll )
         {
             titleBar.append( [
-                $( `<input type='button' value='Cache All' style='margin-left: 10px;' />` ).click( $.proxy( function(){ this.cacheAllImages(); }, this ) ),
-                $( `<input type='checkbox' id='${this.html.id.cacheAll}' title='include not visible' style='vertical-align: bottom; margin-bottom: 5px;' />` )
+                $( `<input type='button' value='Cache All' style='margin-left: 10px; vertical-align: middle;' />` ).click( $.proxy( function(){ this.cacheAllImages(); }, this ) ),
+                $( `<input type='checkbox' id='${this.html.id.cacheAll}' title='include not visible' style='vertical-align: bottom; margin-bottom: 5px; vertical-align: middle;' />` )
             ] );
         }
 
