@@ -148,6 +148,7 @@ class ImagesDisplay
                 hideAll: false,
                 keepAll: false,
                 cacheAll: false,
+                filterCount: false,
             },
 
             showButtons: {
@@ -221,6 +222,7 @@ class ImagesDisplay
                 hideAll: true,
                 cacheAll: true,
                 downloadAll: true,
+                filterCount: true,
             },
             deleteKeepKeys: true,
             showButtons: { keep: false },
@@ -324,7 +326,7 @@ class ImagesDisplay
             {}
         );
 
-        this.createPage( dlData, this.pageFilterCount( tempData ) );
+        this.createPage( dlData, this.props.titlebar.filterCount ? this.pageFilterCount( tempData ) : null );
     }
 
     createPage( imgs, subTitle=null )
