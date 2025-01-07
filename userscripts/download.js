@@ -149,6 +149,7 @@ class ImagesDisplay
                 keepAll: false,
                 cacheAll: false,
                 filterCount: false,
+                customSubTitle: null,
             },
 
             showButtons: {
@@ -326,7 +327,18 @@ class ImagesDisplay
             {}
         );
 
-        this.createPage( dlData, this.props.titlebar.filterCount ? this.pageFilterCount( tempData ) : null );
+        let subTitle = null;
+
+        if( this.props.titlebar.filterCount )
+        {
+            subTitle = this.pageFilterCount( tempData );
+        }
+        else if( this.props.titlebar.customSubTitle )
+        {
+            subTitle = this.props.titlebar.customSubTitle;
+        }
+
+        this.createPage( dlData, subTitle );
     }
 
     createPage( imgs, subTitle=null )
