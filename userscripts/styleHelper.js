@@ -130,4 +130,35 @@ class StyleHelper
             ? $( `<a href='${href}' class='${className}'>${content}</a>` )
             : $( `<a href='${href}' class='${className}'></a>` ).append( $( content ) );
     }
+
+    static fadeOut( elem, func=false, delay=50, inter=0.1 )
+    {
+        let op = 1;
+        let timer = setInterval
+        (
+            function()
+            {
+                if( op < inter )
+                {
+                    clearInterval( timer );
+    
+                    if( func )
+                    {
+                        elem.css( 'opacity', 0 );
+                        func();
+                    }
+                    else
+                    {
+                        elem.css( 'display', 'none' );
+                    }
+                }
+                else
+                {
+                    elem.css( 'opacity', op );
+                    op -= op * inter;
+                }
+            },
+            delay
+        );
+    }
 }
