@@ -1,4 +1,4 @@
-// https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/StyleHelper.js
+// https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/styleHelper.js
 // @require      https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/utils.js
 // @require      https://raw.githubusercontent.com/wilsquar3d/public/master/scripts/jqueryHelper.js
 // @grant        GM_addStyle
