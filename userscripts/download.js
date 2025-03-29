@@ -114,6 +114,7 @@ async function downloadImageFile( filename, url, type='image/png' )
 class ImagesDisplay
 {
     id = null;
+    photosId = 'updatePhotos';
     default = {
         showAll: 50,
         pagination: 50,
@@ -147,15 +148,14 @@ class ImagesDisplay
                 hideAll: false,
                 keepAll: false,
                 cacheAll: false,
-                reloadAll: false,
                 filterCount: false,
-                customSubTitle: null, // new filter function
+                customSubTitle: null,
             },
 
             showButtons: {
                 keep: true,
                 hide: true,
-                reload: false, // TODO
+                reload: true,
                 cache: true,
                 download: true,
                 link: true,
@@ -200,7 +200,6 @@ class ImagesDisplay
                 title: title,
                 hideAll: true,
                 keepAll: true,
-                reloadAll: true,
             },
             deleteKeepKeys: true,
             showButtons: { delete: false },
@@ -224,7 +223,6 @@ class ImagesDisplay
                 hideAll: true,
                 cacheAll: true,
                 downloadAll: true,
-                reloadAll: true,
                 filterCount: true,
             },
             deleteKeepKeys: true,
@@ -248,7 +246,6 @@ class ImagesDisplay
                 title: title + ' - Hide',
                 keepAll: true,
                 deleteAll: true,
-                filterCount: true,
             },
             deleteKeepKeys: true,
             showButtons: { hide: false },
@@ -338,7 +335,7 @@ class ImagesDisplay
         }
         else if( this.props.titlebar.customSubTitle )
         {
-            subTitle = this.props.titlebar.customSubTitle( tempData );
+            subTitle = this.props.titlebar.customSubTitle;
         }
 
         this.createPage( dlData, subTitle );
@@ -507,13 +504,6 @@ class ImagesDisplay
             ] );
         }
 
-        if( this.props.titlebar.reloadAll )
-        {
-            titleBar.append( [
-                $( `<input type='button' value='Reload' style='margin-left: 10px; vertical-align: middle;' />` ).click( $.proxy( function(){ this.reloadImages(); }, this ) )
-            ] );
-        }
-
         let titleWrapper = $( '<div style="position: sticky;top: 0;padding: 20px;background: #FFF;"></div>' );
         titleWrapper.append( titleBar );
 
@@ -528,8 +518,10 @@ class ImagesDisplay
 
         for( let imgKey of imgs )
         {
-            this.keepImage( imgKey );
+            this.keepImage( imgKey, false );
         }
+
+        GM_setValue( this.props.key, data );
     }
 
     hideAllImages()
@@ -538,8 +530,10 @@ class ImagesDisplay
 
         for( let imgKey of imgs )
         {
-            this.hideImage( imgKey );
+            this.hideImage( imgKey, false );
         }
+
+        GM_setValue( this.props.key, data );
     }
 
     async cacheAllImages()
@@ -556,16 +550,6 @@ class ImagesDisplay
         }
 
         console.log( 'Caching complete' );
-    }
-
-    async reloadImages()
-    {
-        let imgs = this.getAllImageKeys(); // always visible only
-
-        for( let imgKey of imgs )
-        {
-            await this.reloadImage( imgKey, true );
-        }
     }
 
     // TODO support delays?
@@ -608,17 +592,17 @@ class ImagesDisplay
 
     /////////////////////////////////////////////////////////////////////////////////////////
 
-    keepImage( key )
+    keepImage( key, saveData=true )
     {
-        this.moveImage( key, this.props.keepKey );
+        this.moveImage( key, this.props.keepKey, saveData );
     }
 
-    hideImage( key )
+    hideImage( key, saveData=true )
     {
-        this.moveImage( key, this.props.hideKey );
+        this.moveImage( key, this.props.hideKey, saveData );
     }
 
-    moveImage( key, whereTo )
+    moveImage( key, whereTo, saveData=true )
     {
         if( !key || !whereTo )
         {
@@ -629,38 +613,28 @@ class ImagesDisplay
 
         if( data[whereTo] )
         {
-            data[whereTo][key] = copyJson( refData[key] );
+            data[whereTo][key] = refData[key]; //copyJson( refData[key], true );
 
             delete refData[key];
 
-            GM_setValue( this.props.key, data );
+            if( saveData )
+            {
+                GM_setValue( this.props.key, data );
+            }
 
             $( `#${key}` ).closest( `div.${this.html.cls.imageWrap}` ).remove();
         }
     }
 
-    async reloadImage( key, multi=false )
+    reloadImage( key )
     {
-        return new Promise( (resolve, reject) => {
-            let [field, record] = this.getPhotoLocation( key );
-            let url = ( record[this.props.prop.link || this.props.prop.img] );
+        let photosUpdateData = GM_getValue( this.photosId, {} ); // siteID: { id: name }
+        let [field, record] = this.getPhotoLocation( key );
 
-            if( multi )
-            {
-                url += '&reloading=true';
-            }
+        photosUpdateData[data.metadata.id] = photosUpdateData[data.metadata.id] || {};
+        photosUpdateData[data.metadata.id][record.id] = key;
 
-            window.open( url, key );
-            setTimeout( function(){ resolve(); }, 5000 );
-        } );
-
-        /*
-            If you want the opened page to automatically close itself, include in an appropriate location:
-            if( window.location.href.includes( '&reloading=true' ) )
-            {
-                window.close();
-            }
-        */
+        GM_setValue( this.photosId, photosUpdateData );
     }
 
     async cacheImage( key )
@@ -782,7 +756,7 @@ class ImagesDisplay
 
     getAllImageKeys( id=null, leaveDataLoaded=true )
     {
-        let visibleOnly = !id || ( $( `#${id}` ).length && !$( `#${id}` ).is(':checked') );
+        let visibleOnly = id && $( `#${id}` ).length && !$( `#${id}` ).is(':checked');
 
         if( visibleOnly )
         {
@@ -795,4 +769,3 @@ class ImagesDisplay
         return Object.keys( this.getCategoryData( leaveDataLoaded ) );
     }
 }
-
