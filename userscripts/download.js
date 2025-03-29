@@ -114,7 +114,6 @@ async function downloadImageFile( filename, url, type='image/png' )
 class ImagesDisplay
 {
     id = null;
-    photosId = 'updatePhotos';
     default = {
         showAll: 50,
         pagination: 50,
@@ -148,14 +147,15 @@ class ImagesDisplay
                 hideAll: false,
                 keepAll: false,
                 cacheAll: false,
+                reloadAll: false,
                 filterCount: false,
-                customSubTitle: null,
+                customSubTitle: null, // new filter function
             },
 
             showButtons: {
                 keep: true,
                 hide: true,
-                reload: true,
+                reload: false, // TODO
                 cache: true,
                 download: true,
                 link: true,
@@ -200,6 +200,7 @@ class ImagesDisplay
                 title: title,
                 hideAll: true,
                 keepAll: true,
+                reloadAll: true,
             },
             deleteKeepKeys: true,
             showButtons: { delete: false },
@@ -223,6 +224,7 @@ class ImagesDisplay
                 hideAll: true,
                 cacheAll: true,
                 downloadAll: true,
+                reloadAll: true,
                 filterCount: true,
             },
             deleteKeepKeys: true,
@@ -246,6 +248,7 @@ class ImagesDisplay
                 title: title + ' - Hide',
                 keepAll: true,
                 deleteAll: true,
+                filterCount: true,
             },
             deleteKeepKeys: true,
             showButtons: { hide: false },
@@ -335,7 +338,7 @@ class ImagesDisplay
         }
         else if( this.props.titlebar.customSubTitle )
         {
-            subTitle = this.props.titlebar.customSubTitle;
+            subTitle = this.props.titlebar.customSubTitle( tempData );
         }
 
         this.createPage( dlData, subTitle );
@@ -504,6 +507,13 @@ class ImagesDisplay
             ] );
         }
 
+        if( this.props.titlebar.reloadAll )
+        {
+            titleBar.append( [
+                $( `<input type='button' value='Reload' style='margin-left: 10px; vertical-align: middle;' />` ).click( $.proxy( function(){ this.reloadImages(); }, this ) )
+            ] );
+        }
+
         let titleWrapper = $( '<div style="position: sticky;top: 0;padding: 20px;background: #FFF;"></div>' );
         titleWrapper.append( titleBar );
 
@@ -518,7 +528,7 @@ class ImagesDisplay
 
         for( let imgKey of imgs )
         {
-            this.keepImage( props, imgKey );
+            this.keepImage( imgKey );
         }
     }
 
@@ -546,6 +556,16 @@ class ImagesDisplay
         }
 
         console.log( 'Caching complete' );
+    }
+
+    async reloadImages()
+    {
+        let imgs = this.getAllImageKeys(); // always visible only
+
+        for( let imgKey of imgs )
+        {
+            await this.reloadImage( imgKey, true );
+        }
     }
 
     // TODO support delays?
@@ -619,15 +639,28 @@ class ImagesDisplay
         }
     }
 
-    reloadImage( key )
+    async reloadImage( key, multi=false )
     {
-        let photosUpdateData = GM_getValue( this.photosId, {} ); // siteID: { id: name }
-        let [field, record] = this.getPhotoLocation( key );
+        return new Promise( (resolve, reject) => {
+            let [field, record] = this.getPhotoLocation( key );
+            let url = ( record[this.props.prop.link || this.props.prop.img] );
 
-        photosUpdateData[data.metadata.id] = photosUpdateData[data.metadata.id] || {};
-        photosUpdateData[data.metadata.id][record.id] = key;
+            if( multi )
+            {
+                url += '&reloading=true';
+            }
 
-        GM_setValue( this.photosId, photosUpdateData );
+            window.open( url, key );
+            setTimeout( function(){ resolve(); }, 5000 );
+        } );
+
+        /*
+            If you want the opened page to automatically close itself, include in an appropriate location:
+            if( window.location.href.includes( '&reloading=true' ) )
+            {
+                window.close();
+            }
+        */
     }
 
     async cacheImage( key )
@@ -749,7 +782,7 @@ class ImagesDisplay
 
     getAllImageKeys( id=null, leaveDataLoaded=true )
     {
-        let visibleOnly = id && $( `#${id}` ).length && !$( `#${id}` ).is(':checked');
+        let visibleOnly = !id || ( $( `#${id}` ).length && !$( `#${id}` ).is(':checked') );
 
         if( visibleOnly )
         {
