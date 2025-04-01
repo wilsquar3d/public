@@ -148,6 +148,7 @@ class ImagesDisplay
                 hideAll: false,
                 keepAll: false,
                 cacheAll: false,
+                reloadAll: false,
                 filterCount: false,
                 customSubTitle: null,
             },
@@ -200,6 +201,7 @@ class ImagesDisplay
                 title: title,
                 hideAll: true,
                 keepAll: true,
+                reloadAll: true,
             },
             deleteKeepKeys: true,
             showButtons: { delete: false },
@@ -224,6 +226,7 @@ class ImagesDisplay
                 cacheAll: true,
                 downloadAll: true,
                 filterCount: true,
+                reloadAll: true,
             },
             deleteKeepKeys: true,
             showButtons: { keep: false },
@@ -504,6 +507,13 @@ class ImagesDisplay
             ] );
         }
 
+        if( this.props.titlebar.reloadAll )
+        {
+            titleBar.append( [
+                $( `<input type='button' value='Reload' style='margin-left: 10px; vertical-align: middle;' />` ).click( $.proxy( function(){ this.reloadImages(); }, this ) )
+            ] );
+        }
+
         let titleWrapper = $( '<div style="position: sticky;top: 0;padding: 20px;background: #FFF;"></div>' );
         titleWrapper.append( titleBar );
 
@@ -550,6 +560,16 @@ class ImagesDisplay
         }
 
         console.log( 'Caching complete' );
+    }
+
+    async reloadImages()
+    {
+        let imgs = this.getAllImageKeys(); // always visible only
+
+        for( let imgKey of imgs )
+        {
+            await this.reloadImage( imgKey, true );
+        }
     }
 
     // TODO support delays?
@@ -626,15 +646,23 @@ class ImagesDisplay
         }
     }
 
-    reloadImage( key )
+    async reloadImage( key, multi=false )
     {
-        let photosUpdateData = GM_getValue( this.photosId, {} ); // siteID: { id: name }
-        let [field, record] = this.getPhotoLocation( key );
+        return new Promise( (resolve, reject) => {
+            let [field, record] = this.getPhotoLocation( key );
+            let url = ( record[this.props.prop.link || this.props.prop.img] ) + '&reloading=true';
 
-        photosUpdateData[data.metadata.id] = photosUpdateData[data.metadata.id] || {};
-        photosUpdateData[data.metadata.id][record.id] = key;
+            window.open( url, key );
+            setTimeout( function(){ resolve(); }, 5000 );
+        } );
 
-        GM_setValue( this.photosId, photosUpdateData );
+        /*
+            If you want the opened page to automatically close itself, include in an appropriate location:
+            if( window.location.href.includes( '&reloading=true' ) )
+            {
+                window.close();
+            }
+        */
     }
 
     async cacheImage( key )
@@ -756,7 +784,7 @@ class ImagesDisplay
 
     getAllImageKeys( id=null, leaveDataLoaded=true )
     {
-        let visibleOnly = id && $( `#${id}` ).length && !$( `#${id}` ).is(':checked');
+        let visibleOnly = !id || ( $( `#${id}` ).length && !$( `#${id}` ).is(':checked') );
 
         if( visibleOnly )
         {
@@ -769,3 +797,4 @@ class ImagesDisplay
         return Object.keys( this.getCategoryData( leaveDataLoaded ) );
     }
 }
+
