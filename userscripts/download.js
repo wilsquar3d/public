@@ -130,12 +130,14 @@ class ImagesDisplay
                 saved: 'saved',
                 cache: 'cache', // (preferred) base64 image property
                 name: null, // name property
+                sort: null, // sort field
+                sortFunc: null, // sort wrapping function
+                // TODO link has 2 meanings!!!!!!!!!!!!!!!!!!
                 link: null, // prop name of image link
             },
 
             loadData: false, // load the data variable with GM data
             showAll: true, // true|false|number
-            reverse: false, // true| false list of images should be reversed
             showAllIncludeCached: false,
             showAllIncludeSaved: false,
             deleteKeepKeys: false, // delete removes object properties, but keeps keys
@@ -307,8 +309,13 @@ class ImagesDisplay
             ( acc, key ) => {
                 let record = {
                     img: jsonPath( tempData[key], this.props.prop.img ),
-                    key: key
+                    key: key,
                 };
+
+                if( this.props.prop.sort )
+                {
+                    record.sort = jsonPath( tempData[key], this.props.prop.sort );
+                }
 
                 if( record.img )
                 {
@@ -355,7 +362,11 @@ class ImagesDisplay
 
         let keys = Object.keys( imgs );
 
-        if( this.props.reverse )
+        if( this.props.prop.sort )
+        {
+            keys.sort( this.props.prop.sortFunc( imgs ) ); // sort function is a wrapper to accept imgs and returns the actual sorter
+        }
+        else
         {
             keys.reverse();
         }
