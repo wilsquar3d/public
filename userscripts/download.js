@@ -180,6 +180,7 @@ class ImagesDisplay
             hideAll: 'check_hideAll',
             keepAll: 'check_keepAll',
             cacheAll: 'check_cacheAll',
+            reloadAll: 'check_reloadAll',
         },
         cls: {
             imageWrap: 'imgWrap',
@@ -256,6 +257,34 @@ class ImagesDisplay
             showButtons: { hide: false },
             maxHeight: '300px'
         };
+    }
+
+    // get the next URL from another URL
+    static reloadNextUrl( url )
+    {
+        let next = url.split( 'reloadNext=' )[1].split( '&' )[0]; // data key
+
+        // get next saved URL
+        let urls = GM_getValue( next, null );
+        let nextUrl = urls.length ? urls.shift() + `&count=${urls.length}` : null;
+
+        GM_setValue( next, urls );
+
+        return nextUrl;
+    }
+
+    // open the next URL from another URL
+    static reloadNextOpen( url, bFirst=false )
+    {
+        let nextUrl = ImagesDisplay.reloadNextUrl( url );
+
+        if( nextUrl )
+        {
+            window.location.href = nextUrl;
+            return;
+        }
+
+        window.close();
     }
 
     constructor( props )
@@ -521,7 +550,8 @@ class ImagesDisplay
         if( this.props.titlebar.reloadAll )
         {
             titleBar.append( [
-                $( `<input type='button' value='Reload' style='margin-left: 10px; vertical-align: middle;' />` ).click( $.proxy( function(){ this.reloadImages(); }, this ) )
+                $( `<input type='button' value='Reload' style='margin-left: 10px; vertical-align: middle;' />` ).click( $.proxy( function(){ this.reloadImages(); }, this ) ),
+                $( `<input type='checkbox' id='${this.html.id.reloadAll}' title='include not visible' style='vertical-align: bottom; margin-bottom: 5px; vertical-align: middle;' />` )
             ] );
         }
 
@@ -575,12 +605,35 @@ class ImagesDisplay
 
     async reloadImages()
     {
-        let imgs = this.getAllImageKeys(); // always visible only
+        let tempData = this.getCategoryData();
+        let imgs = this.getAllImageKeys( this.html.id.reloadAll ).filter( x => !tempData[x][this.props.prop.saved] );
+        let num = imgs.length;
+        let ndx = 0;
+        let links = imgs.map( key => { let [field, record] = this.getPhotoLocation( key ); return this.reloadUrl( record, ++ndx, num ); } );
+        let url = null;
 
-        for( let imgKey of imgs )
+        let temp = GM_getValue( 'reloadKey', [] );
+
+        if( !temp.length )
         {
-            await this.reloadImage( imgKey, true );
+            url = links.shift();
         }
+
+        temp.push( ...links );
+        GM_setValue( 'reloadKey', temp );
+
+        if( !temp.length )
+        {
+            window.open( url, 'reloadingPage' );
+        }
+
+        /*
+            If you want the opened page to automatically close itself, include in an appropriate location:
+            if( window.location.href.includes( '&reloading=true' ) )
+            {
+                ImagesDisplay.reloadNextOpen( window.location.href );
+            }
+        */
     }
 
     // TODO support delays?
@@ -657,23 +710,19 @@ class ImagesDisplay
         }
     }
 
-    async reloadImage( key, multi=false )
+    reloadUrl( record )
     {
-        return new Promise( (resolve, reject) => {
+        return ( record[this.props.prop.link || this.props.prop.img] ) + '&reloading=true&reloadNext=reloadKey';
+    }
+
+    async reloadImage( key, multi=false, ndx=null, total=null )
+    {
+        return new Promise( async (resolve, reject) => {
             let [field, record] = this.getPhotoLocation( key );
-            let url = ( record[this.props.prop.link || this.props.prop.img] ) + '&reloading=true';
+            let url = this.reloadUrl( record, ndx, total );
 
             window.open( url, key );
-            setTimeout( function(){ resolve(); }, 5000 );
         } );
-
-        /*
-            If you want the opened page to automatically close itself, include in an appropriate location:
-            if( window.location.href.includes( '&reloading=true' ) )
-            {
-                window.close();
-            }
-        */
     }
 
     async cacheImage( key )
