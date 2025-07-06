@@ -613,6 +613,7 @@ class ImagesDisplay
         let url = null;
 
         let temp = GM_getValue( 'reloadKey', [] );
+        let len = temp.length;
 
         if( !temp.length )
         {
@@ -622,7 +623,7 @@ class ImagesDisplay
         temp.push( ...links );
         GM_setValue( 'reloadKey', temp );
 
-        if( !temp.length )
+        if( !len )
         {
             window.open( url, 'reloadingPage' );
         }
