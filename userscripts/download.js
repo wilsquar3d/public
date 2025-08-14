@@ -266,7 +266,13 @@ class ImagesDisplay
 
         // get next saved URL
         let urls = GM_getValue( next, null );
-        let nextUrl = urls.length ? urls.shift() + `&count=${urls.length}` : null;
+        let nextUrl = null;
+
+        if( urls.length )
+        {
+            let temp = urls.shift().split( '&reloading=' );
+            nextUrl = `${temp[0]}&count=_${urls.length}_&reloading=${temp[1]}`;
+        }
 
         GM_setValue( next, urls );
 
@@ -609,7 +615,7 @@ class ImagesDisplay
         let imgs = this.getAllImageKeys( this.html.id.reloadAll ).filter( x => !tempData[x][this.props.prop.saved] );
         let num = imgs.length;
         let ndx = 0;
-        let links = imgs.map( key => { let [field, record] = this.getPhotoLocation( key ); return this.reloadUrl( record, ++ndx, num ); } );
+        let links = imgs.map( key => { let [field, record] = this.getPhotoLocation( key ); return this.reloadUrl( record ); } );
         let url = null;
 
         let temp = GM_getValue( 'reloadKey', [] );
@@ -713,7 +719,7 @@ class ImagesDisplay
 
     reloadUrl( record )
     {
-        return ( record[this.props.prop.link || this.props.prop.img] ) + '&reloading=true&reloadNext=reloadKey';
+        return ( record[this.props.prop.link || this.props.prop.img] ) + `&reloading=true&ownerId=${this.props.key}&reloadNext=reloadKey`;
     }
 
     async reloadImage( key, multi=false, ndx=null, total=null )
