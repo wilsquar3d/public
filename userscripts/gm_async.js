@@ -1,6 +1,6 @@
 class GM_Async
 {
-  static GM_xmlhttpRequestAsync( url, method='GET' )
+  static xmlhttpRequestAsync( url, method='GET' )
   {
       return new Promise( ( resolve, reject ) => {
           GM_xmlhttpRequest( {
@@ -19,7 +19,7 @@ class GM_Async
       progress: <null or unset - updated as the file downloads>,
       download: <null or unset - set by the download, includes an abort() method to cancel the download>
   }*/
-  static GM_downloadAsync( obj, progressFunc=null )
+  static downloadAsync( obj, progressFunc=null )
   {
       if( obj.progress >= 0 )
       {
