@@ -1,3 +1,5 @@
+// https://raw.githubusercontent.com/wilsquar3d/public/refs/heads/master/specific/GeometricRays.js
+
 class GeometricRays {
     constructor({
         width,
