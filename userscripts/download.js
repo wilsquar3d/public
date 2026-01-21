@@ -352,8 +352,8 @@ class ImagesDisplay
                     record.sort = jsonPath( tempData[key], this.props.prop.sort );
                 }
 
-                // Edge case where uri was removed before the image was saved
-                if( !tempData[key][this.props.prop.saved] && !record.img )
+                // Edge case where uri was removed before the image was saved (not hidden page)
+                if( this.default.props.hideKey != this.props.imagesKey && !tempData[key][this.props.prop.saved] && !record.img )
                 {
                     console.log( 'Image src removed before saving' );
                     console.log( tempData[key] );
@@ -877,3 +877,4 @@ class ImagesDisplay
         return Object.keys( this.getCategoryData( leaveDataLoaded ) );
     }
 }
+
