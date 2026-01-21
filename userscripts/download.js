@@ -339,7 +339,7 @@ class ImagesDisplay
     {
         let tempData = this.getCategoryData( this.props.loadData, true ); // force reload required for page changes
 
-        // name: { img: url, key: key, [cacheKey]: cache, [savedKey]: isSaved }
+        // name: { img: uri, key: key, [cacheKey]: cache, [savedKey]: isSaved }
         let dlData = Object.keys( tempData ).reduce(
             ( acc, key ) => {
                 let record = {
@@ -350,6 +350,15 @@ class ImagesDisplay
                 if( this.props.prop.sort )
                 {
                     record.sort = jsonPath( tempData[key], this.props.prop.sort );
+                }
+
+                // Edge case where uri was removed before the image was saved
+                if( !tempData[key][this.props.prop.saved] && !record.img )
+                {
+                    console.log( 'Image src removed before saving' );
+                    console.log( tempData[key] );
+
+                    record.img = '?';
                 }
 
                 if( record.img )
@@ -422,6 +431,10 @@ class ImagesDisplay
 
             if( !imgSrc )
             {
+                // Should be handled, but logging kept
+                console.log( 'Image src not found for expected image' );
+                console.log( imgs[key] );
+
                 continue;
             }
 
@@ -864,4 +877,3 @@ class ImagesDisplay
         return Object.keys( this.getCategoryData( leaveDataLoaded ) );
     }
 }
-
