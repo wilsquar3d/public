@@ -1,8 +1,10 @@
 //https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/menu.js
 //requires utils.js
 
-unsafeWindow.gm_version = unsafeWindow.gm_version || {};
-unsafeWindow.gm_version.menu = { "version": "1.1.3", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/menu.js" };
+var localWindow = ( typeof unsafeWindow !== 'undefined' ) ? unsafeWindow : window;
+
+localWindow.gm_version = localWindow.gm_version || {};
+localWindow.gm_version.menu = { "version": "1.1.3", "source": "https://raw.githubusercontent.com/wilsquar3d/public/master/userscripts/menu.js" };
 
 GM_addStyle( `
     .menuItemSelected {
