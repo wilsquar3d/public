@@ -204,5 +204,8 @@ var cities_alts = {
   'Salt Lake': 'Salt Lake City',
   'Montréal': 'Montreal',
   'Washington': 'Washington D.C.',
+  'D.C.': 'Washington D.C.',
   'New York City': 'New York',
+  'LA': 'Los Angeles',
+  
 };
