@@ -172,7 +172,7 @@ var cities = [
   "Denver",
   "Seattle",
   "Las Vegas",
-  "Washington",
+  "Washington D.C.",
   "Baltimore",
   "Cleveland",
   "Cincinnati",
@@ -180,7 +180,6 @@ var cities = [
   "San Diego",
   "San Jose",
   "Salt Lake City",
-  "Real Salt Lake",
   "Charlotte",
   "Orlando",
   "Nashville",
@@ -194,5 +193,16 @@ var cities = [
   "Indianapolis",
   "Memphis",
   "New Orleans",
-  "Oklahoma City"
-]
+  "Oklahoma City",
+  "Austin",
+  "Colorado",
+  "Minnesota",
+  "New England",
+];
+
+var cities_alts = {
+  'Salt Lake': 'Salt Lake City',
+  'Montréal': 'Montreal',
+  'Washington': 'Washington D.C.',
+  'New York City': 'New York',
+};
