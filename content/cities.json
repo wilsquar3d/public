@@ -198,6 +198,8 @@ var cities = [
   "Colorado",
   "Minnesota",
   "New England",
+  "Anaheim",
+  "Arizona",
 ];
 
 var cities_alts = {
