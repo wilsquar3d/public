@@ -200,6 +200,7 @@ var cities = [
   "New England",
   "Anaheim",
   "Arizona",
+  "Texas",
 ];
 
 var cities_alts = {
