@@ -201,6 +201,10 @@ var cities = [
   "Anaheim",
   "Arizona",
   "Texas",
+  "Indiana",
+  "Utah",
+  "Sacramento",
+  "San Antonio",
 ];
 
 var cities_alts = {
