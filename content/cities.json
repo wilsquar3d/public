@@ -206,6 +206,7 @@ var cities = [
   "Sacramento",
   "San Antonio",
   "Brooklyn",
+  "Carolina",
 ];
 
 var cities_alts = {
