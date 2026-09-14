@@ -219,5 +219,5 @@ var cities_alts = {
   'D.C.': 'Washington D.C.',
   'New York City': 'New York',
   'LA': 'Los Angeles',
-  "Vegas": "Las Vegas",
+  'Vegas': 'Las Vegas',
 };
